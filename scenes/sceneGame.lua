@@ -2,6 +2,7 @@ local sceneGame = newScene("game")
 
 local camera = require("level.camera")
 local background = require("level.background")
+local ship = require("characters.ship")
 
 -- Variables for parallax layers and speed
 local playerX = 0  -- Player's X position (you can adjust this for your own player logic)
@@ -14,19 +15,17 @@ end
 
 sceneGame.update = function(dt)
     -- Here we simulate player movement (replace this with your actual player controls)
-    playerX = playerX + 100 * dt  -- The player moves to the right at 100 pixels per second
-    playerY = playerY + 100 * dt  -- The player moves to the right at 100 pixels per second
-    camera.update(playerX, playerY)
+    camera.update(ship.pos.x, ship.pos.y)
     background.update(dt)
+    ship.update(dt)
 end
 
 sceneGame.draw = function()
     --love.graphics.push()
         
     camera.move()
-    background.draw(playerX, playerY)
-    -- Example target drawing (e.g., the player)
-    love.graphics.circle("fill", playerX, playerY, 10) -- Target object
+    background.draw(ship.pos.x, ship.pos.y)
+    ship.draw()
     --love.graphics.pop()
 end
 

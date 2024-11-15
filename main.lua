@@ -20,6 +20,7 @@ ScreenHeight = love.graphics.getHeight()
 
 require("utils.sprite")
 require("utils.vector2")
+require("utils.math")
 require("scenes.sceneManager")
 require("scenes.sceneGame")
 require("scenes.sceneMenu")

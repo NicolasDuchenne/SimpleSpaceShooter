@@ -7,7 +7,7 @@ local nlquad = 1
 local qwidth = 640
 local qheight = 360
 local fps = 10
-local scale = newVector2(3,3)
+local scale = newVector2(1,1)
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 01 - Void.png", speed = 0.2})
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 02 - Stars.png", speed = 0.5})
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 03 - Stars.png", speed = 1})
@@ -30,7 +30,7 @@ background.draw = function(x, y)
 
         -- Draw the layer image, tiling it if necessary, with an offset from player's position
         local offset_x = x * layer.speed
-        local offset_y = x * layer.speed
+        local offset_y = y * layer.speed
         local width = layer.sprite.width * scale.x
         local height = layer.sprite.height * scale.y
         for l = math.floor((x-ScreenWidth)/width) * width, x + width + ScreenWidth, width do

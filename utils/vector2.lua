@@ -53,8 +53,11 @@ function newVector2(px,py)
   
     v.normalize= function() -- fait de v un vecteur unitaire ( de norme 1 )
       local norm = v.norm()
-      v.x = v.x/norm
-      v.y = v.y/norm
+      if norm ~= 0 then
+        return newVector2(v.x/norm, v.y/norm)
+      else 
+        return v
+      end
     end
   
     --*********************************************************************************************************
@@ -73,6 +76,14 @@ function newVector2(px,py)
     v.scalaire= function(u)
       return u.x * v.x + u.y * v.y
     end
+
+    v.rotate = function(angle)
+      local cosTheta = math.cos(angle)
+      local sinTheta = math.sin(angle)
+  
+      return newVector2(v.x * cosTheta - v.y * sinTheta, v.x * sinTheta + v.y * cosTheta)
+  
+  end
     
     return v
   end
