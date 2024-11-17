@@ -1,12 +1,14 @@
+require("characters.components.engines")
+require("characters.components.weapons")
+
 local ship = {}
 ship.pos = newVector2(ScreenWidth/2, ScreenHeight/2)
 ship.rad = 0
-ship.image_rad_offset = math.pi/2
 ship.base_speed = 100
 ship.speed = ship.base_speed
 ship.base_sprite = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png")
-ship.engine = require("characters.player.engines")
-ship.weapon = require("characters.player.weapons")
+ship.engine = newEngine(BASE_ENGINE)
+ship.weapon = newWeapon(AUTO_CANNON)
 
 ship.update = function(dt)
     local mouseX, mouseY = love.mouse.getPosition()
@@ -14,7 +16,7 @@ ship.update = function(dt)
     --ship does not move in screen because the camera follows the ship so we calculate the angle like this
     ship.rad = math.angle(ScreenWidth * 0.5 * SCALE, ScreenHeight * 0.5 * SCALE, mouseX, mouseY) 
 
-    local dir = newVector2(math.cos(ship.rad), math.sin(ship.rad))
+    local dir = newVector2FromRad(ship.rad)
 
     local up_engine_dir = 0
     --up down thrust
@@ -53,22 +55,26 @@ ship.update = function(dt)
 
 
     -- Manage weapons
-    if love.keyboard.isScancodeDown("2") then
-        ship.weapon.set_type(BIG_SPACE_GUN)
-    elseif love.keyboard.isScancodeDown("1") then
+    if love.keyboard.isScancodeDown("1") then
         ship.weapon.set_type(AUTO_CANNON)
+    elseif love.keyboard.isScancodeDown("2") then
+        ship.weapon.set_type(BIG_SPACE_GUN)
+    elseif love.keyboard.isScancodeDown("3") then
+        ship.weapon.set_type(ROCKETS)
+    elseif love.keyboard.isScancodeDown("4") then
+        ship.weapon.set_type(ZAPPER)
     end
     -- shoot weapon
     if love.mouse.isDown(1) then
-        ship.weapon.base_sprite.play_sprite = true
+        ship.weapon.shoot()
     end
-    ship.weapon.update(dt)
+    ship.weapon.update(dt, ship.pos, ship.rad)
 end
 
 ship.draw = function()
-    ship.base_sprite.draw(ship.pos, ship.rad + ship.image_rad_offset)
-    ship.engine.draw(ship.pos, ship.rad + ship.image_rad_offset)
-    ship.weapon.draw(ship.pos, ship.rad + ship.image_rad_offset)
+    ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+    ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+    ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
 end
 
 return ship

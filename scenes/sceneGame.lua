@@ -5,6 +5,7 @@ local background = require("level.background")
 local ship = require("characters.player.ship")
 
 
+
 sceneGame.load = function(data)
     background.load()
 end

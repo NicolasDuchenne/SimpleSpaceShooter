@@ -50,6 +50,10 @@ function newVector2(px,py)
     v.norm = function() -- norme d'une vecteur
       return math.sqrt(v.x^2+v.y^2) 
     end
+
+    v.angle = function()
+      return math.atan2(v.y, v.x)
+    end
   
     v.normalize= function() -- fait de v un vecteur unitaire ( de norme 1 )
       local norm = v.norm()
@@ -86,4 +90,8 @@ function newVector2(px,py)
   end
     
     return v
+  end
+
+  function newVector2FromRad(rad)
+    return newVector2(math.cos(rad), math.sin(rad))
   end

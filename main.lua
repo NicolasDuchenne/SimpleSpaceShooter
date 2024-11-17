@@ -17,6 +17,7 @@ SCALE = 1.3
 
 ScreenWidth = love.graphics.getWidth() / SCALE
 ScreenHeight = love.graphics.getHeight() / SCALE
+IMG_RAD_OFFSET = math.pi/2
 
 
 require("utils.sprite")
