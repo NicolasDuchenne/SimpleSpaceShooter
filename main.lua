@@ -12,10 +12,11 @@ io.stdout:setvbuf("no")
 
 
 love.window.setMode(1024, 736)
+SCALE = 1.3
 
 
-ScreenWidth = love.graphics.getWidth()
-ScreenHeight = love.graphics.getHeight()
+ScreenWidth = love.graphics.getWidth() / SCALE
+ScreenHeight = love.graphics.getHeight() / SCALE
 
 
 require("utils.sprite")
@@ -35,6 +36,7 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.scale(SCALE,SCALE)
     drawCurrentScene()
 
 end

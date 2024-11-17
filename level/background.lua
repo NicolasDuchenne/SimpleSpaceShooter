@@ -7,7 +7,7 @@ local nlquad = 1
 local qwidth = 640
 local qheight = 360
 local fps = 10
-local scale = newVector2(1,1)
+local scale = newVector2(1.5,1.5)
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 01 - Void.png", speed = 0.2})
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 02 - Stars.png", speed = 0.5})
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 03 - Stars.png", speed = 1})
@@ -15,7 +15,7 @@ table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/C
 background.load = function()
     -- Load background images (far, middle, near)
     for i, layer in ipairs(layers) do
-        backgroundLayers[i] = {sprite = newSprite(layer.img_name, ncquad, nlquad, qwidth, qheight, fps), speed = layer.speed}
+        backgroundLayers[i] = {sprite = newQuadSprite(layer.img_name, ncquad, nlquad, qwidth, qheight, fps), speed = layer.speed}
     end
 end
 

@@ -2,11 +2,8 @@ local sceneGame = newScene("game")
 
 local camera = require("level.camera")
 local background = require("level.background")
-local ship = require("characters.ship")
+local ship = require("characters.player.ship")
 
--- Variables for parallax layers and speed
-local playerX = 0  -- Player's X position (you can adjust this for your own player logic)
-local playerY = 0
 
 sceneGame.load = function(data)
     background.load()
@@ -22,7 +19,6 @@ end
 
 sceneGame.draw = function()
     --love.graphics.push()
-        
     camera.move()
     background.draw(ship.pos.x, ship.pos.y)
     ship.draw()
