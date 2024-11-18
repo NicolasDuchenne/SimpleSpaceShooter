@@ -23,6 +23,7 @@ IMG_RAD_OFFSET = math.pi/2
 require("utils.sprite")
 require("utils.vector2")
 require("utils.math")
+require("utils.copy")
 require("scenes.sceneManager")
 require("scenes.sceneGame")
 require("scenes.sceneMenu")

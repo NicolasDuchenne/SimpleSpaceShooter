@@ -1,13 +1,22 @@
 local sceneGame = newScene("game")
 
+
+require("characters.ships.shipFactory")
+require("characters.ships.enemies.enemyShip")
+
 local camera = require("level.camera")
 local background = require("level.background")
-local ship = require("characters.player.ship")
+local ship = require("characters.ships.player.ship")
+
 
 
 
 sceneGame.load = function(data)
     background.load()
+    newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
+    newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
+    newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
+    
 end
 
 
@@ -16,9 +25,8 @@ sceneGame.update = function(dt)
     camera.update(ship.pos.x, ship.pos.y)
     background.update(dt)
     ship.update(dt)
-    for i, projectile in ipairs(Projectiles) do
-        projectile.update(dt)
-    end
+    EnemyShips.update(dt)
+    Projectiles.update(dt)
 end
 
 sceneGame.draw = function()
@@ -26,9 +34,8 @@ sceneGame.draw = function()
     camera.move()
     background.draw(ship.pos.x, ship.pos.y)
     ship.draw()
-    for i, projectile in ipairs(Projectiles) do
-        projectile.draw()
-    end
+    EnemyShips.draw()
+    Projectiles.draw()
     --love.graphics.pop()
 end
 

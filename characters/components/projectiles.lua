@@ -3,8 +3,7 @@ BIG_SPACE_GUN_PROJECTILE = "big_space_gun_projectile"
 ROCKETS_PROJECTILE = "rockets_projectile"
 ZAPPER_PROJECTILE = "zapper_projectile"
 
-Projectiles = {}
-
+NAIRAN_BOLT_PROJECTILE = "nairan_bolt_projectile"
 
 local function create_projectile_sprite(params)
     return newQuadSprite(
@@ -57,10 +56,31 @@ projectiles_params[ZAPPER_PROJECTILE]= {
     scale = newVector2(0.8,0.8)
 }
 
-for type, params in pairs(projectiles_params) do
-    params.sprite = create_projectile_sprite(params)
-end
+projectiles_params[NAIRAN_BOLT_PROJECTILE]= {
+    img = "assets/Void_EnemyFleet_2/Nairan/Weapon Effects - Projectiles/PNGs/Nairan - Bolt.png",
+    cquad = 5,
+    lquad = 1,
+    wquad = 9,
+    hquad = 9,
+    fps = 8,
+    scale = newVector2(1,1)
+}
 
+Projectiles = {}
+Projectiles.update = function(dt)
+    for i=#Projectiles, 1, -1 do
+        Projectiles[i].update(dt)
+        if Projectiles[i].time_elapsed > Projectiles[i].life_span then
+            table.remove(Projectiles, i)
+        end
+    end
+
+end
+Projectiles.draw = function()
+    for i, projectile in ipairs(Projectiles) do
+        projectile.draw()
+    end
+end
 
 function newProjectile(type, pos, rad, speed)
     local projectile = {}
@@ -68,12 +88,16 @@ function newProjectile(type, pos, rad, speed)
     projectile.rad = rad
     projectile.dir = newVector2FromRad(rad)
     projectile.speed = speed 
-    projectile.sprite = projectiles_params[type].sprite
+    projectile.sprite = create_projectile_sprite(projectiles_params[type])
     projectile.scale = projectiles_params[type].scale
+    projectile.life_span = 5
+    projectile.time_elapsed = 0
     
     projectile.update = function(dt)
         projectile.sprite.update(dt)
         projectile.pos = projectile.pos + projectile.dir * projectile.speed * dt
+        projectile.time_elapsed = projectile.time_elapsed + dt
+
     end
 
     projectile.draw = function()

@@ -1,16 +1,7 @@
-require("characters.components.engines")
-require("characters.components.weapons")
 
-local ship = {}
-ship.pos = newVector2(ScreenWidth/2, ScreenHeight/2)
-ship.rad = 0
-ship.moving_dir = newVector2()
-ship.base_speed = 100
-ship.speed = ship.base_speed
-ship.lerp_speed = 5
-ship.base_sprite = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png")
-ship.engine = newEngine(BASE_ENGINE)
-ship.weapon = newWeapon(AUTO_CANNON)
+
+local ship = newShip("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png", BASE_ENGINE, AUTO_CANNON)
+
 
 local function move(dt)
     local mouseX, mouseY = love.mouse.getPosition()
@@ -47,30 +38,7 @@ local function move(dt)
     ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
 end
 
-ship.update = function(dt)
-    move(dt)
-
-    -- Manage engines
-    if love.keyboard.isScancodeDown("lshift") then
-        ship.engine.set_type(BURST_ENGINE)
-        ship.speed = ship.base_speed * 2
-    else
-        ship.engine.set_type(BASE_ENGINE)
-        ship.speed = ship.base_speed
-    end
-    ship.engine.update(ship.moving_dir.norm(), dt)
-
-
-    -- Manage weapons
-    if love.keyboard.isScancodeDown("1") then
-        ship.weapon.set_type(AUTO_CANNON)
-    elseif love.keyboard.isScancodeDown("2") then
-        ship.weapon.set_type(BIG_SPACE_GUN)
-    elseif love.keyboard.isScancodeDown("3") then
-        ship.weapon.set_type(ROCKETS)
-    elseif love.keyboard.isScancodeDown("4") then
-        ship.weapon.set_type(ZAPPER)
-    end
+local shoot= function(dt)
     -- shoot weapon
     if love.mouse.isDown(1) then
         ship.weapon.shoot()
@@ -78,10 +46,31 @@ ship.update = function(dt)
     ship.weapon.update(dt, ship.pos, ship.rad)
 end
 
-ship.draw = function()
-    ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-    ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-    ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+ship.update = function(dt)
+    move(dt)
+    -- Manage engines
+    if love.keyboard.isScancodeDown("lshift") then
+        ship.engine.change_type(BURST_ENGINE)
+        ship.speed = ship.base_speed * 2
+    else
+        ship.engine.change_type(BASE_ENGINE)
+        ship.speed = ship.base_speed
+    end
+    ship.engine.update(ship.moving_dir.norm(), dt)
+
+
+    -- Manage weapons
+    if love.keyboard.isScancodeDown("1") then
+        ship.weapon = newWeapon(AUTO_CANNON)
+    elseif love.keyboard.isScancodeDown("2") then
+        ship.weapon = newWeapon(BIG_SPACE_GUN)
+    elseif love.keyboard.isScancodeDown("3") then
+        ship.weapon = newWeapon(ROCKETS)
+    elseif love.keyboard.isScancodeDown("4") then
+        ship.weapon = newWeapon(ZAPPER)
+    end
+    shoot(dt)
 end
+
 
 return ship
