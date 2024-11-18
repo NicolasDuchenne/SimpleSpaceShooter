@@ -35,9 +35,8 @@ local function create_engine_effect(params)
     return output
 end
 
-local engine_effects = {}
 for type, params in pairs(engine_effects_params) do
-    engine_effects[type] = create_engine_effect(params)
+    params.effects = create_engine_effect(params)
 end
 
 
@@ -49,13 +48,13 @@ function newEngine(type)
 
 
     engine.current_base_sprite = base_sprites[engine.type]
-    engine.current_engine_effects = engine_effects[engine.type]
+    engine.current_engine_effects = engine_effects_params[engine.type].effects
     engine.current_engine_effect = nil
 
     engine.set_type = function(type)
         engine.type = type
         engine.current_base_sprite = base_sprites[engine.type]
-        engine.current_engine_effects = engine_effects[engine.type]
+        engine.current_engine_effects = engine_effects_params[engine.type].effects
     end
 
     engine.update = function(speed, dt)

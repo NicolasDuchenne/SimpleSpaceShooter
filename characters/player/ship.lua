@@ -4,17 +4,20 @@ require("characters.components.weapons")
 local ship = {}
 ship.pos = newVector2(ScreenWidth/2, ScreenHeight/2)
 ship.rad = 0
+ship.moving_dir = newVector2()
 ship.base_speed = 100
 ship.speed = ship.base_speed
+ship.lerp_speed = 5
 ship.base_sprite = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png")
 ship.engine = newEngine(BASE_ENGINE)
 ship.weapon = newWeapon(AUTO_CANNON)
 
-ship.update = function(dt)
+local function move(dt)
     local mouseX, mouseY = love.mouse.getPosition()
     --ship.rad = math.angle(ship.pos.x, ship.pos.y, mouseX, mouseY)
     --ship does not move in screen because the camera follows the ship so we calculate the angle like this
-    ship.rad = math.angle(ScreenWidth * 0.5 * SCALE, ScreenHeight * 0.5 * SCALE, mouseX, mouseY) 
+    local target_rad = math.angle(ScreenWidth * 0.5 * SCALE, ScreenHeight * 0.5 * SCALE, mouseX, mouseY)
+    ship.rad = LerpAngle(ship.rad, target_rad, ship.lerp_speed * dt)
 
     local dir = newVector2FromRad(ship.rad)
 
@@ -40,8 +43,12 @@ ship.update = function(dt)
     end
     local side_dir = side_engine_dir  * dir
 
-    local final_dir = (up_dir + side_dir).normalize()
-    ship.pos = ship.pos + final_dir * ship.speed * dt
+    ship.moving_dir = (up_dir + side_dir).normalize()
+    ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+end
+
+ship.update = function(dt)
+    move(dt)
 
     -- Manage engines
     if love.keyboard.isScancodeDown("lshift") then
@@ -51,7 +58,7 @@ ship.update = function(dt)
         ship.engine.set_type(BASE_ENGINE)
         ship.speed = ship.base_speed
     end
-    ship.engine.update(final_dir.norm(), dt)
+    ship.engine.update(ship.moving_dir.norm(), dt)
 
 
     -- Manage weapons

@@ -1,4 +1,4 @@
-require("characters.player.projectiles")
+require("characters.components.projectiles")
 
 AUTO_CANNON = "auto_cannon"
 BIG_SPACE_GUN = "big_space_gun"
@@ -7,14 +7,14 @@ ZAPPER = "zapper"
 
 local function create_weapon_sprite(params)
     return newQuadSprite(
-    params.img,
-    params.cquad,
-    params.lquad,
-    params.wquad,
-    params.hquad,
-    params.fps,
-    SPRITE_PLAY_ONCE
-)
+        params.img,
+        params.cquad,
+        params.lquad,
+        params.wquad,
+        params.hquad,
+        params.fps,
+        SPRITE_PLAY_ONCE
+    )
 end
 
 local weapon_sprite_params = {}
@@ -106,23 +106,21 @@ weapon_sprite_params[ZAPPER] = {
     shooting_frames = {
         {
             frame = 5,
-            offset = newVector2(10,-20)
+            offset = newVector2(8,-20)
         },
         {
             frame = 5,
-            offset = newVector2(-10,-20)
+            offset = newVector2(-8,-20)
         },
     }
 }
 
-local base_sprites = {}
 for type, params in pairs(weapon_sprite_params) do
-    base_sprites[type] = create_weapon_sprite(params)
+    params.sprite = create_weapon_sprite(params)
 end
 
 function newWeapon(type)
     local weapon = {}
-    local projectiles = {}
     weapon.can_shoot = true
     weapon.will_shoot = false
     weapon.shot_fired = 0
@@ -130,7 +128,7 @@ function newWeapon(type)
 
     weapon.set_type = function(type)
         weapon.type = type
-        weapon.current_base_sprite = base_sprites[weapon.type]
+        weapon.current_base_sprite = weapon_sprite_params[weapon.type].sprite
         weapon.bullet_type = weapon_sprite_params[type].bullet_type
         weapon.bullet_speed = weapon_sprite_params[type].bullet_speed
         weapon.shooting_frames = weapon_sprite_params[type].shooting_frames
@@ -153,23 +151,17 @@ function newWeapon(type)
 
     weapon.update = function(dt, pos, rad)
         weapon.current_base_sprite.update(dt)
-        for i, projectile in ipairs(projectiles) do
-            projectile.update(dt)
-        end
         if weapon.current_base_sprite.play_sprite == false then
             weapon.can_shoot = true
         end
         if weapon.will_shoot then
             for i= 1, #weapon.shooting_frames do
                 if weapon.current_base_sprite.frame == weapon.shooting_frames[i].frame and weapon.shooting_frames[i].has_shot == false then
-                    table.insert(
-                            projectiles,
-                            newProjectile(
-                                weapon.bullet_type,
-                                pos + weapon.shooting_frames[i].offset.rotate(rad + IMG_RAD_OFFSET),
-                                rad,
-                                weapon.bullet_speed
-                        )
+                    newProjectile(
+                        weapon.bullet_type,
+                        pos + weapon.shooting_frames[i].offset.rotate(rad + IMG_RAD_OFFSET),
+                        rad,
+                        weapon.bullet_speed
                     )
                     weapon.shooting_frames[i].has_shot = true
                     weapon.shot_fired = weapon.shot_fired + 1
@@ -184,9 +176,6 @@ function newWeapon(type)
 
     weapon.draw = function(pos, rad)
         weapon.current_base_sprite.draw(pos, rad)
-        for i, projectile in ipairs(projectiles) do
-            projectile.draw()
-        end
     end
 
     return weapon

@@ -12,7 +12,7 @@ io.stdout:setvbuf("no")
 
 
 love.window.setMode(1024, 736)
-SCALE = 1.3
+SCALE = 1
 
 
 ScreenWidth = love.graphics.getWidth() / SCALE

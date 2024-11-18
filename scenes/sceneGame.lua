@@ -16,6 +16,9 @@ sceneGame.update = function(dt)
     camera.update(ship.pos.x, ship.pos.y)
     background.update(dt)
     ship.update(dt)
+    for i, projectile in ipairs(Projectiles) do
+        projectile.update(dt)
+    end
 end
 
 sceneGame.draw = function()
@@ -23,6 +26,9 @@ sceneGame.draw = function()
     camera.move()
     background.draw(ship.pos.x, ship.pos.y)
     ship.draw()
+    for i, projectile in ipairs(Projectiles) do
+        projectile.draw()
+    end
     --love.graphics.pop()
 end
 
