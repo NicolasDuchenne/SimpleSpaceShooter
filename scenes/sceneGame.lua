@@ -43,6 +43,7 @@ sceneGame.keypressed = function(key)
     if key=="space" then
         changeScene("menu", "hello world")
     end
+    print(key)
 end
 
 

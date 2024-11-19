@@ -48,7 +48,7 @@ weapon_sprite_params[BIG_SPACE_GUN] = {
 }
 
 weapon_sprite_params[ROCKETS] = {
-    img = "assets/Void_MainShip/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - ROCKETS.png",
+    img = "assets/Void_MainShip/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Rockets.png",
     cquad = 17,
     lquad = 1,
     wquad = 48,

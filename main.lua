@@ -10,13 +10,33 @@ love.graphics.setDefaultFilter("nearest")
 -- Cette ligne permet d'afficher des traces dans la console pendant l'éxécution
 io.stdout:setvbuf("no")
 
+local devMode = true
+local devWidth = 1024
+local devHeight = 736
 
-love.window.setMode(1024, 736)
-SCALE = 1
+function setWindowSize()
+    if devMode == true then
+        love.window.setMode(devWidth, devHeight)
+        SCALE = 1
+    else
+        local monitorWidth, monitorHeight = love.window.getDesktopDimensions(monitorIndex)
+        local offset = 200
+        monitorWidth = monitorWidth - offset
+        monitorHeight = monitorHeight - offset
+
+        local ratio = devWidth/devHeight
+
+        love.window.setMode(monitorWidth, monitorHeight)
+        SCALE = math.min(monitorWidth/devWidth, monitorHeight/devHeight)
+    end
+    ScreenWidth = love.graphics.getWidth() / SCALE
+    ScreenHeight = love.graphics.getHeight() / SCALE
+end
+
+setWindowSize()
 
 
-ScreenWidth = love.graphics.getWidth() / SCALE
-ScreenHeight = love.graphics.getHeight() / SCALE
+
 IMG_RAD_OFFSET = math.pi/2
 
 
@@ -45,5 +65,9 @@ end
 
 function love.keypressed(key)
     keypressed(key)
+    if key == "escape" then
+        devMode = not devMode
+        setWindowSize()
+    end
 end
 
