@@ -39,11 +39,10 @@ sceneGame.draw = function()
     --love.graphics.pop()
 end
 
-sceneGame.keypressed = function(key)
-    if key=="space" then
+sceneGame.keypressed = function(key, scancode)
+    if scancode=="space" then
         changeScene("menu", "hello world")
     end
-    print(key)
 end
 
 

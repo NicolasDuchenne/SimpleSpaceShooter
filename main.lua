@@ -14,7 +14,7 @@ local devMode = true
 local devWidth = 1024
 local devHeight = 736
 
-function setWindowSize()
+local function setWindowSize()
     if devMode == true then
         love.window.setMode(devWidth, devHeight)
         SCALE = 1
@@ -63,9 +63,9 @@ function love.draw()
 
 end
 
-function love.keypressed(key)
-    keypressed(key)
-    if key == "escape" then
+function love.keypressed(key, scancode)
+    keypressed(key, scancode)
+    if scancode == "escape" then
         devMode = not devMode
         setWindowSize()
     end

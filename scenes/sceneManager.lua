@@ -41,8 +41,8 @@ function drawCurrentScene()
     currentScene.draw()
 end
 
-function keypressed(key)
-    currentScene.keypressed(key)
+function keypressed(key, scancode)
+    currentScene.keypressed(key, scancode)
 end
 
 
