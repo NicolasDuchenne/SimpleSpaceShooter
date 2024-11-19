@@ -1,14 +1,15 @@
-BASE_ENGINE = "base"
-BURST_ENGINE = "burst"
+ENGINES = {}
+ENGINES.base = "base_engine"
+ENGINES.burst = "burst_engine"
 
-NAIRAN_FIGHTER_ENGINE = "nairan_fighter_engine"
-NAIRAN_BATTLECRUISER_ENGINE = "nairan_battlecruiser_engine"
+ENGINES.nairan_fighter = "nairan_fighter_engine"
+ENGINES.nairan_battlecruiser = "nairan_battlecruiser_engine"
 
 local base_sprites = {}
 local engine_effects_params = {}
 
-base_sprites[BASE_ENGINE] = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Base Engine.png")
-engine_effects_params[BASE_ENGINE] = {
+base_sprites[ENGINES.base] = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Base Engine.png")
+engine_effects_params[ENGINES.base] = {
     img = "assets/Void_MainShip/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Base Engine - " ,
     idle_cquad = 3,
     powering_cquad = 4,
@@ -19,8 +20,8 @@ engine_effects_params[BASE_ENGINE] = {
     always_powering = false
 }
 
-base_sprites[BURST_ENGINE] = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Burst Engine.png")
-engine_effects_params[BURST_ENGINE] = {
+base_sprites[ENGINES.burst] = newSprite("assets/Void_MainShip/Main Ship/Main Ship - Engines/PNGs/Main Ship - Engines - Burst Engine.png")
+engine_effects_params[ENGINES.burst] = {
     img = "assets/Void_MainShip/Main Ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Burst Engine - " ,
     idle_cquad = 4,
     powering_cquad = 4,
@@ -31,8 +32,8 @@ engine_effects_params[BURST_ENGINE] = {
     always_powering = false
 }
 
-base_sprites[NAIRAN_BATTLECRUISER_ENGINE] = nil
-engine_effects_params[NAIRAN_BATTLECRUISER_ENGINE] = {
+base_sprites[ENGINES.nairan_battlecruiser] = nil
+engine_effects_params[ENGINES.nairan_battlecruiser] = {
     img = "assets/Void_EnemyFleet_2/Nairan/Engine Effects/PNGs/Nairan - Battlecruiser - Engine.png" ,
     idle_cquad = 8,
     powering_cquad = 8,
@@ -44,8 +45,8 @@ engine_effects_params[NAIRAN_BATTLECRUISER_ENGINE] = {
 }
 
 
-base_sprites[NAIRAN_FIGHTER_ENGINE] = nil
-engine_effects_params[NAIRAN_FIGHTER_ENGINE] = {
+base_sprites[ENGINES.nairan_fighter] = nil
+engine_effects_params[ENGINES.nairan_fighter] = {
     img = "assets/Void_EnemyFleet_2/Nairan/Engine Effects/PNGs/Nairan - Fighter - Engine.png" ,
     idle_cquad = 8,
     powering_cquad = 8,

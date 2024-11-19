@@ -45,6 +45,9 @@ sceneGame.keypressed = function(key, scancode)
     end
 end
 
+sceneGame.moussepressed = function(x, y, button)
+end
+
 
 
 return sceneGame

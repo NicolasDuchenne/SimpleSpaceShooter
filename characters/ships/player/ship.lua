@@ -1,13 +1,20 @@
 
 
-local ship = newShip("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png", BASE_ENGINE, AUTO_CANNON)
 
+
+local ship = newShip("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png", ENGINES.base, WEAPONS.auto_cannon)
+
+ship.inventory = require("characters.ships.player.inventory")
+ship.inventory.add_weapon(WEAPONS.auto_cannon, 1)
+ship.inventory.add_weapon(WEAPONS.big_space_gun, 2)
+ship.inventory.add_weapon(WEAPONS.rockets, 3)
+ship.inventory.add_weapon(WEAPONS.zapper, 4)
 
 local function move(dt)
     local mouseX, mouseY = love.mouse.getPosition()
     --ship.rad = math.angle(ship.pos.x, ship.pos.y, mouseX, mouseY)
     --ship does not move in screen because the camera follows the ship so we calculate the angle like this
-    local target_rad = math.angle(ScreenWidth * 0.5 * SCALE, ScreenHeight * 0.5 * SCALE, mouseX, mouseY)
+    local target_rad = math.angle(ScreenWidth * 0.5 * Scale, ScreenHeight * 0.5 * Scale, mouseX, mouseY)
     ship.rad = LerpAngle(ship.rad, target_rad, ship.lerp_speed * dt)
 
     local dir = newVector2FromRad(ship.rad)
@@ -50,26 +57,30 @@ ship.update = function(dt)
     move(dt)
     -- Manage engines
     if love.keyboard.isScancodeDown("lshift") then
-        ship.engine.change_type(BURST_ENGINE)
+        ship.engine.change_type(ENGINES.burst)
         ship.speed = ship.base_speed * 2
     else
-        ship.engine.change_type(BASE_ENGINE)
+        ship.engine.change_type(ENGINES.base)
         ship.speed = ship.base_speed
     end
     ship.engine.update(ship.moving_dir.norm(), dt)
 
 
-    -- Manage weapons
-    if love.keyboard.isScancodeDown("1") then
-        ship.weapon = newWeapon(AUTO_CANNON)
-    elseif love.keyboard.isScancodeDown("2") then
-        ship.weapon = newWeapon(BIG_SPACE_GUN)
-    elseif love.keyboard.isScancodeDown("3") then
-        ship.weapon = newWeapon(ROCKETS)
-    elseif love.keyboard.isScancodeDown("4") then
-        ship.weapon = newWeapon(ZAPPER)
+    for i, weapon in ipairs(ship.inventory.weapons) do
+        if love.keyboard.isScancodeDown(tostring(i)) then
+            ship.weapon = weapon
+        end
     end
+    ship.inventory.update(ship.pos + newVector2(-ScreenWidth/2, ScreenHeight/2))
+
     shoot(dt)
+end
+
+ship.draw = function()
+    ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+    ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+    ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+    ship.inventory.draw()
 end
 
 

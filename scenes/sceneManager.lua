@@ -30,7 +30,6 @@ function changeScene(title, data)
     end
     currentScene = scenes[title]
     currentScene.load(data)
-
 end
 
 function updateCurrentScene(dt)
@@ -46,6 +45,6 @@ function keypressed(key, scancode)
 end
 
 
-function mousePressed(x, y, button)
-    currentScene.mousePressed(x, y, button)
+function moussepressed(x, y, button)
+    currentScene.moussepressed(x, y, button)
 end

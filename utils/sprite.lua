@@ -72,12 +72,13 @@ function newQuadSprite(img, ncquad, nlquad, wquad, hquad,fps, play_mode)
 
 
 
-    sprite.draw = function(pos, rad, scale, offset)
+    sprite.draw = function(pos, rad, scale, offset, frame)
         local d_pos = pos or newVector2()
         local d_rad = rad or 0
         local d_scale = scale or newVector2(1,1)
         local d_offset = offset or newVector2(sprite.width * 0.5, sprite.height * 0.5)
-        love.graphics.draw(sprite.img, sprite.quad[sprite.frame], d_pos.x, d_pos.y, d_rad, d_scale.x, d_scale.y, d_offset.x, d_offset.y)
+        local d_frame = frame or sprite.frame
+        love.graphics.draw(sprite.img, sprite.quad[d_frame], d_pos.x, d_pos.y, d_rad, d_scale.x, d_scale.y, d_offset.x, d_offset.y)
     end
 
     return sprite

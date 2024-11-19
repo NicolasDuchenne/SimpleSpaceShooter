@@ -1,11 +1,12 @@
-function deep_copy(original)
-    local copy = {}
-    for key, value in pairs(original) do
-        if type(value) == "table" then
-            copy[key] = deep_copy(value) -- Recursive call for nested tables
-        else
-            copy[key] = value
+function DeepCopy(original)
+    local copy
+    if type(original) == "table" then
+        copy = {}
+        for key, value in pairs(original) do
+            copy[key] = DeepCopy(value)
         end
+    else
+        copy = original -- If it's not a table, just copy the value
     end
     return copy
 end

@@ -1,9 +1,11 @@
-AUTO_CANNON_PROJECTILE = "auto_cannon_projectile"
-BIG_SPACE_GUN_PROJECTILE = "big_space_gun_projectile"
-ROCKETS_PROJECTILE = "rockets_projectile"
-ZAPPER_PROJECTILE = "zapper_projectile"
+PROJECTILES = {}
 
-NAIRAN_BOLT_PROJECTILE = "nairan_bolt_projectile"
+PROJECTILES.auto_cannon = "auto_cannon_projectile"
+PROJECTILES.space_gun = "big_space_gun_projectile"
+PROJECTILES.rockets = "rockets_projectile"
+PROJECTILES.zapper = "zapper_projectile"
+
+PROJECTILES.nairan_bolt = "nairan_bolt_projectile"
 
 local function create_projectile_sprite(params)
     return newQuadSprite(
@@ -17,7 +19,7 @@ local function create_projectile_sprite(params)
 end
 
 local projectiles_params = {}
-projectiles_params[AUTO_CANNON_PROJECTILE]= {
+projectiles_params[PROJECTILES.auto_cannon]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Auto cannon bullet.png",
     cquad = 4,
     lquad = 1,
@@ -27,7 +29,7 @@ projectiles_params[AUTO_CANNON_PROJECTILE]= {
     scale = newVector2(0.5,0.5)
 }
 
-projectiles_params[BIG_SPACE_GUN_PROJECTILE]= {
+projectiles_params[PROJECTILES.space_gun]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Big Space Gun.png",
     cquad = 10,
     lquad = 1,
@@ -37,7 +39,7 @@ projectiles_params[BIG_SPACE_GUN_PROJECTILE]= {
     scale = newVector2(1,1)
 }
 
-projectiles_params[ROCKETS_PROJECTILE]= {
+projectiles_params[PROJECTILES.rockets]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Rocket.png",
     cquad = 3,
     lquad = 1,
@@ -46,7 +48,7 @@ projectiles_params[ROCKETS_PROJECTILE]= {
     fps = 8,
     scale = newVector2(1,1)
 }
-projectiles_params[ZAPPER_PROJECTILE]= {
+projectiles_params[PROJECTILES.zapper]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Zapper.png",
     cquad = 8,
     lquad = 1,
@@ -56,7 +58,7 @@ projectiles_params[ZAPPER_PROJECTILE]= {
     scale = newVector2(0.8,0.8)
 }
 
-projectiles_params[NAIRAN_BOLT_PROJECTILE]= {
+projectiles_params[PROJECTILES.nairan_bolt]= {
     img = "assets/Void_EnemyFleet_2/Nairan/Weapon Effects - Projectiles/PNGs/Nairan - Bolt.png",
     cquad = 5,
     lquad = 1,

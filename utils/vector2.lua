@@ -40,6 +40,17 @@ function newVector2(px,py)
       end
       return vect
     end
+
+    function vectorMT.__div(v,k) -- operateur *
+      local vect = newVector2(0,0)
+      if type(k)=="number" then
+        vect.x = v.x/k
+        vect.y = v.y/k
+      else
+        error("cannot divide vector by vector")
+      end
+      return vect
+    end
   
     setmetatable(v,vectorMT)
   

@@ -17,7 +17,7 @@ local devHeight = 736
 local function setWindowSize()
     if devMode == true then
         love.window.setMode(devWidth, devHeight)
-        SCALE = 1
+        Scale = 1
     else
         local monitorWidth, monitorHeight = love.window.getDesktopDimensions(monitorIndex)
         local offset = 200
@@ -27,10 +27,10 @@ local function setWindowSize()
         local ratio = devWidth/devHeight
 
         love.window.setMode(monitorWidth, monitorHeight)
-        SCALE = math.min(monitorWidth/devWidth, monitorHeight/devHeight)
+        Scale = math.min(monitorWidth/devWidth, monitorHeight/devHeight)
     end
-    ScreenWidth = love.graphics.getWidth() / SCALE
-    ScreenHeight = love.graphics.getHeight() / SCALE
+    ScreenWidth = love.graphics.getWidth() / Scale
+    ScreenHeight = love.graphics.getHeight() / Scale
 end
 
 setWindowSize()
@@ -44,6 +44,7 @@ require("utils.sprite")
 require("utils.vector2")
 require("utils.math")
 require("utils.copy")
+require("ui.button")
 require("scenes.sceneManager")
 require("scenes.sceneGame")
 require("scenes.sceneMenu")
@@ -58,7 +59,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.scale(SCALE,SCALE)
+    love.graphics.scale(Scale,Scale)
     drawCurrentScene()
 
 end
@@ -69,5 +70,9 @@ function love.keypressed(key, scancode)
         devMode = not devMode
         setWindowSize()
     end
+end
+
+function love.mousepressed(x, y, button)
+    moussepressed(x, y, button)
 end
 
