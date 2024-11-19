@@ -69,9 +69,9 @@ ship.update = function(dt)
     for i, weapon in ipairs(ship.inventory.weapons) do
         if love.keyboard.isScancodeDown(tostring(i)) then
             ship.weapon = weapon
+            ship.weapon.reset()
         end
     end
-    ship.inventory.update(ship.pos + newVector2(-ScreenWidth/2, ScreenHeight/2))
 
     shoot(dt)
 end
@@ -80,7 +80,6 @@ ship.draw = function()
     ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
     ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
     ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-    ship.inventory.draw()
 end
 
 

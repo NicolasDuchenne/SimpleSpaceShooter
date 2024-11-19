@@ -21,12 +21,19 @@ function newWeapon(type)
     weapon.bullet_type = weapon_sprite_params[type].bullet_type
     weapon.bullet_speed = weapon_sprite_params[type].bullet_speed
     weapon.shooting_frames = weapon_sprite_params[type].shooting_frames
-    weapon.current_base_sprite.reset()
-    weapon.has_shot = {}
 
-    weapon.can_shoot = true
-    weapon.will_shoot = false
-    weapon.shot_fired = 0
+    weapon.reset = function()
+        weapon.current_base_sprite.reset()
+        weapon.has_shot = {}
+        weapon.can_shoot = true
+        weapon.will_shoot = false
+        weapon.shot_fired = 0
+    end
+
+    weapon.reset()
+
+
+
 
     weapon.shoot = function()
         if weapon.can_shoot then

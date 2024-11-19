@@ -1,5 +1,20 @@
 Buttons = {}
 
+Buttons.update = function()
+end
+
+Buttons.draw = function()
+    for i, button in ipairs(Buttons) do
+        button.draw()
+    end
+end
+Buttons.mousepressed = function(x, y, button)
+    for i, cbutton in ipairs(Buttons) do
+        cbutton.isMouseIn(x, y)
+    end
+end
+
+
 function newButton(pos, size)
     local button = {}
     button.pos = pos
@@ -41,6 +56,8 @@ function newQuadButton(pos, quadSprite)
     local size = newVector2(img.width, img.height)
     local button = newButton(pos, size)
     button.img = img
+    print(button.pos.x)
+    print(button.pos.y)
 
 
     button.draw = function()

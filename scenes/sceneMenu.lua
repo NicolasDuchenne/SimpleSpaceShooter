@@ -16,9 +16,7 @@ sceneMenu.update = function(dt)
 end
 
 sceneMenu.draw = function()
-    for i, button in ipairs(Buttons) do
-        button.draw()
-    end
+    Buttons.draw()
 end
 
 sceneMenu.keypressed = function(key, scancode)
@@ -28,9 +26,7 @@ sceneMenu.keypressed = function(key, scancode)
 end
 
 sceneMenu.moussepressed = function(x, y, button)
-    for i, button in ipairs(Buttons) do
-        button.isMouseIn(x, y)
-    end
+    Buttons.mousepressed(x, y, button)
 end
 
 

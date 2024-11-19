@@ -29,14 +29,24 @@ sceneGame.update = function(dt)
     Projectiles.update(dt)
 end
 
-sceneGame.draw = function()
-    --love.graphics.push()
+local function draw_game()
+    love.graphics.push()
     camera.move()
     background.draw(ship.pos.x, ship.pos.y)
-    ship.draw()
     EnemyShips.draw()
     Projectiles.draw()
-    --love.graphics.pop()
+    ship.draw()
+    love.graphics.pop()
+end
+
+local function draw_ui()
+    love.graphics.origin()
+    Buttons.draw()
+end
+
+sceneGame.draw = function()
+    draw_game()
+    draw_ui()
 end
 
 sceneGame.keypressed = function(key, scancode)
