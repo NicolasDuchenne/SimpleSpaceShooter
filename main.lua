@@ -14,6 +14,10 @@ local devMode = true
 local devWidth = 1024
 local devHeight = 736
 
+
+Font = love.graphics.newFont(12)  -- Choose your font size
+love.graphics.setFont(Font)
+
 local function setWindowSize()
     if devMode == true then
         love.window.setMode(devWidth, devHeight)

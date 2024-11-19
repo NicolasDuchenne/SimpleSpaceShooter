@@ -14,3 +14,10 @@ function LerpAngle(from, to, speed)
     local delta = (to - from + math.pi) % (math.pi*2) - math.pi
     return (from + delta * speed)
 end
+
+function SmoothLookAt(source, target, rad, lerp_speed, dt)
+    local target_rad = math.angle(source.x, source.y, target.x, target.y)
+    local output_rad = LerpAngle(rad, target_rad, lerp_speed * dt)
+    local moving_dir = newVector2FromRad(output_rad)
+    return output_rad, moving_dir
+end

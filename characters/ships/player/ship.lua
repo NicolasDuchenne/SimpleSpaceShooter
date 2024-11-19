@@ -1,23 +1,19 @@
 
-
-
-
 local ship = newShip("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png", ENGINES.base, WEAPONS.auto_cannon)
-
-ship.inventory = require("characters.ships.player.inventory")
-ship.inventory.add_weapon(WEAPONS.auto_cannon, 1)
-ship.inventory.add_weapon(WEAPONS.big_space_gun, 2)
-ship.inventory.add_weapon(WEAPONS.rockets, 3)
-ship.inventory.add_weapon(WEAPONS.zapper, 4)
+ship.base_speed = 200
+ship.boost_factor = 1.5
 
 local function move(dt)
     local mouseX, mouseY = love.mouse.getPosition()
-    --ship.rad = math.angle(ship.pos.x, ship.pos.y, mouseX, mouseY)
     --ship does not move in screen because the camera follows the ship so we calculate the angle like this
-    local target_rad = math.angle(ScreenWidth * 0.5 * Scale, ScreenHeight * 0.5 * Scale, mouseX, mouseY)
-    ship.rad = LerpAngle(ship.rad, target_rad, ship.lerp_speed * dt)
-
-    local dir = newVector2FromRad(ship.rad)
+    local dir = nil
+    ship.rad, dir = SmoothLookAt(
+        newVector2(ScreenWidth * 0.5 * Scale, ScreenHeight * 0.5 * Scale),
+        newVector2(mouseX, mouseY),
+        ship.rad,
+        ship.lerp_speed,
+        dt
+    )
 
     local up_engine_dir = 0
     --up down thrust
@@ -28,7 +24,6 @@ local function move(dt)
         up_engine_dir = up_engine_dir -1
     end
     local up_dir = up_engine_dir * dir
-
 
     --left right thrust
     dir = dir.rotate(math.pi/2)
@@ -53,12 +48,20 @@ local shoot= function(dt)
     ship.weapon.update(dt, ship.pos, ship.rad)
 end
 
+ship.load = function()
+    ship.inventory = require("characters.ships.player.inventory")
+    ship.inventory.add_weapon(WEAPONS.auto_cannon, PICKUPS.auto_cannon, 1)
+    ship.inventory.add_weapon(WEAPONS.big_space_gun, PICKUPS.big_space_gun, 2)
+    ship.inventory.add_weapon(WEAPONS.rockets, PICKUPS.rockets, 3)
+    ship.inventory.add_weapon(WEAPONS.zapper, PICKUPS.zapper, 4)
+end
+
 ship.update = function(dt)
     move(dt)
     -- Manage engines
     if love.keyboard.isScancodeDown("lshift") then
         ship.engine.change_type(ENGINES.burst)
-        ship.speed = ship.base_speed * 2
+        ship.speed = ship.base_speed * ship.boost_factor
     else
         ship.engine.change_type(ENGINES.base)
         ship.speed = ship.base_speed

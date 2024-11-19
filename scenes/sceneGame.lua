@@ -6,36 +6,55 @@ require("characters.ships.enemies.enemyShip")
 
 local camera = require("level.camera")
 local background = require("level.background")
-local ship = require("characters.ships.player.ship")
+PlayerShip = require("characters.ships.player.ship")
+sceneGame.saved_data = nil
 
 
-
-
-sceneGame.load = function(data)
-    background.load()
-    newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
-    newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
-    newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
+sceneGame.load = function()
     
+    background.load()
+    if sceneGame.saved_data then
+        EnemyShips = sceneGame.saved_data.EnemyShips
+        Buttons = sceneGame.saved_data.Buttons
+        Projectiles = sceneGame.saved_data.Projectiles
+        PlayerShip = sceneGame.saved_data.PlayerShip
+    else
+        PlayerShip.load()
+        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
+        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
+        newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
+    end
+end
+
+sceneGame.unload = function()
+    Buttons.unload()
+end
+
+local function update_game(dt)
+    camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
+    background.update(dt)
+    PlayerShip.update(dt)
+    EnemyShips.update(dt)
+    Projectiles.update(dt)
+end
+
+local function update_ui(dt)
+    Buttons.update(dt)
 end
 
 
 sceneGame.update = function(dt)
-    -- Here we simulate player movement (replace this with your actual player controls)
-    camera.update(ship.pos.x, ship.pos.y)
-    background.update(dt)
-    ship.update(dt)
-    EnemyShips.update(dt)
-    Projectiles.update(dt)
+    update_game(dt)
+    update_ui(dt)
 end
 
 local function draw_game()
     love.graphics.push()
     camera.move()
-    background.draw(ship.pos.x, ship.pos.y)
+    background.draw(PlayerShip.pos.x, PlayerShip.pos.y)
     EnemyShips.draw()
     Projectiles.draw()
-    ship.draw()
+    PlayerShip.draw()
     love.graphics.pop()
 end
 
@@ -49,8 +68,18 @@ sceneGame.draw = function()
     draw_ui()
 end
 
+sceneGame.save_data = function()
+    local data = {}
+    data.PlayerShip = PlayerShip
+    data.EnemyShips = EnemyShips
+    data.Buttons = DeepCopy(Buttons)
+    data.Projectiles = Projectiles
+    return data
+end
+
 sceneGame.keypressed = function(key, scancode)
     if scancode=="space" then
+        sceneGame.saved_data = sceneGame.save_data()
         changeScene("menu", "hello world")
     end
 end

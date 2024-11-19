@@ -13,8 +13,14 @@ function newScene(title)
     end
 
     scene.unload = function()
-
     end
+
+    scene.moussepressed = function(x, y, button)
+    end
+
+    scene.keypressed = function(key, scancode)
+    end
+
     scenes[title] = scene
     return scene
 end

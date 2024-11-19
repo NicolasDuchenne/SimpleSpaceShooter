@@ -1,6 +1,7 @@
 require("characters.components.engines")
 require("characters.components.projectiles")
 require("characters.components.weapons")
+require("characters.components.pickups")
 
 function newShip(img, engine, cannon, pos, rad, base_speed, lerp_speed)
     local ship = {}
@@ -19,6 +20,7 @@ function newShip(img, engine, cannon, pos, rad, base_speed, lerp_speed)
     end
 
     ship.update = function(dt)
+        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
         ship.engine.update(0, dt)
         ship.shoot()
         ship.weapon.update(dt, ship.pos, ship.rad)

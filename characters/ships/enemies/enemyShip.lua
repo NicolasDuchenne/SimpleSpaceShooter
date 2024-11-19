@@ -27,17 +27,36 @@ EnemyShips.draw = function(dt)
     end
 end
 
+EnemyShips.unload = function()
+    for i=#EnemyShips, 1, -1 do
+        table.remove(EnemyShips, i)
+    end
+end
+
 
 
 function newEnemyShip(type, pos, rad)
-    local enemyShip = newShip(
+    local ship = newShip(
         enemy_ships_params[type].img,
         enemy_ships_params[type].engine,
         enemy_ships_params[type].weapon,
         pos,
         rad
     )
+    
+    ship.update = function(dt)
+        ship.rad, ship.moving_dir = SmoothLookAt(ship.pos, PlayerShip.pos, ship.rad, ship.lerp_speed, dt)
+        -- local target_rad = math.angle(ship.pos.x, ship.pos.y, PlayerShip.pos.x, PlayerShip.pos.y)
+        -- ship.rad = LerpAngle(ship.rad, target_rad, ship.lerp_speed * dt)
+        -- ship.moving_dir = newVector2FromRad(ship.rad)
 
-    table.insert(EnemyShips, enemyShip)
+        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+        ship.engine.update(0, dt)
+        ship.shoot()
+        ship.weapon.update(dt, ship.pos, ship.rad)
+
+    end
+
+    table.insert(EnemyShips, ship)
     
 end
