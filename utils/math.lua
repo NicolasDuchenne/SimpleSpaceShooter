@@ -6,6 +6,17 @@ function math.vdist(v1, v2) return (v1-v2).norm() end
 -- Renvoie l'angle entre deux vecteurs supposant la même origine.
 function math.angle(x1,y1, x2,y2) return math.atan2(y2-y1, x2-x1) end
 
+-- Function to clamp a value
+function math.clamp(value, min, max)
+    if value < min then
+        return min
+    elseif value > max then
+        return max
+    else
+        return value
+    end
+end
+
 function Lerp(from, to, speed)
     return from + (to - from) * speed
 end

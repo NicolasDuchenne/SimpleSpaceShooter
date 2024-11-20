@@ -5,6 +5,9 @@ EnemyShips = {}
 EnemyShips.update = function(dt)
     for i=#EnemyShips, 1, -1 do
         EnemyShips[i].update(dt)
+        if EnemyShips[i].is_dead == true then
+            table.remove(EnemyShips, i)
+        end
     end
 end
 
@@ -38,6 +41,7 @@ function newEnemyShip(type, pos, rad)
     ship.type = type
     ship.detection_range = enemy_ships_params[type].detection_range
     ship.shooting_range = enemy_ships_params[type].shooting_range
+    ship.avoid_ship_range = enemy_ships_params[type].avoid_ship_range
 
     local shipStateMachine = newEnemyShipStateMachine()
     

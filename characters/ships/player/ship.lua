@@ -96,6 +96,10 @@ ship.update = function(dt)
     ship.update_hit_timer(dt)
 end
 
+ship.die = function()
+    print("Player Ship Dead")
+end
+
 
 
 

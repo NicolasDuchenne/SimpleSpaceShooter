@@ -20,6 +20,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.weapon = newWeapon(cannon, group)
 
     ship.health = health or 20
+    ship.is_dead = false
     ship.can_get_hit = true
     ship.invinsibility_timer = 0
     ship.invinsibility_duration = 0.1
@@ -64,15 +65,15 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         draw_hitbox()
     end
     
-    local function die()
-        print("I am dead")
+    ship.die = function()
+        ship.is_dead = true
     end
 
     local function take_damage(damage)
         ship.health = ship.health - damage
         if ship.health < 0 then
             ship.health = 0
-            die()
+            ship.die()
         end
     end
 

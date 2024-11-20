@@ -17,25 +17,29 @@ local devHeight = 736
 
 Font = love.graphics.newFont(12)  -- Choose your font size
 love.graphics.setFont(Font)
+Scale = 1
+local scale_increment = 0.1
+local min_scale, max_scale = 0.8, 2
+
+local function setScale()
+    ScreenWidth = love.graphics.getWidth() / Scale
+    ScreenHeight = love.graphics.getHeight() / Scale
+end
 
 local function setWindowSize()
     if devMode == true then
         love.window.setMode(devWidth, devHeight)
-        Scale = 1
     else
-        local monitorWidth, monitorHeight = love.window.getDesktopDimensions(monitorIndex)
+        local monitorWidth, monitorHeight = love.window.getDesktopDimensions()
         local offset = 200
         monitorWidth = monitorWidth - offset
         monitorHeight = monitorHeight - offset
-
-        local ratio = devWidth/devHeight
-
         love.window.setMode(monitorWidth, monitorHeight)
-        Scale = math.min(monitorWidth/devWidth, monitorHeight/devHeight)
     end
-    ScreenWidth = love.graphics.getWidth() / Scale
-    ScreenHeight = love.graphics.getHeight() / Scale
+    setScale()
 end
+
+
 
 setWindowSize()
 
@@ -78,5 +82,10 @@ end
 
 function love.mousepressed(x, y, button)
     moussepressed(x, y, button)
+end
+
+function love.wheelmoved(x, y)
+    Scale = math.clamp(Scale + y*scale_increment, min_scale, max_scale)
+    setScale()
 end
 
