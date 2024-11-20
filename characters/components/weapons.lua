@@ -1,4 +1,4 @@
-local weapon_sprite_params = require("characters.components.list_weapons")
+local weapon_sprite_params = require("characters.components.weapons_config")
 
 
 local function create_weapon_sprite(params)

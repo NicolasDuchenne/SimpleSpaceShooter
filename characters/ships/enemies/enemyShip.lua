@@ -1,18 +1,5 @@
-NAIRAN_FIGHTER = "nairan_figther"
-NAIRAN_BATTLECRUISER = "NAIRAN_BATTLECRUISER"
-
-local enemy_ships_params = {}
-enemy_ships_params[NAIRAN_FIGHTER] = {
-    img = "assets/Void_EnemyFleet_2/Nairan/Designs - Base/PNGs/Nairan - Fighter - Base.png",
-    engine = ENGINES.nairan_fighter,
-    weapon = WEAPONS.nairan_fighter
-}
-
-enemy_ships_params[NAIRAN_BATTLECRUISER] = {
-    img = "assets/Void_EnemyFleet_2/Nairan/Designs - Base/PNGs/Nairan - Battlecruiser - Base.png",
-    engine = ENGINES.nairan_battlecruiser,
-    weapon = WEAPONS.nairan_battlecruiser
-}
+local enemy_ships_params = require("characters.ships.enemies.enemyShips_config")
+local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStates")
 
 EnemyShips = {}
 EnemyShips.update = function(dt)
@@ -43,16 +30,16 @@ function newEnemyShip(type, pos, rad)
         pos,
         rad
     )
+    ship.type = type
+    ship.detection_range = enemy_ships_params[type].detection_range
+    ship.shooting_range = enemy_ships_params[type].shooting_range
+
+    local shipStateMachine = newEnemyShipStateMachine()
     
     ship.update = function(dt)
-        ship.rad, ship.moving_dir = SmoothLookAt(ship.pos, PlayerShip.pos, ship.rad, ship.lerp_speed, dt)
-        -- local target_rad = math.angle(ship.pos.x, ship.pos.y, PlayerShip.pos.x, PlayerShip.pos.y)
-        -- ship.rad = LerpAngle(ship.rad, target_rad, ship.lerp_speed * dt)
-        -- ship.moving_dir = newVector2FromRad(ship.rad)
+        shipStateMachine.update(ship, dt)
 
-        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
         ship.engine.update(0, dt)
-        ship.shoot()
         ship.weapon.update(dt, ship.pos, ship.rad)
 
     end
