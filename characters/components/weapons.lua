@@ -14,13 +14,14 @@ local function create_weapon_sprite(params)
 end
 
 
-function newWeapon(type)
+function newWeapon(type, group)
     local weapon = {}
     weapon.current_base_sprite = create_weapon_sprite(weapon_sprite_params[type])
     weapon.type = type
     weapon.bullet_type = weapon_sprite_params[type].bullet_type
     weapon.bullet_speed = weapon_sprite_params[type].bullet_speed
     weapon.shooting_frames = weapon_sprite_params[type].shooting_frames
+    weapon.group = group or "player"
 
     weapon.reset = function()
         weapon.current_base_sprite.reset()
@@ -59,7 +60,8 @@ function newWeapon(type)
                         weapon.bullet_type,
                         pos + weapon.shooting_frames[i].offset.rotate(rad + IMG_RAD_OFFSET),
                         rad,
-                        weapon.bullet_speed
+                        weapon.bullet_speed,
+                        weapon.group
                     )
                     weapon.has_shot[i] = true
                     weapon.shot_fired = weapon.shot_fired + 1

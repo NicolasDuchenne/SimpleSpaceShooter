@@ -53,8 +53,8 @@ local function draw_game()
     camera.move()
     background.draw(PlayerShip.pos.x, PlayerShip.pos.y)
     EnemyShips.draw()
-    Projectiles.draw()
     PlayerShip.draw()
+    Projectiles.draw()
     love.graphics.pop()
 end
 

@@ -24,9 +24,14 @@ end
 
 function newEnemyShip(type, pos, rad)
     local ship = newShip(
+        SHIP_GROUPS.ENEMY,
         enemy_ships_params[type].img,
         enemy_ships_params[type].engine,
         enemy_ships_params[type].weapon,
+        enemy_ships_params[type].health,
+        enemy_ships_params[type].hitbox_radius,
+        enemy_ships_params[type].base_speed,
+        enemy_ships_params[type].lerp_speed,
         pos,
         rad
     )
@@ -38,6 +43,8 @@ function newEnemyShip(type, pos, rad)
     
     ship.update = function(dt)
         shipStateMachine.update(ship, dt)
+
+        ship.update_hit_timer(dt)
 
         ship.engine.update(0, dt)
         ship.weapon.update(dt, ship.pos, ship.rad)

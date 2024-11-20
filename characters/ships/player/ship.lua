@@ -1,7 +1,23 @@
 
-local ship = newShip("assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png", ENGINES.base, WEAPONS.auto_cannon)
-ship.base_speed = 200
+local health = 100
+local hitbox_radius = 10
+local base_speed = 200
+local lerp_speed = 5
+
+local ship = newShip(
+    SHIP_GROUPS.PLAYER,
+    "assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png",
+    ENGINES.base,
+    WEAPONS.auto_cannon,
+    health,
+    hitbox_radius,
+    base_speed,
+    lerp_speed
+)
+
 ship.boost_factor = 1.5
+
+
 
 local function move(dt)
     local mouseX, mouseY = love.mouse.getPosition()
@@ -77,13 +93,9 @@ ship.update = function(dt)
     end
 
     shoot(dt)
+    ship.update_hit_timer(dt)
 end
 
-ship.draw = function()
-    ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-    ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-    ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-end
 
 
 

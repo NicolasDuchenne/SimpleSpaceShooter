@@ -17,7 +17,9 @@ projectiles_params[PROJECTILES.auto_cannon]= {
     wquad = 32,
     hquad = 32,
     fps = 8,
-    scale = newVector2(0.5,0.5)
+    scale = newVector2(0.5,0.5),
+    hitbox_radius = 3,
+    damage = 2
 }
 
 projectiles_params[PROJECTILES.space_gun]= {
@@ -27,7 +29,10 @@ projectiles_params[PROJECTILES.space_gun]= {
     wquad = 32,
     hquad = 32,
     fps = 8,
-    scale = newVector2(1,1)
+    scale = newVector2(1,1),
+    hitbox_radius = 10,
+    damage = 10
+    
 }
 
 projectiles_params[PROJECTILES.rockets]= {
@@ -37,7 +42,9 @@ projectiles_params[PROJECTILES.rockets]= {
     wquad = 32,
     hquad = 32,
     fps = 8,
-    scale = newVector2(1,1)
+    scale = newVector2(1,1),
+    hitbox_radius = 3,
+    damage = 1
 }
 projectiles_params[PROJECTILES.zapper]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Zapper.png",
@@ -46,7 +53,9 @@ projectiles_params[PROJECTILES.zapper]= {
     wquad = 32,
     hquad = 32,
     fps = 8,
-    scale = newVector2(0.8,0.8)
+    scale = newVector2(0.8,0.8),
+    hitbox_radius = 3,
+    damage = 5
 }
 
 projectiles_params[PROJECTILES.nairan_bolt]= {
@@ -56,7 +65,9 @@ projectiles_params[PROJECTILES.nairan_bolt]= {
     wquad = 9,
     hquad = 9,
     fps = 8,
-    scale = newVector2(1,1)
+    scale = newVector2(1,1),
+    hitbox_radius = 3,
+    damage = 1
 }
 
 return projectiles_params

@@ -4,17 +4,26 @@ STATES.CHASE = "chase"
 STATES.FLEE = "flee"
 STATES.FIRE = "fire"
 
-local enemy_detection_range = 100
+local ship_detection_range = 100
 
 local function get_close_ships_direction(ship)
     local dir = newVector2()
     local ship_detected = false
+
+    -- Check if enemy ships too close
     for i, enemyShip in ipairs(EnemyShips) do
-        if enemyShip ~= ship and  math.vdist(ship.pos, enemyShip.pos) < enemy_detection_range then
+        if enemyShip ~= ship and  math.vdist(ship.pos, enemyShip.pos) < ship_detection_range then
             dir = dir + (enemyShip.pos - ship.pos)
             ship_detected = true
         end
     end
+
+    -- Check if player is too close
+    if  math.vdist(ship.pos, PlayerShip.pos) < ship_detection_range then
+        dir = dir + (PlayerShip.pos - ship.pos)
+        ship_detected = true
+    end
+
     if ship_detected == true then
         return dir.normalize()
     else
@@ -26,19 +35,23 @@ end
 local newEnemyShipStateMachine  = function()
     local stateMachine = {}
     stateMachine.state = STATES.IDLE
+
     local function move(ship, dt)
         ship.rad, ship.moving_dir = SmoothLookAt(ship.pos, PlayerShip.pos, ship.rad, ship.lerp_speed, dt)
         local enemyShips_dir = get_close_ships_direction(ship)
+        -- If close ships detected, move in opposite direction
         if enemyShips_dir then
             ship.moving_dir = -enemyShips_dir
         end
         ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
     end
+
     local function shoot(ship, dt)
         move(ship, dt)
         
         ship.shoot()
     end
+
     stateMachine.update = function(ship, dt)
         local dist_to_player = math.vdist(ship.pos, PlayerShip.pos)
         if stateMachine.state == STATES.IDLE then

@@ -7,7 +7,12 @@ enemy_ships_params[NAIRAN_FIGHTER] = {
     engine = ENGINES.nairan_fighter,
     weapon = WEAPONS.nairan_fighter,
     detection_range = 500,
-    shooting_range = 200
+    shooting_range = 200,
+    health = 10,
+    hitbox_radius = 10,
+    speed = 200,
+    lerp_speed = 10,
+
 }
 
 enemy_ships_params[NAIRAN_BATTLECRUISER] = {
@@ -15,7 +20,11 @@ enemy_ships_params[NAIRAN_BATTLECRUISER] = {
     engine = ENGINES.nairan_battlecruiser,
     weapon = WEAPONS.nairan_battlecruiser,
     detection_range = 1000,
-    shooting_range = 500
+    shooting_range = 500,
+    health = 30,
+    hitbox_radius = 27,
+    speed = 100,
+    lerp_speed = 2,
 }
 
 return enemy_ships_params
