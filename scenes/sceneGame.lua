@@ -8,6 +8,7 @@ local camera = require("level.camera")
 local background = require("level.background")
 PlayerShip = require("characters.ships.player.ship")
 sceneGame.saved_data = nil
+local pause_game = false
 
 
 sceneGame.load = function()
@@ -20,6 +21,13 @@ sceneGame.load = function()
         PlayerShip = sceneGame.saved_data.PlayerShip
     else
         PlayerShip.load()
+        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
+        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
+        newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
+        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 101))
+        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
+        newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
+
         newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
         newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
         newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
@@ -44,7 +52,24 @@ end
 
 
 sceneGame.update = function(dt)
-    update_game(dt)
+    if pause_game==false and love.keyboard.isScancodeDown("t") then
+        pause_game = true
+        PlayerShip.upgrades.create_choices()
+    end
+    if Leveled_up == true then
+        pause_game = true
+        Leveled_up = false
+        PlayerShip.upgrades.create_choices()
+    end
+    if pause_game then
+        if love.keyboard.isScancodeDown("return") then
+            pause_game = false
+            PlayerShip.upgrades.delete_choices()
+        end
+    else
+        update_game(dt)
+    end
+    
     update_ui(dt)
 end
 

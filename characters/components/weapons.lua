@@ -9,6 +9,7 @@ local function create_weapon_sprite(params)
         params.wquad,
         params.hquad,
         params.fps,
+        {r=1, g=1, b=1},
         SPRITE_PLAY_ONCE
     )
 end
@@ -34,6 +35,10 @@ function newWeapon(type, group)
     weapon.reset()
 
 
+
+    weapon.increase_fire_rate = function(increase_percentage)
+        weapon.current_base_sprite.fps = weapon.current_base_sprite.fps + weapon.current_base_sprite.fps * increase_percentage / 100
+    end
 
 
     weapon.shoot = function()

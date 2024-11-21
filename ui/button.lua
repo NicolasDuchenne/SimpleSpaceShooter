@@ -6,9 +6,13 @@ Buttons.unload = function()
 end
 
 Buttons.update = function(dt)
-    for i, button in ipairs(Buttons) do
+    for i=#Buttons, 1, -1 do
+        local button = Buttons[i]
         if button.update then
             button.update(dt)
+        end
+        if button.remove == true then
+            table.remove(Buttons, i)
         end
     end
 end
@@ -29,13 +33,28 @@ function newButton(pos, size, text, text_offset)
     local button = {}
     button.pos = pos
     button.size = size
-    button.content_pos = button.pos + button.size/2
     button.text = text
-    text_offset = text_offset or newVector2()
-    if text then
+    button.remove = false
+    
+    local function update_size_from_text()
+        text_offset = text_offset or newVector2()
+        if text then
+            button.textWidth = Font:getWidth(button.text)
+            button.textHeight = Font:getHeight(button.text)
+            button.size = newVector2(math.max(button.size.x, button.textWidth), math.max(button.size.y, button.textHeight))
+        end
         
-        button.textWidth = Font:getWidth(text)
-        button.textHeight = Font:getHeight(text)
+        button.content_pos = button.pos + button.size/2
+    end
+    update_size_from_text()
+
+    button.delete = function()
+        button.remove = true
+    end
+
+    button.set_text = function(text)
+        button.text = text
+        update_size_from_text()
     end
 
     button.isMouseIn = function(x, y)
@@ -43,11 +62,6 @@ function newButton(pos, size, text, text_offset)
         y > button.pos.y and y < button.pos.y + button.size.y then
             print("mouse is in")
         end
-    end
-
-    button.update = function(new_pos)
-        button.pos = new_pos or button.pos
-        button.content_pos = button.pos + button.size/2
     end
 
     button.draw_text = function()
@@ -59,11 +73,11 @@ function newButton(pos, size, text, text_offset)
     return button
 end
 
-function newImgButton(pos, sprite, text, text_offset)
-    
+function newImgButton(pos, sprite, text, text_offset, size)
+    size = size or newVector2()
     local img = sprite
-    local size = newVector2(img.width, img.height)
-    local button = newButton(pos, size, text, text_offset)
+    local tmp_size = newVector2(math.max(size.x,img.width), math.max(size.y,img.height))
+    local button = newButton(pos, tmp_size, text, text_offset)
     button.img = img
 
     button.draw = function()
@@ -73,10 +87,11 @@ function newImgButton(pos, sprite, text, text_offset)
     return button
 end
 
-function newQuadButton(pos, quadSprite, text, text_offset)
+function newQuadButton(pos, quadSprite, text, text_offset, size)
+    size = size or newVector2()
     local img = quadSprite
-    local size = newVector2(img.width, img.height)
-    local button = newButton(pos, size, text, text_offset)
+    local tmp_size = newVector2(math.max(size.x, img.width), math.max(size.y, img.height))
+    local button = newButton(pos, tmp_size, text, text_offset)
     button.img = img
 
     button.update = function(dt)

@@ -41,12 +41,23 @@ function newEnemyShip(type, pos, rad)
     ship.type = type
     ship.detection_range = enemy_ships_params[type].detection_range
     ship.shooting_range = enemy_ships_params[type].shooting_range
+    ship.base_harass_range = enemy_ships_params[type].harass_range
+    ship.harass_range = ship.base_harass_range
+    ship.base_flee_range = enemy_ships_params[type].flee_range
+    ship.flee_range = ship.base_flee_range
     ship.avoid_ship_range = enemy_ships_params[type].avoid_ship_range
+    ship.fire_delay_seconds = enemy_ships_params[type].fire_delay_seconds
+    ship.experience = enemy_ships_params[type].experience
 
-    local shipStateMachine = newEnemyShipStateMachine()
+    ship.stateMachine = newEnemyShipStateMachine(ship)
+
+    ship.die = function()
+        ship.is_dead = true
+        PlayerShip.experience.gain(ship.experience)
+    end
     
     ship.update = function(dt)
-        shipStateMachine.update(ship, dt)
+        ship.stateMachine.update(dt)
 
         ship.update_hit_timer(dt)
 

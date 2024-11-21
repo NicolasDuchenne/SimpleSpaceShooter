@@ -19,7 +19,7 @@ projectiles_params[PROJECTILES.auto_cannon]= {
     fps = 8,
     scale = newVector2(0.5,0.5),
     hitbox_radius = 3,
-    damage = 2
+    damage = 1
 }
 
 projectiles_params[PROJECTILES.space_gun]= {
@@ -31,7 +31,7 @@ projectiles_params[PROJECTILES.space_gun]= {
     fps = 8,
     scale = newVector2(1,1),
     hitbox_radius = 10,
-    damage = 10
+    damage = 3
     
 }
 
@@ -55,7 +55,7 @@ projectiles_params[PROJECTILES.zapper]= {
     fps = 8,
     scale = newVector2(0.8,0.8),
     hitbox_radius = 3,
-    damage = 5
+    damage = 2
 }
 
 projectiles_params[PROJECTILES.nairan_bolt]= {

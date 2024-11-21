@@ -34,3 +34,5 @@ function SmoothLookAt(source, target, rad, lerp_speed, dt)
     local moving_dir = newVector2FromRad(output_rad)
     return output_rad, moving_dir
 end
+
+

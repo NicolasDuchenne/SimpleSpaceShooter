@@ -1,7 +1,7 @@
 local pickups_sprite_params = require("characters.components.pickups_config")
 
 
-local function create_pickups_sprite(params)
+local function create_pickups_sprite(params, size)
     return newQuadSprite(
         params.img,
         params.cquad,
@@ -9,6 +9,7 @@ local function create_pickups_sprite(params)
         params.wquad,
         params.hquad,
         params.fps
+
     )
 end
 

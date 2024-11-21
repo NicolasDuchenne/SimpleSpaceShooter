@@ -53,6 +53,13 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         love.graphics.print(tostring(ship.health), ship.pos.x-10, ship.pos.y-30)
     end
 
+    local function draw_state()
+        if ship.stateMachine then
+            love.graphics.print(tostring(ship.stateMachine.state), ship.pos.x-10, ship.pos.y-50)
+        end
+    end
+
+
     local function draw_hitbox()
         love.graphics.circle("line", ship.pos.x, ship.pos.y, ship.hitbox_radius)
     end
@@ -63,6 +70,8 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
         draw_health()
         draw_hitbox()
+        draw_state()
+
     end
     
     ship.die = function()
@@ -71,7 +80,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     local function take_damage(damage)
         ship.health = ship.health - damage
-        if ship.health < 0 then
+        if ship.health <= 0 then
             ship.health = 0
             ship.die()
         end

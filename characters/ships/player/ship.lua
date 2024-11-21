@@ -14,9 +14,9 @@ local ship = newShip(
     base_speed,
     lerp_speed
 )
-
+ship.experience = require("characters.ships.player.experience")
+ship.upgrades = require("characters.ships.player.upgrades")
 ship.boost_factor = 1.5
-
 
 
 local function move(dt)
@@ -67,12 +67,15 @@ end
 ship.load = function()
     ship.inventory = require("characters.ships.player.inventory")
     ship.inventory.add_weapon(WEAPONS.auto_cannon, PICKUPS.auto_cannon, 1)
+    ship.weapon = ship.inventory.weapons[1]
+    ship.weapon.increase_fire_rate(300)
     ship.inventory.add_weapon(WEAPONS.big_space_gun, PICKUPS.big_space_gun, 2)
     ship.inventory.add_weapon(WEAPONS.rockets, PICKUPS.rockets, 3)
     ship.inventory.add_weapon(WEAPONS.zapper, PICKUPS.zapper, 4)
 end
 
 ship.update = function(dt)
+    ship.experience.update(dt)
     move(dt)
     -- Manage engines
     if love.keyboard.isScancodeDown("lshift") then
