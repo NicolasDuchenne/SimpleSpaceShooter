@@ -39,7 +39,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.scale = projectiles_params[type].scale
     projectile.life_span = 5
     projectile.time_elapsed = 0
-    projectile.hitbox_radius = projectiles_params[type].hitbox_radius
+    projectile.hitbox_radius = projectiles_params[type].hitbox_radius * projectile.scale.x
     projectile.damage = damage
     projectile.group = group
     projectile.has_hit_something = false

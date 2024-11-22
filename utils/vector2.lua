@@ -6,9 +6,9 @@ function newVector2(px,py)
     local vectorMT = {}
   
     -- ce que renvoie la fonction print
-    --function vecteurMetaTable.__tostring(v)  
-    --    return "("..v.x..","..v.y..")"
-    --end
+    function vectorMT.__tostring(v)  
+       return "("..v.x..","..v.y..")"
+    end
   
     function vectorMT.__add(v1,v2)  -- operateur +
       local sum = newVector2(0,0)

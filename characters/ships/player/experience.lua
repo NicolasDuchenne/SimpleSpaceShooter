@@ -1,5 +1,5 @@
 Leveled_up = false
-local max_level = 10
+local max_level = 1000
 local exp_per_level = 100
 local levels_exp = {
 }

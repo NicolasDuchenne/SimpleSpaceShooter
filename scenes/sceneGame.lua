@@ -3,6 +3,7 @@ local sceneGame = newScene("game")
 
 require("characters.ships.shipFactory")
 require("characters.ships.enemies.enemyShip")
+local enemySpawner = require("characters.ships.enemies.enemySpawner")
 
 local camera = require("level.camera")
 local background = require("level.background")
@@ -19,18 +20,9 @@ sceneGame.load = function()
         Buttons = sceneGame.saved_data.Buttons
         Projectiles = sceneGame.saved_data.Projectiles
         PlayerShip = sceneGame.saved_data.PlayerShip
+        enemySpawner.load()
     else
         PlayerShip.load()
-        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
-        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
-        newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
-        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 101))
-        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
-        newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
-
-        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 100))
-        newEnemyShip(NAIRAN_FIGHTER, newVector2(100, 250))
-        newEnemyShip(NAIRAN_BATTLECRUISER, newVector2(100, 500))
     end
 end
 
@@ -44,6 +36,7 @@ local function update_game(dt)
     PlayerShip.update(dt)
     EnemyShips.update(dt)
     Projectiles.update(dt)
+    enemySpawner.update(dt)
 end
 
 local function update_ui(dt)

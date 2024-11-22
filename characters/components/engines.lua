@@ -30,15 +30,17 @@ function newEngine(type)
     end
     engine.change_type(type)
     engine.always_powering = engine_effects_params[engine.type].always_powering
-    engine.current_engine_effect = nil
+    if engine.always_powering then
+        engine.current_engine_effect = engine.current_engine_effects
+    else
+        engine.current_engine_effect = engine.current_engine_effects.idle
+    end
 
     
 
     engine.update = function(speed, dt)
             -- Manage engine effect
-            if engine.always_powering == true then
-                engine.current_engine_effect = engine.current_engine_effects
-            else
+            if engine.always_powering == false then
                 if speed>0 then
                     engine.current_engine_effect = engine.current_engine_effects.powering
                 else
