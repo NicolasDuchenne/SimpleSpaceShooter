@@ -1,11 +1,5 @@
-PICKUPS = {}
-PICKUPS.auto_cannon = "auto_cannon_pickup"
-PICKUPS.big_space_gun = "big_space_gun_pickup"
-PICKUPS.rockets = "rockets_pickup"
-PICKUPS.zapper = "zapper_pickup"
-
 local pickups_sprite_params = {}
-pickups_sprite_params[PICKUPS.auto_cannon] = {
+pickups_sprite_params[WEAPONS.player.auto_cannon] = {
     img = "assets/Void_PickupsPack/Weapons/PNGs/Pickup Icon - Weapons - Auto Cannons.png",
     cquad = 15,
     lquad = 1,
@@ -14,7 +8,7 @@ pickups_sprite_params[PICKUPS.auto_cannon] = {
     fps = 24
 }
 
-pickups_sprite_params[PICKUPS.big_space_gun] = {
+pickups_sprite_params[WEAPONS.player.big_space_gun] = {
     img = "assets/Void_PickupsPack/Weapons/PNGs/Pickup Icon - Weapons - Big Space Gun 2000.png",
     cquad = 15,
     lquad = 1,
@@ -23,7 +17,7 @@ pickups_sprite_params[PICKUPS.big_space_gun] = {
     fps = 24
 }
 
-pickups_sprite_params[PICKUPS.rockets] = {
+pickups_sprite_params[WEAPONS.player.rockets] = {
     img = "assets/Void_PickupsPack/Weapons/PNGs/Pickup Icon - Weapons - Rocket.png",
     cquad = 15,
     lquad = 1,
@@ -32,7 +26,7 @@ pickups_sprite_params[PICKUPS.rockets] = {
     fps = 24
 }
 
-pickups_sprite_params[PICKUPS.zapper] = {
+pickups_sprite_params[WEAPONS.player.zapper] = {
     img = "assets/Void_PickupsPack/Weapons/PNGs/Pickup Icon - Weapons - Zapper.png",
     cquad = 15,
     lquad = 1,

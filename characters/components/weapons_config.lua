@@ -1,16 +1,17 @@
 WEAPONS = {}
+WEAPONS.player = {}
+WEAPONS.player.auto_cannon = "auto_cannon"
+WEAPONS.player.big_space_gun = "big_space_gun"
+WEAPONS.player.rockets = "rockets"
+WEAPONS.player.zapper = "zapper"
 
-WEAPONS.auto_cannon = "auto_cannon"
-WEAPONS.big_space_gun = "big_space_gun"
-WEAPONS.rockets = "rockets"
-WEAPONS.zapper = "zapper"
-
-WEAPONS.nairan_fighter = "nairan_fighter_weapon"
-WEAPONS.nairan_battlecruiser = "nairan_battlecruiser_weapon"
+WEAPONS.nairan = {}
+WEAPONS.nairan.fighter = "nairan_fighter_weapon"
+WEAPONS.nairan.battlecruiser = "nairan_battlecruiser_weapon"
 
 
 local weapon_sprite_params = {}
-weapon_sprite_params[WEAPONS.auto_cannon] = {
+weapon_sprite_params[WEAPONS.player.auto_cannon] = {
     img ="assets/Void_MainShip/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Auto Cannon.png",
     cquad = 7,
     lquad = 1,
@@ -31,7 +32,7 @@ weapon_sprite_params[WEAPONS.auto_cannon] = {
     }
 }
 
-weapon_sprite_params[WEAPONS.big_space_gun] = {
+weapon_sprite_params[WEAPONS.player.big_space_gun] = {
     img = "assets/Void_MainShip/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Big Space Gun.png",
     cquad = 12,
     lquad = 1,
@@ -48,7 +49,7 @@ weapon_sprite_params[WEAPONS.big_space_gun] = {
     }
 }
 
-weapon_sprite_params[WEAPONS.rockets] = {
+weapon_sprite_params[WEAPONS.player.rockets] = {
     img = "assets/Void_MainShip/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Rockets.png",
     cquad = 17,
     lquad = 1,
@@ -86,7 +87,7 @@ weapon_sprite_params[WEAPONS.rockets] = {
     }
 }
 
-weapon_sprite_params[WEAPONS.zapper] = {
+weapon_sprite_params[WEAPONS.player.zapper] = {
     img = "assets/Void_MainShip/Main Ship/Main Ship - Weapons/PNGs/Main Ship - Weapons - Zapper.png",
     cquad = 14,
     lquad = 1,
@@ -107,7 +108,7 @@ weapon_sprite_params[WEAPONS.zapper] = {
     }
 }
 
-weapon_sprite_params[WEAPONS.nairan_fighter] = {
+weapon_sprite_params[WEAPONS.nairan.fighter] = {
     img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Fighter - Weapons.png",
     cquad = 28,
     lquad = 1,
@@ -145,7 +146,7 @@ weapon_sprite_params[WEAPONS.nairan_fighter] = {
     }
 }
 
-weapon_sprite_params[WEAPONS.nairan_battlecruiser] = {
+weapon_sprite_params[WEAPONS.nairan.battlecruiser] = {
     img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Battlecruiser - Weapons.png",
     cquad = 9,
     lquad = 1,

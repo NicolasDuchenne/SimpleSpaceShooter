@@ -22,9 +22,10 @@ Buttons.draw = function()
         button.draw()
     end
 end
+
 Buttons.mousepressed = function(x, y, button)
     for i, cbutton in ipairs(Buttons) do
-        cbutton.isMouseIn(x, y)
+        cbutton.isMoussePressed(x, y)
     end
 end
 
@@ -35,6 +36,7 @@ function newButton(pos, size, text, text_offset)
     button.size = size
     button.text = text
     button.remove = false
+    button.isPressed = false
     
     local function update_size_from_text()
         text_offset = text_offset or newVector2()
@@ -57,10 +59,10 @@ function newButton(pos, size, text, text_offset)
         update_size_from_text()
     end
 
-    button.isMouseIn = function(x, y)
+    button.isMoussePressed = function(x, y)
         if x > button.pos.x and x < button.pos.x + button.size.x and 
         y > button.pos.y and y < button.pos.y + button.size.y then
-            print("mouse is in")
+            button.isPressed = true
         end
     end
 

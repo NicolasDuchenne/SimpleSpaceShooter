@@ -1,6 +1,6 @@
 Leveled_up = false
 local max_level = 10
-local exp_per_level = 100
+local exp_per_level = 10
 local levels_exp = {
 }
 for i=1,max_level do
@@ -38,7 +38,8 @@ local function level_up()
     experience.level = experience.level + 1
     experience.exp = 0
     experience.button_level.set_text(set_level_text())
-    Leveled_up = true
+    PlayerShip.upgrades.create_choices()
+    Pause_game = true
 end
 
 experience.gain = function(exp)

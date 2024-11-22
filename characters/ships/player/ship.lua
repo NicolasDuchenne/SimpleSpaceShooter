@@ -8,7 +8,7 @@ local ship = newShip(
     SHIP_GROUPS.PLAYER,
     "assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png",
     ENGINES.base,
-    WEAPONS.auto_cannon,
+    WEAPONS.player.auto_cannon,
     health,
     hitbox_radius,
     base_speed,
@@ -66,12 +66,12 @@ end
 
 ship.load = function()
     ship.inventory = require("characters.ships.player.inventory")
-    ship.inventory.add_weapon(WEAPONS.auto_cannon, PICKUPS.auto_cannon, 1)
+    ship.inventory.add_weapon(WEAPONS.player.auto_cannon)
     ship.weapon = ship.inventory.weapons[1]
     ship.weapon.increase_fire_rate(300)
-    ship.inventory.add_weapon(WEAPONS.big_space_gun, PICKUPS.big_space_gun, 2)
-    ship.inventory.add_weapon(WEAPONS.rockets, PICKUPS.rockets, 3)
-    ship.inventory.add_weapon(WEAPONS.zapper, PICKUPS.zapper, 4)
+    -- ship.inventory.add_weapon(WEAPONS.player.big_space_gun)
+    -- ship.inventory.add_weapon(WEAPONS.player.rockets)
+    -- ship.inventory.add_weapon(WEAPONS.player.zapper)
 end
 
 ship.update = function(dt)

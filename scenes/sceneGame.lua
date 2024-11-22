@@ -8,7 +8,7 @@ local camera = require("level.camera")
 local background = require("level.background")
 PlayerShip = require("characters.ships.player.ship")
 sceneGame.saved_data = nil
-local pause_game = false
+Pause_game = false
 
 
 sceneGame.load = function()
@@ -52,18 +52,10 @@ end
 
 
 sceneGame.update = function(dt)
-    if pause_game==false and love.keyboard.isScancodeDown("t") then
-        pause_game = true
-        PlayerShip.upgrades.create_choices()
-    end
-    if Leveled_up == true then
-        pause_game = true
-        Leveled_up = false
-        PlayerShip.upgrades.create_choices()
-    end
-    if pause_game then
+    if Pause_game == true then
+        PlayerShip.upgrades.update()
         if love.keyboard.isScancodeDown("return") then
-            pause_game = false
+            Pause_game = false
             PlayerShip.upgrades.delete_choices()
         end
     else
@@ -107,9 +99,14 @@ sceneGame.keypressed = function(key, scancode)
         sceneGame.saved_data = sceneGame.save_data()
         changeScene("menu", "hello world")
     end
+    if Pause_game==false and love.keyboard.isScancodeDown("t") then
+        Pause_game = true
+        PlayerShip.upgrades.create_choices()
+    end
 end
 
 sceneGame.moussepressed = function(x, y, button)
+    Buttons.mousepressed(x, y, button)
 end
 
 
