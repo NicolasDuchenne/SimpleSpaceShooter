@@ -10,7 +10,7 @@ local background = require("level.background")
 require("characters.ships.player.ship")
 sceneGame.saved_data = nil
 Pause_game = false
-local deathUI = {}
+local deathUI = require("ui.death_ui")
 
 sceneGame.load = function()
     
@@ -39,7 +39,8 @@ local function update_game(dt)
     enemySpawner.update(dt)
     if PlayerShip.is_dead then
         Pause_game = true
-        sceneGame.restart()
+        deathUI.create_button()
+        --sceneGame.restart()
     end
 end
 
@@ -57,6 +58,9 @@ sceneGame.update = function(dt)
                 PlayerShip.upgrades.delete_choices()
             end
         else
+            if deathUI.button.isPressed then
+                sceneGame.restart()
+            end
         end
     else
         update_game(dt)
@@ -114,8 +118,7 @@ sceneGame.restart = function()
     EnemyShips.unload()
     Projectiles.unload()
     PlayerShip = newPlayerShip()
-    PlayerShip.load()
-    deathUI = require("ui.death_ui")
+    PlayerShip.load() 
 end
 
 
