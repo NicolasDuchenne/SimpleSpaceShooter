@@ -22,8 +22,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.health = health or 20
     ship.is_dead = false
     ship.can_get_hit = true
-    ship.invinsibility_timer = 0
-    ship.invinsibility_duration = 0.1
+    ship.invincibility_timer = newTimer(0.1)
     ship.hitbox_radius = hitbox_radius or 20
 
     ship.bullet_speed_increase = 0
@@ -60,13 +59,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     end
 
     
-    ship.update_hit_timer = function(dt)
-        if ship.can_get_hit == false then
-            ship.invinsibility_timer = ship.invinsibility_timer + dt
-            if ship.invinsibility_timer > ship.invinsibility_duration then
-                ship.can_get_hit = true
-                ship.invinsibility_timer = 0
-            end
+    ship.update_invincibility_timer = function(dt)
+        if ship.invincibility_timer.update(dt) then
+            ship.can_get_hit = true
         end
     end
 
@@ -75,7 +70,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.engine.update(0, dt)
         ship.shoot()
         ship.weapon.update(dt, ship.pos, ship.rad)
-        ship.update_hit_timer(dt)
+        ship.update_invincibility_timer(dt)
         
     end
 
@@ -118,7 +113,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.hit = function(damage)
         if ship.can_get_hit == true then
-            ship.can_get_hit = false
+            ship.invincibility_timer.start()
             take_damage(damage)
         end
     end

@@ -2,10 +2,12 @@ local enemy_ships_params = require("characters.ships.enemies.enemyShips_config")
 local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStates")
 
 EnemyShips = {}
+EnemyShips.total_exp = 0
 EnemyShips.update = function(dt)
     for i=#EnemyShips, 1, -1 do
         EnemyShips[i].update(dt)
-        if EnemyShips[i].is_dead == true then
+        if EnemyShips[i].is_dead == true or EnemyShips[i].has_hit_something then
+            EnemyShips.total_exp = EnemyShips.total_exp - EnemyShips[i].experience
             table.remove(EnemyShips, i)
         end
     end
@@ -22,7 +24,6 @@ EnemyShips.unload = function()
         table.remove(EnemyShips, i)
     end
 end
-
 
 
 function newEnemyShip(type, pos, rad)
@@ -48,24 +49,35 @@ function newEnemyShip(type, pos, rad)
     ship.avoid_ship_range = enemy_ships_params[type].avoid_ship_range
     ship.fire_delay_seconds = enemy_ships_params[type].fire_delay_seconds
     ship.experience = enemy_ships_params[type].experience
-
+    
+    ship.self_destruct = enemy_ships_params[type].self_destruct or false
+    ship.has_hit_something = false
     ship.stateMachine = newEnemyShipStateMachine(ship)
 
     ship.die = function()
         ship.is_dead = true
         PlayerShip.experience.gain(ship.experience)
     end
+
+    ship.hit_player = function()
+        if ship.self_destruct == true then
+            if  math.vdist(ship.pos, PlayerShip.pos) < PlayerShip.hitbox_radius+ship.hitbox_radius then
+                PlayerShip.hit(ship.weapon.bullet_damage)
+                ship.has_hit_something = true
+            end
+        end
+    end
     
     ship.update = function(dt)
         ship.stateMachine.update(dt)
-
-        ship.update_hit_timer(dt)
-
+        ship.update_invincibility_timer(dt)
         ship.engine.update(0, dt)
         ship.weapon.update(dt, ship.pos, ship.rad)
+        ship.hit_player()
 
     end
 
     table.insert(EnemyShips, ship)
+    EnemyShips.total_exp = EnemyShips.total_exp + ship.experience
     
 end

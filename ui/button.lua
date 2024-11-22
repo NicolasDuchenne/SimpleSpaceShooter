@@ -6,8 +6,10 @@ Buttons.unload = function()
 end
 
 Buttons.update = function(dt)
+    print(#Buttons)
     for i=#Buttons, 1, -1 do
         local button = Buttons[i]
+        print(button.text)
         if button.update then
             button.update(dt)
         end
@@ -71,7 +73,9 @@ function newButton(pos, size, text, text_offset)
             love.graphics.print(button.text, button.content_pos.x, button.content_pos.y, 0, 1, 1, button.textWidth/2 - text_offset.x, button.textHeight/2 - text_offset.y)
         end
     end
+    print("insert button: "..text)
     table.insert(Buttons, button)
+    print(#Buttons)
     return button
 end
 

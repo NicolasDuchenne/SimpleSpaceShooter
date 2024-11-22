@@ -8,7 +8,6 @@ STATES.FIRE = "fire"
 STATES.HARASS = "harass"
 
 
-
 local function get_close_ships_direction(ship)
     local dir = newVector2()
     local ship_detected = false

@@ -7,10 +7,10 @@ local enemySpawner = require("characters.ships.enemies.enemySpawner")
 
 local camera = require("level.camera")
 local background = require("level.background")
-PlayerShip = require("characters.ships.player.ship")
+require("characters.ships.player.ship")
 sceneGame.saved_data = nil
 Pause_game = false
-
+local deathUI = {}
 
 sceneGame.load = function()
     
@@ -22,7 +22,7 @@ sceneGame.load = function()
         PlayerShip = sceneGame.saved_data.PlayerShip
         enemySpawner.load()
     else
-        PlayerShip.load()
+        sceneGame.restart()
     end
 end
 
@@ -37,6 +37,10 @@ local function update_game(dt)
     EnemyShips.update(dt)
     Projectiles.update(dt)
     enemySpawner.update(dt)
+    if PlayerShip.is_dead then
+        Pause_game = true
+        sceneGame.restart()
+    end
 end
 
 local function update_ui(dt)
@@ -46,10 +50,13 @@ end
 
 sceneGame.update = function(dt)
     if Pause_game == true then
-        PlayerShip.upgrades.update()
-        if love.keyboard.isScancodeDown("return") then
-            Pause_game = false
-            PlayerShip.upgrades.delete_choices()
+        if PlayerShip.is_dead == false then
+            PlayerShip.upgrades.update()
+            if love.keyboard.isScancodeDown("return") then
+                Pause_game = false
+                PlayerShip.upgrades.delete_choices()
+            end
+        else
         end
     else
         update_game(dt)
@@ -100,6 +107,15 @@ end
 
 sceneGame.moussepressed = function(x, y, button)
     Buttons.mousepressed(x, y, button)
+end
+
+sceneGame.restart = function()
+    Buttons.unload()
+    EnemyShips.unload()
+    Projectiles.unload()
+    PlayerShip = newPlayerShip()
+    PlayerShip.load()
+    deathUI = require("ui.death_ui")
 end
 
 

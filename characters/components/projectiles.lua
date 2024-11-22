@@ -16,12 +16,19 @@ Projectiles = {}
 Projectiles.update = function(dt)
     for i=#Projectiles, 1, -1 do
         Projectiles[i].update(dt)
-        if Projectiles[i].time_elapsed > Projectiles[i].life_span or Projectiles[i].has_hit_something == true then
+        if Projectiles[i].life_timer.update(dt) or Projectiles[i].has_hit_something == true then
             table.remove(Projectiles, i)
         end
     end
 
 end
+
+Projectiles.unload = function()
+    for i=#Projectiles, 1, -1 do
+        table.remove(Projectiles, i)
+    end
+end
+
 Projectiles.draw = function()
     for i, projectile in ipairs(Projectiles) do
         projectile.draw()
@@ -37,12 +44,13 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.speed = speed
     projectile.sprite = create_projectile_sprite(projectiles_params[type])
     projectile.scale = projectiles_params[type].scale
-    projectile.life_span = 5
-    projectile.time_elapsed = 0
+    projectile.life_timer = newTimer(5)
+    projectile.life_timer.start()
     projectile.hitbox_radius = projectiles_params[type].hitbox_radius * projectile.scale.x
     projectile.damage = damage
     projectile.group = group
     projectile.has_hit_something = false
+    
     if group == SHIP_GROUPS.PLAYER then
         projectile.color = {r = 0, g = 1, b = 0}
     elseif projectile.group == SHIP_GROUPS.ENEMY then
@@ -72,7 +80,6 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.update = function(dt)
         projectile.sprite.update(dt)
         projectile.pos = projectile.pos + projectile.dir * projectile.speed * dt
-        projectile.time_elapsed = projectile.time_elapsed + dt
         hit_ships()
     end
     local function draw_hitbox()

@@ -41,24 +41,6 @@ function newWeapon(type, group)
 
     weapon.reset()
 
-
-
-    weapon.increase_fire_rate = function(added_speed)
-        weapon.shooting_speed_increase = weapon.shooting_speed_increase + added_speed
-        weapon.current_base_sprite.fps = weapon.base_shooting_speed + math.floor(weapon.base_shooting_speed * weapon.shooting_speed_increase / 100)
-    end
-
-    weapon.increase_damage = function(added_damage)
-        weapon.bullet_damage_increase = weapon.bullet_damage_increase + added_damage
-        weapon.bullet_damage =weapon.bullet_base_damage + math.floor(weapon.bullet_base_damage * weapon.bullet_damage_increase / 100)
-    end
-
-    weapon.increase_projectile_speed = function(added_speed)
-        weapon.bullet_speed_increase = weapon.bullet_speed_increase + added_speed
-        weapon.bullet_speed = weapon.bullet_base_speed + math.floor(weapon.bullet_base_speed*weapon.bullet_speed_increase/100)
-    end
-
-
     weapon.shoot = function()
         if weapon.can_shoot then
             weapon.current_base_sprite.play_sprite = true

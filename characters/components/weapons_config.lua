@@ -9,6 +9,7 @@ WEAPONS.player.number = 4
 WEAPONS.nairan = {}
 WEAPONS.nairan.fighter = "nairan_fighter_weapon"
 WEAPONS.nairan.battlecruiser = "nairan_battlecruiser_weapon"
+WEAPONS.nairan.torpedo = "nairan_torpedo_engine"
 
 
 local weapon_sprite_params = {}
@@ -164,7 +165,41 @@ weapon_sprite_params[WEAPONS.nairan.battlecruiser] = {
     bullet_base_damage = 20,
     shooting_frames = {
         {
+            frame = 2,
+            offset = newVector2(0,-20)
+        },
+        {
             frame = 5,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 8,
+            offset = newVector2(0,-20)
+        }
+    }
+}
+
+weapon_sprite_params[WEAPONS.nairan.torpedo] = {
+    img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Torpedo Ship - Weapons.png",
+    cquad = 12,
+    lquad = 1,
+    wquad = 64,
+    hquad = 64,
+    fps = 24,
+    bullet_type = PROJECTILES.space_gun,
+    bullet_base_speed = 300,
+    bullet_base_damage = 20,
+    shooting_frames = {
+        {
+            frame = 2,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 5,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 8,
             offset = newVector2(0,-20)
         }
     }
