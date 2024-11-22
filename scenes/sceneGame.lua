@@ -94,7 +94,7 @@ sceneGame.keypressed = function(key, scancode)
     end
     if Pause_game==false and love.keyboard.isScancodeDown("t") then
         Pause_game = true
-        PlayerShip.upgrades.create_choices()
+        PlayerShip.upgrades.create_weapon_choices()
     end
 end
 

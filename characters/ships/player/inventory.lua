@@ -1,6 +1,7 @@
 local inventory = {}
 inventory.weapons = {}
 inventory.buttons = {}
+inventory.weapons_full = false
 
 inventory.add_weapon = function(weapon_type)
     if not inventory.has_weapon(weapon_type) then
@@ -16,6 +17,9 @@ inventory.add_weapon = function(weapon_type)
         )
         inventory.buttons[key].img.fps = 0
         PlayerShip.switch_weapon(key)
+    end
+    if #inventory.weapons == WEAPONS.player.number then
+        inventory.weapons_full = true
     end
 end
 

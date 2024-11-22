@@ -2,10 +2,8 @@ UPGRADE_GET = "get"
 UPGRADE_SHOOTING_SPEED = "shooting_speed"
 UPGRADE_DAMAGE = "damage"
 UPGRADE_PROJECTILE_SPEED = "projectile_speed"
-local upgrades_list = {}
 
-
-upgrades_list[WEAPONS.player.auto_cannon] = {
+local upgrades_list = {
     get =  {
         color = {r=1, g=1, b=1}
     },
@@ -27,71 +25,6 @@ upgrades_list[WEAPONS.player.auto_cannon] = {
     
 }
 
-upgrades_list[WEAPONS.player.big_space_gun] = {
-    get =  {
-        color = {r=1, g=1, b=1}
-    },
-    shooting_speed = {
-        color = {r=0, g=1, b=0},
-        increase = 10,
-        max = 300
-    },
-    damage = {
-        color = {r=1, g=0, b=0},
-        increase = 20,
-        max = 200
-    },
-    projectile_speed = {
-        color = {r=0, g=0, b=1},
-        increase = 20,
-        max = 300
-    }
-   
-}
-
-upgrades_list[WEAPONS.player.zapper] = {
-    get =  {
-        color = {r=1, g=1, b=1}
-    },
-    shooting_speed = {
-        color = {r=0, g=1, b=0},
-        increase = 10,
-        max = 300
-    },
-    damage = {
-        color = {r=1, g=0, b=0},
-        increase = 20,
-        max = 300
-    },
-    projectile_speed = {
-        color = {r=0, g=0, b=1},
-        increase = 20,
-        max = 300
-    }
-   
-}
-
-upgrades_list[WEAPONS.player.rockets] = {
-    get =  {
-        color = {r=1, g=1, b=1}
-    },
-    shooting_speed = {
-        color = {r=0, g=1, b=0},
-        increase = 10,
-        max = 300
-    },
-    damage = {
-        color = {r=1, g=0, b=0},
-        increase = 20,
-        max = 300
-    },
-    projectile_speed = {
-        color = {r=0, g=0, b=1},
-        increase = 20,
-        max = 300
-    }
-   
-}
 
 local bweapons = {}
 bweapons[1] = WEAPONS.player.auto_cannon
@@ -106,7 +39,8 @@ bupgrades_available[3] = UPGRADE_PROJECTILE_SPEED
 
 
 local upgrades = {}
-upgrades.number_of_choice = 3
+upgrades.number_of_choice = 2
+upgrades.number_of_weapon_choice = 2
 upgrades.buttons = {}
 upgrades.size = newVector2(64,64)
 
@@ -115,8 +49,7 @@ local function upgrade_attenuation_function(max_increase, current_increase, base
 end
 
 local function create_upgrade_button(upgrade_type, weapon_type, button_index, offset, current_increase, max_increase, upgrade_value)
-    local weapon_upgrades = upgrades_list[weapon_type]
-    local upgrade = weapon_upgrades[upgrade_type]
+    local upgrade = upgrades_list[upgrade_type]
     local pickup = newPickup(weapon_type)
     local quadSPrite = pickup.sprite
     local text = ""
@@ -142,46 +75,57 @@ local function create_upgrade_button(upgrade_type, weapon_type, button_index, of
     return offset
 end
 
+upgrades.create_weapon_choices = function()
+    
+    if PlayerShip.inventory.weapons_full == false then
+        local offset = 0
+        local button_index = 1
+        local weapons = DeepCopy(bweapons)
+        local number_of_choice_created = 0
+        
+        
+        while #weapons > 0 and number_of_choice_created < upgrades.number_of_weapon_choice do
+            local weapon_index = math.random(1, #weapons)
+            local weapon_type = weapons[weapon_index]
+            if not PlayerShip.inventory.has_weapon(weapon_type) then
+                offset = create_upgrade_button(UPGRADE_GET, weapon_type, button_index, offset)
+                button_index = button_index + 1
+                number_of_choice_created = number_of_choice_created +1
+            end
+            table.remove(weapons, weapon_index)
+            
+        end
+    else
+        upgrades.create_choices()
+    end
+end
+
 upgrades.create_choices = function()
     local offset = 0
     local button_index = 1
     local number_of_choice_created = 0
-
-    local weapons = DeepCopy(bweapons)
     local upgrades_available = DeepCopy(bupgrades_available)
     
-
     while number_of_choice_created < upgrades.number_of_choice do
-        -- Chose weapon
-        local weapon_index = math.random(1, #weapons)
-        number_of_choice_created = number_of_choice_created +1
-        local weapon_type = weapons[weapon_index]
-        local player_weapon = PlayerShip.inventory.has_weapon(weapon_type)
-        -- if player has weapon, chose upgrade for weapon
-        if player_weapon then
-            if #upgrades_available > 0 then
-                local upgrade_index = math.random(1, #upgrades_available)
-                local upgrade_type = upgrades_available[upgrade_index]
-                local upgrade_value = upgrades_list[weapon_type][upgrade_type].increase
-                local max_upgrade = upgrades_list[weapon_type][upgrade_type].max
-                if upgrade_type == UPGRADE_SHOOTING_SPEED then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.shooting_speed_increase, max_upgrade, upgrade_value)
-                elseif upgrade_type == UPGRADE_DAMAGE then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_damage_increase, max_upgrade, upgrade_value)
-                elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_speed_increase, max_upgrade, upgrade_value)
-                end
-                if upgrade_type ~= UPGRADE_GET then
-                    button_index = button_index + 1
-                end
-            
-                table.remove(upgrades_available, upgrade_index)
+        if #upgrades_available > 0 then
+            local upgrade_index = math.random(1, #upgrades_available)
+            local upgrade_type = upgrades_available[upgrade_index]
+            local upgrade_value = upgrades_list[upgrade_type].increase
+            local max_upgrade = upgrades_list[upgrade_type].max
+            local weapon_type = PlayerShip.weapon.type
+            if upgrade_type == UPGRADE_SHOOTING_SPEED then
+                offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.shooting_speed_increase, max_upgrade, upgrade_value)
+            elseif upgrade_type == UPGRADE_DAMAGE then
+                offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_damage_increase, max_upgrade, upgrade_value)
+            elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
+                offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_speed_increase, max_upgrade, upgrade_value)
             end
-        -- if not, propose to get weapon TODO replace by get weapon from loot, or every 10 levels
-        elseif upgrades_list[weapon_type] then
-            offset = create_upgrade_button(UPGRADE_GET, weapon_type, button_index, offset)
-            button_index = button_index + 1
-            table.remove(weapons, weapon_index)
+            if upgrade_type ~= UPGRADE_GET then
+                button_index = button_index + 1
+            end
+        
+            table.remove(upgrades_available, upgrade_index)
+            number_of_choice_created = number_of_choice_created +1
         end
     end
 end
@@ -196,6 +140,9 @@ end
 
 
 upgrades.update = function()
+    if #upgrades.buttons == 0 then
+        Pause_game = false
+    end
     for i, button in ipairs(upgrades.buttons) do
         -- Check if an upgrade was selected, and upgrade weapon accordingly
         if button.isPressed== true then
@@ -205,7 +152,6 @@ upgrades.update = function()
             if button.upgrade_type == UPGRADE_GET then
                 PlayerShip.inventory.add_weapon(button.weapon_type)
             else
-                local upgrade_value = upgrades_list[button.weapon_type][button.upgrade_type].increase
                 PlayerShip.upgrade_weapon(button.upgrade_type, button.upgrade_value)
             end
         end

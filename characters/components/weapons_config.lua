@@ -4,6 +4,7 @@ WEAPONS.player.auto_cannon = "auto_cannon"
 WEAPONS.player.big_space_gun = "big_space_gun"
 WEAPONS.player.rockets = "rockets"
 WEAPONS.player.zapper = "zapper"
+WEAPONS.player.number = 4
 
 WEAPONS.nairan = {}
 WEAPONS.nairan.fighter = "nairan_fighter_weapon"
@@ -19,7 +20,7 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
     hquad = 48,
     fps = 24,
     bullet_type = PROJECTILES.auto_cannon,
-    bullet_base_speed = 400,
+    bullet_base_speed = 500,
     bullet_base_damage = 10,
     shooting_frames = {
         {
@@ -41,7 +42,7 @@ weapon_sprite_params[WEAPONS.player.big_space_gun] = {
     hquad = 48,
     fps = 18,
     bullet_type = PROJECTILES.space_gun,
-    bullet_base_speed = 300,
+    bullet_base_speed = 400,
     bullet_base_damage = 30,
     shooting_frames = {
         {
@@ -59,7 +60,7 @@ weapon_sprite_params[WEAPONS.player.rockets] = {
     hquad = 48,
     fps = 12,
     bullet_type = PROJECTILES.rockets,
-    bullet_base_speed = 300,
+    bullet_base_speed = 500,
     bullet_base_damage = 10,
     shooting_frames = {
         {
@@ -98,7 +99,7 @@ weapon_sprite_params[WEAPONS.player.zapper] = {
     hquad = 48,
     fps = 24,
     bullet_type = PROJECTILES.zapper,
-    bullet_base_speed = 300,
+    bullet_base_speed = 400,
     bullet_base_damage = 20,
     shooting_frames = {
         {
@@ -120,7 +121,7 @@ weapon_sprite_params[WEAPONS.nairan.fighter] = {
     hquad = 64,
     fps = 12,
     bullet_type = PROJECTILES.rockets,
-    bullet_base_speed = 300,
+    bullet_base_speed = 400,
     bullet_base_damage = 10,
     shooting_frames = {
         {
@@ -159,7 +160,7 @@ weapon_sprite_params[WEAPONS.nairan.battlecruiser] = {
     hquad = 128,
     fps = 24,
     bullet_type = PROJECTILES.space_gun,
-    bullet_base_speed = 200,
+    bullet_base_speed = 300,
     bullet_base_damage = 20,
     shooting_frames = {
         {

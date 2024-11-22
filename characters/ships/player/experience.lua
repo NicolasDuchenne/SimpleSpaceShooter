@@ -1,6 +1,7 @@
 Leveled_up = false
 local max_level = 1000
 local exp_per_level = 100
+local level_new_weapon = 10
 local levels_exp = {
 }
 for i=0,max_level do
@@ -38,7 +39,11 @@ experience.level_up = function()
     experience.level = experience.level + 1
     experience.exp = 0
     experience.button_level.set_text(set_level_text())
-    PlayerShip.upgrades.create_choices()
+    if experience.level % level_new_weapon == 1 then
+        PlayerShip.upgrades.create_weapon_choices()
+    else
+        PlayerShip.upgrades.create_choices()
+    end
     Pause_game = true
 end
 
