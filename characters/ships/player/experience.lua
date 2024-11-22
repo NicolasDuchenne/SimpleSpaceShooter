@@ -1,6 +1,6 @@
 Leveled_up = false
 local max_level = 10
-local exp_per_level = 10
+local exp_per_level = 100
 local levels_exp = {
 }
 for i=1,max_level do

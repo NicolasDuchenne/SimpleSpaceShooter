@@ -9,7 +9,7 @@ SHIP_GROUPS.PLAYER = "player"
 
 function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, lerp_speed, pos, rad)
     local ship = {}
-    ship.pos = pos or newVector2(ScreenWidth/2, ScreenHeight/2)
+    ship.pos = pos or newVector2(ScaledScreenWidth/2, ScaledScreenHeight/2)
     ship.rad = rad or 0
     ship.moving_dir = newVector2()
     ship.base_speed = base_speed or 100

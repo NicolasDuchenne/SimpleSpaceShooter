@@ -1,4 +1,3 @@
-
 local health = 500
 local hitbox_radius = 10
 local base_speed = 200
@@ -24,7 +23,7 @@ local function move(dt)
     --ship does not move in screen because the camera follows the ship so we calculate the angle like this
     local dir = nil
     ship.rad, dir = SmoothLookAt(
-        newVector2(ScreenWidth * 0.5 * Scale, ScreenHeight * 0.5 * Scale),
+        newVector2(ScaledScreenWidth * 0.5 * Scale, ScaledScreenHeight * 0.5 * Scale),
         newVector2(mouseX, mouseY),
         ship.rad,
         ship.lerp_speed,
@@ -68,10 +67,6 @@ ship.load = function()
     ship.inventory = require("characters.ships.player.inventory")
     ship.inventory.add_weapon(WEAPONS.player.auto_cannon)
     ship.weapon = ship.inventory.weapons[1]
-    -- ship.weapon.increase_fire_rate(300)
-    -- ship.inventory.add_weapon(WEAPONS.player.big_space_gun)
-    -- ship.inventory.add_weapon(WEAPONS.player.rockets)
-    -- ship.inventory.add_weapon(WEAPONS.player.zapper)
 end
 
 ship.update = function(dt)

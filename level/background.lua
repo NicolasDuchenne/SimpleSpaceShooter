@@ -34,7 +34,7 @@ background.draw = function(x, y)
         local width = layer.sprite.width * scale.x
         local height = layer.sprite.height * scale.y
         for l = math.floor((x-ScreenWidth)/width) * width, x + width + ScreenWidth, width do
-            for c = math.floor((y-ScreenHeight)/height) * height, y + height + ScreenHeight, height do
+            for c = math.floor((y-ScaledScreenHeight)/height) * height, y + height + ScaledScreenHeight, height do
                 layer.sprite.draw(newVector2(-(offset_x%width) + l, -(offset_y%height) + c), 0, scale)
             end
         end

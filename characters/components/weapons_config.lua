@@ -41,7 +41,7 @@ weapon_sprite_params[WEAPONS.player.big_space_gun] = {
     hquad = 48,
     fps = 18,
     bullet_type = PROJECTILES.space_gun,
-    bullet_base_speed = 200,
+    bullet_base_speed = 300,
     bullet_base_damage = 30,
     shooting_frames = {
         {
