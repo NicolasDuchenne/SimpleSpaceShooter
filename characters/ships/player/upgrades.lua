@@ -165,11 +165,11 @@ upgrades.create_choices = function()
                 local upgrade_value = upgrades_list[weapon_type][upgrade_type].increase
                 local max_upgrade = upgrades_list[weapon_type][upgrade_type].max
                 if upgrade_type == UPGRADE_SHOOTING_SPEED then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, player_weapon.shooting_speed_increase, max_upgrade, upgrade_value)
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.shooting_speed_increase, max_upgrade, upgrade_value)
                 elseif upgrade_type == UPGRADE_DAMAGE then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, player_weapon.bullet_damage_increase, max_upgrade, upgrade_value)
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_damage_increase, max_upgrade, upgrade_value)
                 elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, player_weapon.bullet_speed_increase, max_upgrade, upgrade_value)
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_speed_increase, max_upgrade, upgrade_value)
                 end
                 if upgrade_type ~= UPGRADE_GET then
                     button_index = button_index + 1
@@ -206,7 +206,7 @@ upgrades.update = function()
                 PlayerShip.inventory.add_weapon(button.weapon_type)
             else
                 local upgrade_value = upgrades_list[button.weapon_type][button.upgrade_type].increase
-                PlayerShip.inventory.upgrade_weapon(button.weapon_type, button.upgrade_type, button.upgrade_value)
+                PlayerShip.upgrade_weapon(button.upgrade_type, button.upgrade_value)
             end
         end
     end

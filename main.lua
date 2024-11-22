@@ -11,7 +11,7 @@ love.graphics.setDefaultFilter("nearest")
 io.stdout:setvbuf("no")
 
 
-Font = love.graphics.newFont(12)  -- Choose your font size
+Font = love.graphics.newFont(18)  -- Choose your font size
 love.graphics.setFont(Font)
 Scale = 1
 local scale_increment = 0.1
@@ -49,6 +49,7 @@ require("scenes.sceneGame")
 require("scenes.sceneMenu")
 
 function love.load()
+    math.randomseed(os.time())
     changeScene("game")
 end
 

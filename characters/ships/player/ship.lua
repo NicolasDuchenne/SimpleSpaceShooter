@@ -65,8 +65,8 @@ end
 
 ship.load = function()
     ship.inventory = require("characters.ships.player.inventory")
-    ship.inventory.add_weapon(WEAPONS.player.auto_cannon)
-    ship.weapon = ship.inventory.weapons[1]
+    --ship.inventory.add_weapon(WEAPONS.player.auto_cannon)
+    --ship.weapon = ship.inventory.weapons[1]
 end
 
 ship.update = function(dt)
@@ -85,13 +85,17 @@ ship.update = function(dt)
 
     for i, weapon in ipairs(ship.inventory.weapons) do
         if love.keyboard.isScancodeDown(tostring(i)) then
-            ship.weapon = weapon
-            ship.weapon.reset()
+            ship.switch_weapon(i)
         end
     end
 
     shoot(dt)
     ship.update_hit_timer(dt)
+end
+
+ship.switch_weapon = function(key)
+    ship.weapon = ship.inventory.weapons[key]
+    ship.weapon.reset()
 end
 
 ship.die = function()

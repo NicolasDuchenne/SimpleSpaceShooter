@@ -4,7 +4,7 @@ inventory.buttons = {}
 
 inventory.add_weapon = function(weapon_type)
     if not inventory.has_weapon(weapon_type) then
-        key = #inventory.weapons + 1
+        local key = #inventory.weapons + 1
         local weapon = newWeapon(weapon_type)
         inventory.weapons[key]=  weapon
         local weapon_pickup = newPickup(weapon_type)
@@ -15,6 +15,7 @@ inventory.add_weapon = function(weapon_type)
             newVector2(0,-25)
         )
         inventory.buttons[key].img.fps = 0
+        PlayerShip.switch_weapon(key)
     end
 end
 

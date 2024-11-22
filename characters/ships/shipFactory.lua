@@ -26,9 +26,39 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.invinsibility_duration = 0.1
     ship.hitbox_radius = hitbox_radius or 20
 
+    ship.bullet_speed_increase = 0
+    ship.bullet_damage_increase = 0
+    ship.shooting_speed_increase = 0
+
     ship.shoot = function()
         ship.weapon.shoot()
     end
+
+    ship.increase_fire_rate = function(added_speed)
+        ship.shooting_speed_increase = ship.shooting_speed_increase + added_speed
+        ship.weapon.current_base_sprite.fps = ship.weapon.base_shooting_speed + math.floor(ship.weapon.base_shooting_speed * ship.shooting_speed_increase / 100)
+    end
+
+    ship.increase_damage = function(added_damage)
+        ship.bullet_damage_increase = ship.bullet_damage_increase + added_damage
+        ship.weapon.bullet_damage =ship.weapon.bullet_base_damage + math.floor(ship.weapon.bullet_base_damage * ship.bullet_damage_increase / 100)
+    end
+
+    ship.increase_projectile_speed = function(added_speed)
+        ship.bullet_speed_increase = ship.bullet_speed_increase + added_speed
+        ship.weapon.bullet_speed = ship.weapon.bullet_base_speed + math.floor(ship.weapon.bullet_base_speed*ship.bullet_speed_increase/100)
+    end
+
+    ship.upgrade_weapon = function(upgrade_type, ugrade_value)
+        if upgrade_type == UPGRADE_SHOOTING_SPEED then
+            ship.increase_fire_rate(ugrade_value)
+        elseif upgrade_type == UPGRADE_DAMAGE then
+            ship.increase_damage(ugrade_value)
+        elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
+            ship.increase_projectile_speed(ugrade_value)
+        end
+    end
+
     
     ship.update_hit_timer = function(dt)
         if ship.can_get_hit == false then

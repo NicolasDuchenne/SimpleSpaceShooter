@@ -14,7 +14,6 @@ enemySpawner.update = function(dt)
         local enemy_index = math.random(1, #ENEMIES)
         local rad_spawn = math.random()*2*math.pi
         local enemy_pos = newVector2FromRad(rad_spawn) * math.random(enemySpawner.enemy_min_distance, enemySpawner.enemy_max_distance)
-        print(enemy_pos)
         newEnemyShip(ENEMIES[enemy_index], PlayerShip.pos + enemy_pos)
 
         enemySpawner.timer.start(math.random()*enemySpawner.timer_variation+enemySpawner.timer_min_duration)
