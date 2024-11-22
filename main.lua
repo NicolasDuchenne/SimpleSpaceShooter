@@ -27,15 +27,15 @@ local function setScale()
 end
 local display_mode_params = {resizable = true, vsync = false, msaa = 4}
 local function setWindowSize()
-    if devMode == true then
-        love.window.setMode(devWidth, devHeight, display_mode_params)
-    else
+    -- if devMode == true then
+    --     love.window.setMode(devWidth, devHeight, display_mode_params)
+    -- else
         local monitorWidth, monitorHeight = love.window.getDesktopDimensions()
         local offset = 200
         monitorWidth = monitorWidth - offset
         monitorHeight = monitorHeight - offset
         love.window.setMode(monitorWidth, monitorHeight, display_mode_params)
-    end
+    -- end
     setScale()
 end
 

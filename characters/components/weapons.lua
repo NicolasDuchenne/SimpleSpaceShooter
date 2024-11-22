@@ -20,11 +20,16 @@ function newWeapon(type, group)
     weapon.current_base_sprite = create_weapon_sprite(weapon_sprite_params[type])
     weapon.type = type
     weapon.bullet_type = weapon_sprite_params[type].bullet_type
-    weapon.bullet_speed = weapon_sprite_params[type].bullet_speed
+    weapon.bullet_base_speed = weapon_sprite_params[type].bullet_base_speed
+    weapon.bullet_speed = weapon.bullet_base_speed
+    weapon.bullet_base_damage = weapon_sprite_params[type].bullet_base_damage
+    weapon.bullet_damage = weapon.bullet_base_damage
+    weapon.base_shooting_speed = weapon_sprite_params[type].fps
+    weapon.bullet_speed_increase = 0
+    weapon.bullet_damage_increase = 0
+    weapon.shooting_speed_increase = 0
     weapon.shooting_frames = weapon_sprite_params[type].shooting_frames
     weapon.group = group or "player"
-    weapon.added_damage = 0
-    weapon.added_speed = 0
 
     weapon.reset = function()
         weapon.current_base_sprite.reset()
@@ -38,16 +43,19 @@ function newWeapon(type, group)
 
 
 
-    weapon.increase_fire_rate = function(increase_percentage)
-        weapon.current_base_sprite.fps = weapon.current_base_sprite.fps + math.floor(weapon.current_base_sprite.fps * increase_percentage / 100)
+    weapon.increase_fire_rate = function(added_speed)
+        weapon.shooting_speed_increase = weapon.shooting_speed_increase + added_speed
+        weapon.current_base_sprite.fps = weapon.base_shooting_speed + math.floor(weapon.base_shooting_speed * weapon.shooting_speed_increase / 100)
     end
 
     weapon.increase_damage = function(added_damage)
-        weapon.added_damage = weapon.added_damage + added_damage
+        weapon.bullet_damage_increase = weapon.bullet_damage_increase + added_damage
+        weapon.bullet_damage =weapon.bullet_base_damage + math.floor(weapon.bullet_base_damage * weapon.bullet_damage_increase / 100)
     end
 
     weapon.increase_projectile_speed = function(added_speed)
-        weapon.bullet_speed = weapon.bullet_speed + math.floor(weapon.bullet_speed*added_speed/100)
+        weapon.bullet_speed_increase = weapon.bullet_speed_increase + added_speed
+        weapon.bullet_speed = weapon.bullet_base_speed + math.floor(weapon.bullet_base_speed*weapon.bullet_speed_increase/100)
     end
 
 
@@ -77,8 +85,7 @@ function newWeapon(type, group)
                         rad,
                         weapon.bullet_speed,
                         weapon.group,
-                        weapon.added_damage,
-                        weapon.added_speed
+                        weapon.bullet_damage
                     )
                     weapon.has_shot[i] = true
                     weapon.shot_fired = weapon.shot_fired + 1

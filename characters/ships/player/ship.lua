@@ -1,5 +1,5 @@
 
-local health = 100
+local health = 500
 local hitbox_radius = 10
 local base_speed = 200
 local lerp_speed = 5
@@ -68,7 +68,7 @@ ship.load = function()
     ship.inventory = require("characters.ships.player.inventory")
     ship.inventory.add_weapon(WEAPONS.player.auto_cannon)
     ship.weapon = ship.inventory.weapons[1]
-    ship.weapon.increase_fire_rate(300)
+    -- ship.weapon.increase_fire_rate(300)
     -- ship.inventory.add_weapon(WEAPONS.player.big_space_gun)
     -- ship.inventory.add_weapon(WEAPONS.player.rockets)
     -- ship.inventory.add_weapon(WEAPONS.player.zapper)

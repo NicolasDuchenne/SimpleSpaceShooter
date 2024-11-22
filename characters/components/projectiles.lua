@@ -28,7 +28,7 @@ Projectiles.draw = function()
     end
 end
 
-function newProjectile(type, pos, rad, speed, group, added_damage)
+function newProjectile(type, pos, rad, speed, group, damage)
     added_damage = added_damage or 0
     local projectile = {}
     projectile.pos = pos
@@ -40,7 +40,7 @@ function newProjectile(type, pos, rad, speed, group, added_damage)
     projectile.life_span = 5
     projectile.time_elapsed = 0
     projectile.hitbox_radius = projectiles_params[type].hitbox_radius
-    projectile.damage = projectiles_params[type].damage + added_damage
+    projectile.damage = damage
     projectile.group = group
     projectile.has_hit_something = false
     if group == SHIP_GROUPS.PLAYER then
@@ -50,7 +50,6 @@ function newProjectile(type, pos, rad, speed, group, added_damage)
     else
         projectile.color = {r = 1, g = 1, b = 1}
     end
-    print(projectile.speed)
 
     local function hit_ships()
         if projectile.group == SHIP_GROUPS.PLAYER then
