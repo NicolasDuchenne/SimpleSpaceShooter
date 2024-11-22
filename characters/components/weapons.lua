@@ -24,6 +24,7 @@ function newWeapon(type, group)
     weapon.shooting_frames = weapon_sprite_params[type].shooting_frames
     weapon.group = group or "player"
     weapon.added_damage = 0
+    weapon.added_speed = 0
 
     weapon.reset = function()
         weapon.current_base_sprite.reset()
@@ -38,11 +39,15 @@ function newWeapon(type, group)
 
 
     weapon.increase_fire_rate = function(increase_percentage)
-        weapon.current_base_sprite.fps = weapon.current_base_sprite.fps + weapon.current_base_sprite.fps * increase_percentage / 100
+        weapon.current_base_sprite.fps = weapon.current_base_sprite.fps + math.floor(weapon.current_base_sprite.fps * increase_percentage / 100)
     end
 
     weapon.increase_damage = function(added_damage)
         weapon.added_damage = weapon.added_damage + added_damage
+    end
+
+    weapon.increase_projectile_speed = function(added_speed)
+        weapon.bullet_speed = weapon.bullet_speed + math.floor(weapon.bullet_speed*added_speed/100)
     end
 
 
@@ -72,7 +77,8 @@ function newWeapon(type, group)
                         rad,
                         weapon.bullet_speed,
                         weapon.group,
-                        weapon.added_damage
+                        weapon.added_damage,
+                        weapon.added_speed
                     )
                     weapon.has_shot[i] = true
                     weapon.shot_fired = weapon.shot_fired + 1

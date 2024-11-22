@@ -1,32 +1,42 @@
 UPGRADE_GET = "get"
 UPGRADE_SPEED = "speed"
 UPGRADE_DAMAGE = "damage"
+UPGRADE_PROJECTILE_SPEED = "projectile_speed"
 local upgrades_list = {}
 
 
 upgrades_list[WEAPONS.player.auto_cannon] = {
     speed = {
         color = {r=0, g=1, b=0},
-        increase_percentage = 20
+        increase = 20
     },
     damage = {
         color = {r=1, g=0, b=0},
-        increase_damage = 1
+        increase = 1
+    },
+    projectile_speed = {
+        color = {r=0, g=0, b=1},
+        increase = 10
     }
+    
 }
 
 upgrades_list[WEAPONS.player.big_space_gun] = {
     get =  {
         color = {r=1, g=1, b=1},
-        increase_percentage = 20
+        increase = 20
     },
     speed = {
         color = {r=0, g=1, b=0},
-        increase_percentage = 20
+        increase = 10
     },
     damage = {
         color = {r=1, g=0, b=0},
-        increase_damage = 1
+        increase = 2
+    },
+    projectile_speed = {
+        color = {r=0, g=0, b=1},
+        increase = 20
     }
    
 }
@@ -93,11 +103,10 @@ upgrades.update = function()
             PlayerShip.upgrades.delete_choices()
             if button.upgrade_type == UPGRADE_GET then
                 PlayerShip.inventory.add_weapon(button.weapon_type)
-            elseif button.upgrade_type == UPGRADE_SPEED or button.upgrade_type == UPGRADE_DAMAGE then
-                PlayerShip.inventory.upgrade_weapon(button.weapon_type, button.upgrade_type)
+            else
+                local upgrade_value = upgrades_list[button.weapon_type][button.upgrade_type].increase
+                PlayerShip.inventory.upgrade_weapon(button.weapon_type, button.upgrade_type, upgrade_value)
             end
-
-            
         end
     end
 

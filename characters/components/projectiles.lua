@@ -34,7 +34,7 @@ function newProjectile(type, pos, rad, speed, group, added_damage)
     projectile.pos = pos
     projectile.rad = rad
     projectile.dir = newVector2FromRad(rad)
-    projectile.speed = speed 
+    projectile.speed = speed
     projectile.sprite = create_projectile_sprite(projectiles_params[type])
     projectile.scale = projectiles_params[type].scale
     projectile.life_span = 5
@@ -50,6 +50,7 @@ function newProjectile(type, pos, rad, speed, group, added_damage)
     else
         projectile.color = {r = 1, g = 1, b = 1}
     end
+    print(projectile.speed)
 
     local function hit_ships()
         if projectile.group == SHIP_GROUPS.PLAYER then

@@ -18,13 +18,15 @@ inventory.add_weapon = function(weapon_type)
     end
 end
 
-inventory.upgrade_weapon = function(weapon_type, upgrade_type)
+inventory.upgrade_weapon = function(weapon_type, upgrade_type, ugrade_value)
     for i, weapon in ipairs(inventory.weapons) do
         if weapon.type == weapon_type then
             if upgrade_type == UPGRADE_SPEED then
-                weapon.increase_fire_rate(100)
+                weapon.increase_fire_rate(ugrade_value)
             elseif upgrade_type == UPGRADE_DAMAGE then
-                weapon.increase_damage(1)
+                weapon.increase_damage(ugrade_value)
+            elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
+                weapon.increase_projectile_speed(ugrade_value)
             end
         end
     end
