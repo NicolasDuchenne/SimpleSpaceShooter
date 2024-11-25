@@ -22,6 +22,7 @@ end
 
 sceneMenu.draw = function()
     background.draw()
+    love.graphics.origin()
     Buttons.draw()
 end
 
