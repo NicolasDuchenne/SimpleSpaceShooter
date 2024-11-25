@@ -29,8 +29,12 @@ background.draw = function(x, y)
     for _, layer in ipairs(backgroundLayers) do
 
         -- Draw the layer image, tiling it if necessary, with an offset from player's position
-        local offset_x = x * layer.speed
-        local offset_y = y * layer.speed
+        local offset_x = 0
+        local offset_y = 0
+        if MovingCamera == true then
+            offset_x = x * layer.speed
+            offset_y = y * layer.speed
+        end
         local width = layer.sprite.width * scale.x
         local height = layer.sprite.height * scale.y
         for l = math.floor((x-ScreenWidth)/width) * width, x + width + ScreenWidth, width do

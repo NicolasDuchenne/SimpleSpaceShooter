@@ -1,13 +1,12 @@
 require("characters.ships.player.experience")
 require("characters.ships.player.upgrades")
 require("characters.ships.player.inventory")
-local health = 10
+local health = 100
 local hitbox_radius = 10
 local base_speed = 200
 local lerp_speed = 5
 
 function newPlayerShip()
-
     local ship = newShip(
         SHIP_GROUPS.PLAYER,
         "assets/Void_MainShip/Main Ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png",
@@ -21,12 +20,19 @@ function newPlayerShip()
     ship.boost_activated = true
 
 
+
     local function move(dt)
         local mouseX, mouseY = love.mouse.getPosition()
         --ship does not move in screen because the camera follows the ship so we calculate the angle like this
         local dir = nil
+        local look_at_pos = nil
+        if MovingCamera == true then
+            look_at_pos = newVector2(ScaledScreenWidth * 0.5 * Scale, ScaledScreenHeight * 0.5 * Scale)
+        else
+            look_at_pos = ship.pos
+        end
         ship.rad, dir = SmoothLookAt(
-            newVector2(ScaledScreenWidth * 0.5 * Scale, ScaledScreenHeight * 0.5 * Scale),
+            look_at_pos,
             newVector2(mouseX, mouseY),
             ship.rad,
             ship.lerp_speed,
@@ -56,6 +62,9 @@ function newPlayerShip()
 
         ship.moving_dir = (up_dir + side_dir).normalize()
         ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+
+        ship.constrain_ship_pos()
+        
     end
 
     local shoot= function(dt)

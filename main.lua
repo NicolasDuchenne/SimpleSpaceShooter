@@ -46,11 +46,13 @@ require("utils.timer")
 require("ui.button")
 require("scenes.sceneManager")
 require("scenes.sceneGame")
+require("scenes.sceneGameMovingCamera")
+require("scenes.sceneGameStaticCamera")
 require("scenes.sceneMenu")
 
 function love.load()
     math.randomseed(os.time())
-    changeScene("game")
+    changeScene("gameMovingCamera")
 end
 
 function love.update(dt)

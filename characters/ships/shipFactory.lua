@@ -39,6 +39,22 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.bullet_damage_increase = 0
     ship.shooting_speed_increase = 0
 
+    ship.constrain_ship_pos = function ()
+        if MovingCamera == false then
+            if ship.pos.x - ship.base_sprite.width * 0.5  < 0 then
+                ship.pos.x = ship.base_sprite.width * 0.5
+            elseif ship.pos.x + ship.base_sprite.width * 0.5 > ScaledScreenWidth then
+                ship.pos.x = ScaledScreenWidth - ship.base_sprite.width * 0.5
+            end
+            if ship.pos.y - ship.base_sprite.height * 0.5  < 0 then
+                ship.pos.y = ship.base_sprite.height * 0.5
+            elseif ship.pos.y + ship.base_sprite.height * 0.5 > ScaledScreenHeight then
+                ship.pos.y = ScaledScreenHeight - ship.base_sprite.height * 0.5
+            end
+        end
+        
+    end
+
     ship.shoot = function()
         ship.weapon.shoot()
     end

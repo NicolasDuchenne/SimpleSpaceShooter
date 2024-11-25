@@ -1,132 +1,162 @@
-local sceneGame = newScene("game")
-
-
 require("characters.ships.shipFactory")
 require("characters.ships.enemies.enemyShip")
 local enemySpawner = require("characters.ships.enemies.enemySpawner")
-
 local camera = require("level.camera")
 local background = require("level.background")
 require("characters.ships.player.ship")
-sceneGame.saved_data = nil
-Pause_game = false
+
 local deathUI = require("ui.death_ui")
 
-sceneGame.load = function()
-    
-    background.load()
-    if sceneGame.saved_data then
+MovingCamera = false
+
+function newScenegame(title)
+    local sceneGame = newScene(title)
+    sceneGame.camera = camera
+    sceneGame.saved_data = nil
+    Pause_game = false
+
+    sceneGame.load = function(data)
+        sceneGame.update_camera()
+        background.load()
+        if data then
+            sceneGame.load_from_data(data)
+        elseif sceneGame.saved_data then
+            sceneGame.load_from_save()
+        else
+            sceneGame.restart()
+        end
+        sceneGame.update_player_pos()
+    end
+
+    sceneGame.load_from_data = function(data)
+        sceneGame.restart_enemies()
+        PlayerShip = data.PlayerShip
+        Buttons = data.Buttons
+        enemySpawner.load()
+    end
+
+    sceneGame.load_from_save = function()
         EnemyShips = sceneGame.saved_data.EnemyShips
         Buttons = sceneGame.saved_data.Buttons
         Projectiles = sceneGame.saved_data.Projectiles
         PlayerShip = sceneGame.saved_data.PlayerShip
         enemySpawner.load()
-    else
-        sceneGame.restart()
     end
-end
 
-sceneGame.unload = function()
-    Buttons.unload()
-end
+    sceneGame.update_player_pos = function()
+    end
+    sceneGame.update_camera = function()
+    end
 
-local function update_pause()
-    if PlayerShip.is_dead == false then
-        PlayerShip.upgrades.update()
-        --if love.keyboard.isScancodeDown("return") then
-        --     Pause_game = false
-        --     PlayerShip.upgrades.delete_choices()
-        -- end
-    else
-        if deathUI.button.isPressed then
-            sceneGame.restart()
+    sceneGame.unload = function()
+        sceneGame.saved_data = sceneGame.save_data()
+        Buttons.unload()
+    end
+
+    local function update_pause()
+        if PlayerShip.is_dead == false then
+            PlayerShip.upgrades.update()
+
+        else
+            if deathUI.button.isPressed then
+                sceneGame.restart()
+            end
         end
     end
-end
 
-local function update_game(dt)
-    camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
-    background.update(dt)
-    PlayerShip.update(dt)
-    EnemyShips.update(dt)
-    Projectiles.update(dt)
-    enemySpawner.update(dt)
-    if PlayerShip.is_dead then
-        Pause_game = true
-        deathUI.create_button()
-        --sceneGame.restart()
+    local function update_game(dt)
+        if MovingCamera == true then
+            sceneGame.camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
+        end
+        background.update(dt)
+        PlayerShip.update(dt)
+        EnemyShips.update(dt)
+        Projectiles.update(dt)
+        enemySpawner.update(dt)
+        if PlayerShip.is_dead then
+            Pause_game = true
+            deathUI.create_button()
+            --sceneGame.restart()
+        end
     end
-end
 
-local function update_ui(dt)
-    Buttons.update(dt)
-end
-
-
-sceneGame.update = function(dt)
-    if Pause_game == true then
-        update_pause()
-    else
-        update_game(dt)
+    local function update_ui(dt)
+        Buttons.update(dt)
     end
-    
-    update_ui(dt)
-end
 
-local function draw_game()
-    love.graphics.push()
-    camera.move()
-    background.draw(PlayerShip.pos.x, PlayerShip.pos.y)
-    EnemyShips.draw()
-    PlayerShip.draw()
-    Projectiles.draw()
-    love.graphics.pop()
-end
 
-local function draw_ui()
-    love.graphics.origin()
-    Buttons.draw()
-end
-
-sceneGame.draw = function()
-    draw_game()
-    draw_ui()
-end
-
-sceneGame.save_data = function()
-    local data = {}
-    data.PlayerShip = PlayerShip
-    data.EnemyShips = EnemyShips
-    data.Buttons = DeepCopy(Buttons)
-    data.Projectiles = Projectiles
-    return data
-end
-
-sceneGame.keypressed = function(key, scancode)
-    if scancode=="space" then
-        sceneGame.saved_data = sceneGame.save_data()
-        changeScene("menu", "hello world")
+    sceneGame.update = function(dt)
+        if Pause_game == true then
+            update_pause()
+        else
+            update_game(dt)
+        end
+        
+        update_ui(dt)
     end
-    -- Uncomment to test create upgrades
-    -- if Pause_game==false and love.keyboard.isScancodeDown("t") then
-    --     Pause_game = true
-    --     PlayerShip.upgrades.create_weapon_choices()
-    -- end
+
+    local function draw_game()
+        love.graphics.push()
+        if MovingCamera == true then
+            sceneGame.camera.move()
+        end
+        background.draw(PlayerShip.pos.x, PlayerShip.pos.y)
+        EnemyShips.draw()
+        PlayerShip.draw()
+        Projectiles.draw()
+        love.graphics.pop()
+    end
+
+    local function draw_ui()
+        love.graphics.origin()
+        Buttons.draw()
+    end
+
+    sceneGame.draw = function()
+        draw_game()
+        draw_ui()
+    end
+
+    sceneGame.save_change_scene_data = function()
+        local data = {}
+        data.PlayerShip = PlayerShip
+        data.Buttons = DeepCopy(Buttons)
+        return data
+    end
+
+    sceneGame.save_data = function()
+        local data = sceneGame.save_change_scene_data()
+        data.EnemyShips = EnemyShips
+        data.Projectiles = Projectiles
+        return data
+    end  
+
+    sceneGame.moussepressed = function(x, y, button)
+        Buttons.mousepressed(x, y, button)
+    end
+
+    sceneGame.restart_enemies = function()
+        EnemyShips.unload()
+        Projectiles.unload()
+        enemySpawner.load()
+    end
+
+    sceneGame.restart = function()
+        Buttons.unload()
+        sceneGame.restart_enemies()
+        PlayerShip = newPlayerShip()
+        PlayerShip.load() 
+        sceneGame.save_and_change_scene("gameMovingCamera")
+        
+    end
+
+    sceneGame.save_and_change_scene = function(title)
+        local data = sceneGame.save_change_scene_data()
+        changeScene(title, data)
+    end
+
+
+
+    return sceneGame
 end
 
-sceneGame.moussepressed = function(x, y, button)
-    Buttons.mousepressed(x, y, button)
-end
-
-sceneGame.restart = function()
-    Buttons.unload()
-    EnemyShips.unload()
-    Projectiles.unload()
-    PlayerShip = newPlayerShip()
-    PlayerShip.load() 
-    enemySpawner.load()
-end
-
-
-
-return sceneGame

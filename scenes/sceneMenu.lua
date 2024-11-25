@@ -23,7 +23,7 @@ end
 
 sceneMenu.keypressed = function(key, scancode)
     if scancode=="space" then
-        changeScene("game")
+        changeScene("gameMovingCamera")
     end
 end
 

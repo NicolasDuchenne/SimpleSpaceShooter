@@ -83,7 +83,7 @@ local newEnemyShipStateMachine = function(ship)
     end
 
     stateMachine.update = function(dt)
-        
+
         update_harass_dir(dt)
         local dist_to_player = math.vdist(ship.pos, PlayerShip.pos)
         if stateMachine.state == STATES.IDLE then
@@ -123,6 +123,7 @@ local newEnemyShipStateMachine = function(ship)
                 stateMachine.state = STATES.CHASE
             end
         end
+        ship.constrain_ship_pos()
         
     end
     return stateMachine
