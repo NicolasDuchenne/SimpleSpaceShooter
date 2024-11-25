@@ -25,6 +25,16 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.invincibility_timer = newTimer(0.1)
     ship.hitbox_radius = hitbox_radius or 20
 
+    ship.max_boost_energy = 100
+    ship.boost_energy = ship.max_boost_energy
+    ship.boost_energy_consumption = 50
+    ship.boost_factor = 1.5
+    ship.is_boosting = false
+    ship.boost_recharge_factor = 0
+    ship.energy_bar_size = newVector2(60,10)
+    ship.energy_bar_size_filed = 1
+    ship.boost_activated = false
+
     ship.bullet_speed_increase = 0
     ship.bullet_damage_increase = 0
     ship.shooting_speed_increase = 0
@@ -65,6 +75,21 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         end
     end
 
+    ship.boost = function(dt)
+        ship.speed = ship.base_speed
+        if ship.is_boosting == true then
+            ship.boost_recharge_factor = 0
+            if ship.boost_energy > 0 then
+                ship.boost_energy = ship.boost_energy - ship.boost_energy_consumption * dt
+                ship.speed = ship.base_speed * ship.boost_factor
+            end
+        else
+            ship.boost_recharge_factor = ship.boost_recharge_factor + 1 * dt
+            ship.boost_energy = math.min(ship.max_boost_energy, ship.boost_energy + ship.boost_recharge_factor * ship.boost_energy_consumption * dt)
+        end
+        ship.energy_bar_size_filed = ship.boost_energy/ship.max_boost_energy
+    end
+
     ship.update = function(dt)
         ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
         ship.engine.update(0, dt)
@@ -76,6 +101,13 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     local function draw_health()
         love.graphics.print(tostring(ship.health), ship.pos.x-10, ship.pos.y-30)
+    end
+
+    local function draw_boost()
+        love.graphics.setColor(0,1,0,0.4)
+        love.graphics.rectangle("line", ship.pos.x-ship.energy_bar_size.x*0.5, ship.pos.y+30, ship.energy_bar_size.x, ship.energy_bar_size.y)
+        love.graphics.rectangle("fill", ship.pos.x-ship.energy_bar_size.x*0.5, ship.pos.y+30, ship.energy_bar_size.x*ship.energy_bar_size_filed, ship.energy_bar_size.y)
+        love.graphics.setColor(1,1,1,1)
     end
 
     local function draw_state()
@@ -96,7 +128,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         draw_health()
         draw_hitbox()
         draw_state()
-
+        if ship.boost_activated == true then
+            draw_boost()
+        end
     end
     
     ship.die = function()

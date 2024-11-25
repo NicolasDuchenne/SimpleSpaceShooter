@@ -113,10 +113,16 @@ function newQuadButton(pos, quadSprite, text, text_offset, size)
     return button
 end
 
-function newTextButton(pos, size, text)
+function newTextButton(pos, size, text, fill)
+    fill = fill or false
     local button = newButton(pos,size, text)
 
     button.draw = function()
+        if fill == true then
+            love.graphics.setColor(0, 0, 0, 255)
+            love.graphics.rectangle("fill", button.pos.x, button.pos.y, button.size.x, button.size.y)
+            love.graphics.setColor(1, 1, 1, 255)
+        end
         love.graphics.rectangle("line", button.pos.x, button.pos.y, button.size.x, button.size.y)
         button.draw_text()
     end

@@ -3,12 +3,18 @@ local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStat
 
 EnemyShips = {}
 EnemyShips.total_exp = 0
+
+EnemyShips.remove_ship = function(key)
+    EnemyShips.total_exp = EnemyShips.total_exp - EnemyShips[key].experience
+    table.remove(EnemyShips, key)
+end
+
+
 EnemyShips.update = function(dt)
     for i=#EnemyShips, 1, -1 do
         EnemyShips[i].update(dt)
         if EnemyShips[i].is_dead == true or EnemyShips[i].has_hit_something then
-            EnemyShips.total_exp = EnemyShips.total_exp - EnemyShips[i].experience
-            table.remove(EnemyShips, i)
+            EnemyShips.remove_ship(i)
         end
     end
 end
@@ -21,8 +27,9 @@ end
 
 EnemyShips.unload = function()
     for i=#EnemyShips, 1, -1 do
-        table.remove(EnemyShips, i)
+        EnemyShips.remove_ship(i)
     end
+
 end
 
 

@@ -3,9 +3,9 @@
  NAIRAN_TORPEDO = "nairan_torpedo"
 
 ENEMIES = {}
-table.insert(ENEMIES, {name = NAIRAN_FIGHTER, rareness = 5})
+table.insert(ENEMIES, {name = NAIRAN_FIGHTER, rareness = 1})
 table.insert(ENEMIES, {name = NAIRAN_BATTLECRUISER, rareness = 1})
-table.insert(ENEMIES, {name = NAIRAN_TORPEDO, rareness = 10})
+table.insert(ENEMIES, {name = NAIRAN_TORPEDO, rareness = 1})
 
 ENEMIES_WITH_RARENESS = {}
 for i, enemy in ipairs(ENEMIES) do
@@ -22,7 +22,7 @@ enemy_ships_params[NAIRAN_FIGHTER] = {
     engine = ENGINES.nairan.fighter,
     weapon = WEAPONS.nairan.fighter,
     health = 30,
-    hitbox_radius = 10,
+    hitbox_radius = 13,
     base_speed = 75,
     lerp_speed = 10,
     detection_range = 10000,
@@ -40,7 +40,7 @@ enemy_ships_params[NAIRAN_BATTLECRUISER] = {
     engine = ENGINES.nairan.battlecruiser,
     weapon = WEAPONS.nairan.battlecruiser,
     health = 80,
-    hitbox_radius = 27,
+    hitbox_radius = 35,
     base_speed = 50,
     lerp_speed = 5,
     detection_range = 15000,
@@ -58,7 +58,7 @@ enemy_ships_params[NAIRAN_TORPEDO] = {
     engine = ENGINES.nairan.torpedo,
     weapon = WEAPONS.nairan.torpedo,
     health = 20,
-    hitbox_radius = 10,
+    hitbox_radius = 13,
     base_speed = 100,
     lerp_speed = 10,
     detection_range = 15000,

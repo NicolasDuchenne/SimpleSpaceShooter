@@ -21,7 +21,6 @@ function Lerp(from, to, speed)
     return from + (to - from) * speed
 end
 
-
 function LerpAngle(from, to, speed)
     -- Calculate the difference making sure you always take the shortest angle path
     local delta = (to - from + math.pi) % (math.pi*2) - math.pi

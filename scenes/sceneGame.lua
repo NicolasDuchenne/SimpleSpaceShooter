@@ -30,6 +30,20 @@ sceneGame.unload = function()
     Buttons.unload()
 end
 
+local function update_pause()
+    if PlayerShip.is_dead == false then
+        PlayerShip.upgrades.update()
+        --if love.keyboard.isScancodeDown("return") then
+        --     Pause_game = false
+        --     PlayerShip.upgrades.delete_choices()
+        -- end
+    else
+        if deathUI.button.isPressed then
+            sceneGame.restart()
+        end
+    end
+end
+
 local function update_game(dt)
     camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
     background.update(dt)
@@ -51,17 +65,7 @@ end
 
 sceneGame.update = function(dt)
     if Pause_game == true then
-        if PlayerShip.is_dead == false then
-            PlayerShip.upgrades.update()
-            if love.keyboard.isScancodeDown("return") then
-                Pause_game = false
-                PlayerShip.upgrades.delete_choices()
-            end
-        else
-            if deathUI.button.isPressed then
-                sceneGame.restart()
-            end
-        end
+        update_pause()
     else
         update_game(dt)
     end
@@ -103,10 +107,11 @@ sceneGame.keypressed = function(key, scancode)
         sceneGame.saved_data = sceneGame.save_data()
         changeScene("menu", "hello world")
     end
-    if Pause_game==false and love.keyboard.isScancodeDown("t") then
-        Pause_game = true
-        PlayerShip.upgrades.create_weapon_choices()
-    end
+    -- Uncomment to test create upgrades
+    -- if Pause_game==false and love.keyboard.isScancodeDown("t") then
+    --     Pause_game = true
+    --     PlayerShip.upgrades.create_weapon_choices()
+    -- end
 end
 
 sceneGame.moussepressed = function(x, y, button)
@@ -119,6 +124,7 @@ sceneGame.restart = function()
     Projectiles.unload()
     PlayerShip = newPlayerShip()
     PlayerShip.load() 
+    enemySpawner.load()
 end
 
 

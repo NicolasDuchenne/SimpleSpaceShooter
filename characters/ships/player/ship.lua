@@ -18,7 +18,7 @@ function newPlayerShip()
         base_speed,
         lerp_speed
     )
-    ship.boost_factor = 1.5
+    ship.boost_activated = true
 
 
     local function move(dt)
@@ -74,28 +74,33 @@ function newPlayerShip()
         --ship.weapon = ship.inventory.weapons[1]
     end
 
-    ship.update = function(dt)
-        ship.experience.update(dt)
-        move(dt)
-        -- Manage engines
+    local function update_engines(dt)
         if love.keyboard.isScancodeDown("lshift") then
             ship.engine.change_type(ENGINES.burst)
-            ship.speed = ship.base_speed * ship.boost_factor
+            ship.is_boosting = true
         else
             ship.engine.change_type(ENGINES.base)
-            ship.speed = ship.base_speed
+            ship.is_boosting = false
         end
         ship.engine.update(ship.moving_dir.norm(), dt)
+    end
 
-
+    local function update_weapons()
         for i, weapon in ipairs(ship.inventory.weapons) do
             if love.keyboard.isScancodeDown(tostring(i)) then
                 ship.switch_weapon(i)
             end
         end
+    end
 
+    ship.update = function(dt)
+        ship.experience.update(dt)
+        move(dt)
+        update_engines(dt)
+        update_weapons()
         shoot(dt)
         ship.update_invincibility_timer(dt)
+        ship.boost(dt)
     end
 
     ship.switch_weapon = function(key)
