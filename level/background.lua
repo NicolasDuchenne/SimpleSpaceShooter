@@ -12,34 +12,43 @@ table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/C
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 02 - Stars.png", speed = 0.1})
 table.insert(layers, {img_name = "assets/Void_EnvironmentPack/Backgrounds/PNGs/Condesed/Starry background  - Layer 03 - Stars.png", speed = 0.2})
 
+
 background.load = function()
     -- Load background images (far, middle, near)
     for i, layer in ipairs(layers) do
         backgroundLayers[i] = {sprite = newQuadSprite(layer.img_name, ncquad, nlquad, qwidth, qheight, fps), speed = layer.speed}
+        backgroundLayers[i].x = 0
+        backgroundLayers[i].y = 0
+        backgroundLayers[i].width = backgroundLayers[i].sprite.width * scale.x
+        backgroundLayers[i].height = backgroundLayers[i].sprite.height * scale.y
+        backgroundLayers[i].offset_x = 0
+        backgroundLayers[i].offset_y = 0
+
     end
 end
 
-background.update = function(dt)
+background.update = function(dt ,x , y)
     for _, layer in ipairs(backgroundLayers) do
+        layer.x = x
+        layer.y = y
+        -- Draw the layer image, tiling it if necessary, with an offset from player's position
+        layer.offset_x = 0
+        layer.offset_y = 0
+        if MovingCamera == true then
+            layer.offset_x = layer.x * layer.speed
+            layer.offset_y = layer.y * layer.speed
+        end
+        layer.width = layer.sprite.width * scale.x
+        layer.height = layer.sprite.height * scale.y
         layer.sprite.update(dt)
     end
 end
 
-background.draw = function(x, y)
+background.draw = function()
     for _, layer in ipairs(backgroundLayers) do
-
-        -- Draw the layer image, tiling it if necessary, with an offset from player's position
-        local offset_x = 0
-        local offset_y = 0
-        if MovingCamera == true then
-            offset_x = x * layer.speed
-            offset_y = y * layer.speed
-        end
-        local width = layer.sprite.width * scale.x
-        local height = layer.sprite.height * scale.y
-        for l = math.floor((x-ScreenWidth)/width) * width, x + width + ScreenWidth, width do
-            for c = math.floor((y-ScaledScreenHeight)/height) * height, y + height + ScaledScreenHeight, height do
-                layer.sprite.draw(newVector2(-(offset_x%width) + l, -(offset_y%height) + c), 0, scale)
+        for l = math.floor((layer.x-ScreenWidth)/layer.width) * layer.width, layer.x + layer.width + ScreenWidth, layer.width do
+            for c = math.floor((layer.y-ScaledScreenHeight)/layer.height) * layer.height, layer.y + layer.height + ScaledScreenHeight, layer.height do
+                layer.sprite.draw(newVector2(-(layer.offset_x%layer.width) + l, -(layer.offset_y%layer.height) + c), 0, scale)
             end
         end
 

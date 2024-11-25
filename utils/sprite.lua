@@ -38,7 +38,7 @@ function newQuadSprite(img, ncquad, nlquad, wquad, hquad,fps, color, play_mode)
     sprite.total_width = sprite.img:getWidth()
     sprite.total_height = sprite.img:getHeight()
     sprite.quad = nil
-    sprite.fps = fps
+    sprite.fps = fps or 0
     sprite.color = color or nil
     sprite.play_mode = play_mode or SPRITE_REPEAT
     sprite.time_last_update = 0

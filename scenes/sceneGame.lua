@@ -11,14 +11,18 @@ MovingCamera = false
 
 function newScenegame(title)
     local sceneGame = newScene(title)
+    sceneGame.title = title
     sceneGame.camera = camera
     sceneGame.saved_data = nil
     Pause_game = false
 
-    sceneGame.load = function(data)
+    sceneGame.load = function(data, restart)
         sceneGame.update_camera()
         background.load()
-        if data then
+        restart = restart or false
+        if restart then
+            sceneGame.restart()
+        elseif data then
             sceneGame.load_from_data(data)
         elseif sceneGame.saved_data then
             sceneGame.load_from_save()
@@ -56,7 +60,6 @@ function newScenegame(title)
     local function update_pause()
         if PlayerShip.is_dead == false then
             PlayerShip.upgrades.update()
-
         else
             if deathUI.button.isPressed then
                 sceneGame.restart()
@@ -68,7 +71,7 @@ function newScenegame(title)
         if MovingCamera == true then
             sceneGame.camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
         end
-        background.update(dt)
+        background.update(dt, PlayerShip.pos.x, PlayerShip.pos.y)
         PlayerShip.update(dt)
         EnemyShips.update(dt)
         Projectiles.update(dt)
@@ -81,7 +84,8 @@ function newScenegame(title)
     end
 
     local function update_ui(dt)
-        Buttons.update(dt)
+        local mouseX, mouseY = love.mouse.getPosition()
+        Buttons.update(dt, mouseX, mouseY)
     end
 
 
@@ -100,7 +104,7 @@ function newScenegame(title)
         if MovingCamera == true then
             sceneGame.camera.move()
         end
-        background.draw(PlayerShip.pos.x, PlayerShip.pos.y)
+        background.draw()
         EnemyShips.draw()
         PlayerShip.draw()
         Projectiles.draw()
@@ -132,7 +136,7 @@ function newScenegame(title)
     end  
 
     sceneGame.moussepressed = function(x, y, button)
-        Buttons.mousepressed(x, y, button)
+        Buttons.mousepressed(button)
     end
 
     sceneGame.restart_enemies = function()
@@ -145,8 +149,11 @@ function newScenegame(title)
         Buttons.unload()
         sceneGame.restart_enemies()
         PlayerShip = newPlayerShip()
-        PlayerShip.load() 
-        sceneGame.save_and_change_scene("gameMovingCamera")
+        PlayerShip.load()
+        -- Go to start scene
+        if sceneGame.title ~= "gameMovingCamera" then
+            sceneGame.save_and_change_scene("gameMovingCamera")
+        end
         
     end
 

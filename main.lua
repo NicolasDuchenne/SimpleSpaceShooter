@@ -52,7 +52,7 @@ require("scenes.sceneMenu")
 
 function love.load()
     math.randomseed(os.time())
-    changeScene("gameMovingCamera")
+    changeScene("menu")
 end
 
 function love.update(dt)

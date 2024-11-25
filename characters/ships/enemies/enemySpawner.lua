@@ -12,7 +12,6 @@ end
 
 enemySpawner.update = function(dt)
     if enemySpawner.timer.update(dt) then
-        print(EnemyShips.total_exp)
         if  EnemyShips.total_exp < enemySpawner.max_enemies_experience then
             local enemy_index = math.random(1, #ENEMIES_WITH_RARENESS)
             local rad_spawn = math.random()*2*math.pi

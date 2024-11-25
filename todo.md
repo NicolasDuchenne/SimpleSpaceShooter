@@ -5,11 +5,11 @@
 * add upgrades to spawned enemies as time goes by
 * add upgrades for player life, player boost
 
+* Add new scene for boss battle, with tp to enter arena. In new Scene, camera will be static and you cannot leave the screen
 * Create boss enemy, with predefined patterns, boss spawns based on a pattern
 
-* Add new scene for boss battle, with tp to enter arena. In new Scene, camera will be static and you cannot leave the screen
 
-* Scale button with scale ?
+* Scale button with scene scale ?
 
 * add rad offset to weapon projectile frame for enemies
 

@@ -27,7 +27,7 @@ end
 
 local currentScene = nil
 
-function changeScene(title, data)
+function changeScene(title, data, restart)
     if currentScene~=nil then
         currentScene.unload()
     end
@@ -35,7 +35,7 @@ function changeScene(title, data)
         error("scene "..title.." not loaded, add require for this scene")
     end
     currentScene = scenes[title]
-    currentScene.load(data)
+    currentScene.load(data, restart)
 end
 
 function updateCurrentScene(dt)
