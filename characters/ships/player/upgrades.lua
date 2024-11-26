@@ -2,6 +2,8 @@ UPGRADE_GET = "get"
 UPGRADE_SHOOTING_SPEED = "shooting_speed"
 UPGRADE_DAMAGE = "damage"
 UPGRADE_PROJECTILE_SPEED = "projectile_speed"
+UPGRADE_HEAL = "heal"
+UPGRADE_MAX_BOOST = "max_boost"
 
 local upgrades_list = {
     get =  {
@@ -21,6 +23,16 @@ local upgrades_list = {
         color = {r=0, g=0, b=1},
         increase = 10,
         max = 200
+    },
+    heal = {
+        color = {r=1, g=1, b=1},
+        increase = 10,
+        max = 3000
+    },
+    max_boost = {
+        color = {r=1, g=1, b=1},
+        increase = 10,
+        max = 300
     }
     
 }
@@ -36,41 +48,46 @@ local bupgrades_available = {}
 bupgrades_available[1] = UPGRADE_SHOOTING_SPEED
 bupgrades_available[2] = UPGRADE_DAMAGE
 bupgrades_available[3] = UPGRADE_PROJECTILE_SPEED
+bupgrades_available[4] = UPGRADE_HEAL
+bupgrades_available[5] = UPGRADE_MAX_BOOST
 
 function newUpgrades()
     local upgrades = {}
-    upgrades.number_of_choice = 2
+    upgrades.number_of_choice = 3
     upgrades.number_of_weapon_choice = 2
     upgrades.buttons = {}
-    upgrades.size = newVector2(64,64)
+    upgrades.size = newVector2(128,128)
+    upgrades.img_scale = newVector2(2,2)
 
     local function upgrade_attenuation_function(max_increase, current_increase, base_increase)
         return math.floor((max_increase - current_increase)/max_increase * base_increase)
     end
 
-    local function create_upgrade_button(upgrade_type, weapon_type, button_index, offset, current_increase, max_increase, upgrade_value)
+    local function create_upgrade_button(upgrade_type, weapon_type, button_index, number_of_choice, offset, current_increase, max_increase, upgrade_value, attenuate)
         local upgrade = upgrades_list[upgrade_type]
         local pickup = newPickup(weapon_type)
         local quadSPrite = pickup.sprite
         local text = ""
-        local reduced_upgrade_value = 0
         if current_increase then
-            reduced_upgrade_value = upgrade_attenuation_function(max_increase, current_increase, upgrade_value)
-            text = "current: "..current_increase.." \nincrease : "..reduced_upgrade_value
+            if attenuate == true then
+                upgrade_value = upgrade_attenuation_function(max_increase, current_increase, upgrade_value)
+            end
+            text = "current: "..current_increase.." \nincrease : "..upgrade_value
         end
 
         quadSPrite.color = upgrade.color
         upgrades.buttons[button_index] = newQuadButton(
-            newVector2(ScreenWidth/2  + offset - upgrades.size.x * upgrades.number_of_choice / 2, ScreenHeight/2 + upgrades.size.y),
+            newVector2(ScreenWidth/2  + offset - upgrades.size.x * number_of_choice / 2, ScreenHeight/2 + upgrades.size.y),
             quadSPrite,
             upgrade_type.."\n"..(text or ""),
-            newVector2(0,-80),
-            upgrades.size
+            newVector2(0,0),
+            upgrades.size,
+            upgrades.img_scale
         )
 
         upgrades.buttons[button_index].weapon_type = weapon_type
         upgrades.buttons[button_index].upgrade_type = upgrade_type
-        upgrades.buttons[button_index].upgrade_value = reduced_upgrade_value
+        upgrades.buttons[button_index].upgrade_value = upgrade_value
         offset = offset + upgrades.buttons[button_index].size.x
         return offset
     end
@@ -88,7 +105,7 @@ function newUpgrades()
                 local weapon_index = math.random(1, #weapons)
                 local weapon_type = weapons[weapon_index]
                 if not PlayerShip.inventory.has_weapon(weapon_type) then
-                    offset = create_upgrade_button(UPGRADE_GET, weapon_type, button_index, offset)
+                    offset = create_upgrade_button(UPGRADE_GET, weapon_type, button_index, upgrades.number_of_weapon_choice, offset)
                     button_index = button_index + 1
                     number_of_choice_created = number_of_choice_created +1
                 end
@@ -109,18 +126,29 @@ function newUpgrades()
         while number_of_choice_created < upgrades.number_of_choice do
             if #upgrades_available > 0 then
                 local upgrade_index = math.random(1, #upgrades_available)
+                local upgrade_created = false
                 local upgrade_type = upgrades_available[upgrade_index]
                 local upgrade_value = upgrades_list[upgrade_type].increase
                 local max_upgrade = upgrades_list[upgrade_type].max
                 local weapon_type = PlayerShip.weapon.type
                 if upgrade_type == UPGRADE_SHOOTING_SPEED then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.shooting_speed_increase, max_upgrade, upgrade_value)
+                    upgrade_created = true
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, upgrades.number_of_choice, offset, PlayerShip.shooting_speed_increase, max_upgrade, upgrade_value, true)
                 elseif upgrade_type == UPGRADE_DAMAGE then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_damage_increase, max_upgrade, upgrade_value)
+                    upgrade_created = true
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, upgrades.number_of_choice, offset, PlayerShip.bullet_damage_increase, max_upgrade, upgrade_value, true)
                 elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
-                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, offset, PlayerShip.bullet_speed_increase, max_upgrade, upgrade_value)
+                    upgrade_created = true
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, upgrades.number_of_choice, offset, PlayerShip.bullet_speed_increase, max_upgrade, upgrade_value, true)
+                elseif upgrade_type == UPGRADE_HEAL then
+                    upgrade_created = true
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, upgrades.number_of_choice, offset, PlayerShip.health_increase, max_upgrade, upgrade_value, false)
+                elseif upgrade_type == UPGRADE_MAX_BOOST then
+                    upgrade_created = true
+                    offset = create_upgrade_button(upgrade_type, weapon_type, button_index, upgrades.number_of_choice, offset, PlayerShip.boost_increase, max_upgrade, upgrade_value, true)
                 end
-                if upgrade_type ~= UPGRADE_GET then
+                
+                if upgrade_created == true then
                     button_index = button_index + 1
                 end
             

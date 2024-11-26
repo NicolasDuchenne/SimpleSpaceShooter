@@ -3,6 +3,7 @@ function newInventory()
     inventory.weapons = {}
     inventory.buttons = {}
     inventory.weapons_full = false
+    inventory.buttons.scale = newVector2(2, 2)
 
     inventory.add_weapon = function(weapon_type)
         if not inventory.has_weapon(weapon_type) then
@@ -11,10 +12,12 @@ function newInventory()
             inventory.weapons[key]=  weapon
             local weapon_pickup = newPickup(weapon_type)
             inventory.buttons[key] = newQuadButton(
-                newVector2(weapon_pickup.sprite.width*(key-1), ScreenHeight-weapon_pickup.sprite.height),
+                newVector2(weapon_pickup.sprite.width * inventory.buttons.scale.x *(key-1), ScreenHeight-weapon_pickup.sprite.height * inventory.buttons.scale.y),
                 weapon_pickup.sprite,
                 key,
-                newVector2(0,-25)
+                newVector2(0,-25),
+                inventory.buttons.size,
+                inventory.buttons.scale
             )
             inventory.buttons[key].img.fps = 0
             PlayerShip.switch_weapon(key)

@@ -16,7 +16,7 @@ sceneMenu.update = function(dt)
     local mouseX, mouseY = love.mouse.getPosition()
     Buttons.update(dt, mouseX, mouseY)
     if menu.start_button.isPressed then
-        changeScene("gameMovingCamera", nil, true)
+        changeScene("gameSurvivor", nil, true)
     end
 end
 

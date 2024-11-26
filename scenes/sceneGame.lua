@@ -1,6 +1,7 @@
 require("characters.ships.shipFactory")
 require("characters.ships.enemies.enemyShip")
-local enemySpawner = require("characters.ships.enemies.enemySpawner")
+
+
 local camera = require("level.camera")
 local background = require("level.background")
 require("characters.ships.player.ship")
@@ -32,11 +33,14 @@ function newScenegame(title)
         sceneGame.update_player_pos()
     end
 
+    sceneGame.load_enemies = function()
+    end
+
     sceneGame.load_from_data = function(data)
         sceneGame.restart_enemies()
         PlayerShip = data.PlayerShip
         Buttons = data.Buttons
-        enemySpawner.load()
+        sceneGame.load_enemies()
     end
 
     sceneGame.load_from_save = function()
@@ -44,7 +48,7 @@ function newScenegame(title)
         Buttons = sceneGame.saved_data.Buttons
         Projectiles = sceneGame.saved_data.Projectiles
         PlayerShip = sceneGame.saved_data.PlayerShip
-        enemySpawner.load()
+        sceneGame.load_enemies()
     end
 
     sceneGame.update_player_pos = function()
@@ -67,7 +71,19 @@ function newScenegame(title)
         end
     end
 
-    local function update_game(dt)
+    local function debug_upgrades()
+        if love.keyboard.isScancodeDown("t") then
+            Pause_game = true
+            PlayerShip.upgrades.create_choices()
+        end
+        if love.keyboard.isScancodeDown("v") then
+            Pause_game = true
+            PlayerShip.upgrades.create_weapon_choices()
+        end
+    end
+    
+    sceneGame.update_game_without_enemies = function(dt)
+        debug_upgrades()
         if MovingCamera == true then
             sceneGame.camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
         end
@@ -75,7 +91,7 @@ function newScenegame(title)
         PlayerShip.update(dt)
         EnemyShips.update(dt)
         Projectiles.update(dt)
-        enemySpawner.update(dt)
+        
         if PlayerShip.is_dead then
             Pause_game = true
             deathUI.create_button()
@@ -83,7 +99,11 @@ function newScenegame(title)
         end
     end
 
-    local function update_ui(dt)
+    sceneGame.update_game = function(dt)
+        sceneGame.update_game_without_enemies(dt)
+    end
+
+    sceneGame.update_ui = function(dt)
         local mouseX, mouseY = love.mouse.getPosition()
         Buttons.update(dt, mouseX, mouseY)
     end
@@ -93,10 +113,10 @@ function newScenegame(title)
         if Pause_game == true then
             update_pause()
         else
-            update_game(dt)
+            sceneGame.update_game(dt)
         end
         
-        update_ui(dt)
+        sceneGame.update_ui(dt)
     end
 
     local function draw_game()
@@ -142,7 +162,7 @@ function newScenegame(title)
     sceneGame.restart_enemies = function()
         EnemyShips.unload()
         Projectiles.unload()
-        enemySpawner.load()
+        sceneGame.load_enemies()
     end
 
     sceneGame.restart = function()
@@ -151,8 +171,8 @@ function newScenegame(title)
         PlayerShip = newPlayerShip()
         PlayerShip.load()
         -- Go to start scene
-        if sceneGame.title ~= "gameMovingCamera" then
-            sceneGame.save_and_change_scene("gameMovingCamera")
+        if sceneGame.title ~= "gameSurvivor" then
+            sceneGame.save_and_change_scene("gameSurvivor")
         end
         
     end

@@ -19,13 +19,15 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.engine = newEngine(engine)
     ship.weapon = newWeapon(cannon, group)
 
+    
     ship.health = health or 20
     ship.is_dead = false
     ship.can_get_hit = true
     ship.invincibility_timer = newTimer(0.1)
     ship.hitbox_radius = hitbox_radius or 20
 
-    ship.max_boost_energy = 100
+    ship.base_max_boost_energy = 100
+    ship.max_boost_energy = ship.base_max_boost_energy
     ship.boost_energy = ship.max_boost_energy
     ship.boost_energy_consumption = 50
     ship.boost_factor = 1.5
@@ -38,6 +40,8 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.bullet_speed_increase = 0
     ship.bullet_damage_increase = 0
     ship.shooting_speed_increase = 0
+    ship.boost_increase = 0
+    ship.health_increase = 0
 
     ship.constrain_ship_pos = function ()
         if MovingCamera == false then
@@ -57,6 +61,16 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.shoot = function()
         ship.weapon.shoot()
+    end
+
+    ship.heal = function(added_health)
+        ship.health_increase = ship.health_increase + added_health
+        ship.health = ship.health + added_health
+    end
+
+    ship.increase_max_boost = function(added_boost)
+        ship.boost_increase = ship.boost_increase + added_boost
+        ship.max_boost_energy = ship.base_max_boost_energy + math.floor(ship.base_max_boost_energy * ship.boost_increase / 100)
     end
 
     ship.increase_fire_rate = function(added_speed)
@@ -81,6 +95,10 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
             ship.increase_damage(ugrade_value)
         elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
             ship.increase_projectile_speed(ugrade_value)
+        elseif upgrade_type == UPGRADE_HEAL then
+            ship.heal(ugrade_value)
+        elseif upgrade_type == UPGRADE_MAX_BOOST then
+            ship.increase_max_boost(ugrade_value)
         end
     end
 

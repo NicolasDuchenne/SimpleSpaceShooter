@@ -6,6 +6,7 @@ ENGINES.nairan = {}
 ENGINES.nairan.fighter = "nairan_fighter_engine"
 ENGINES.nairan.battlecruiser = "nairan_battlecruiser_engine"
 ENGINES.nairan.torpedo = "nairan_torpedo_engine"
+ENGINES.nairan.dreadnought = "nairan_dreadnought_engine"
 
 local base_sprites = {}
 local engine_effects_params = {}
@@ -70,5 +71,18 @@ engine_effects_params[ENGINES.nairan.torpedo] = {
     fps = 8,
     always_powering = true
 }
+
+base_sprites[ENGINES.nairan.dreadnought] = nil
+engine_effects_params[ENGINES.nairan.dreadnought] = {
+    img = "assets/Void_EnemyFleet_2/Nairan/Engine Effects/PNGs/Nairan - Dreadnought - Engine.png" ,
+    idle_cquad = 8,
+    powering_cquad = 8,
+    lquad = 1,
+    wquad = 128,
+    hquad = 128,
+    fps = 8,
+    always_powering = true
+}
+
 
 return {base=base_sprites, effects=engine_effects_params}

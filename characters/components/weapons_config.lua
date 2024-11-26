@@ -9,7 +9,8 @@ WEAPONS.player.number = 4
 WEAPONS.nairan = {}
 WEAPONS.nairan.fighter = "nairan_fighter_weapon"
 WEAPONS.nairan.battlecruiser = "nairan_battlecruiser_weapon"
-WEAPONS.nairan.torpedo = "nairan_torpedo_engine"
+WEAPONS.nairan.torpedo = "nairan_torpedo_weapon"
+WEAPONS.nairan.dreadnought = "nairan_dreadnought_weapon"
 
 
 local weapon_sprite_params = {}
@@ -185,6 +186,20 @@ weapon_sprite_params[WEAPONS.nairan.torpedo] = {
     lquad = 1,
     wquad = 64,
     hquad = 64,
+    fps = 24,
+    bullet_type = PROJECTILES.space_gun,
+    bullet_base_speed = 300,
+    bullet_base_damage = 20,
+    shooting_frames = {
+    }
+}
+
+weapon_sprite_params[WEAPONS.nairan.dreadnought] = {
+    img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Dreadnought - Weapons.png",
+    cquad = 34,
+    lquad = 1,
+    wquad = 128,
+    hquad = 128,
     fps = 24,
     bullet_type = PROJECTILES.space_gun,
     bullet_base_speed = 300,

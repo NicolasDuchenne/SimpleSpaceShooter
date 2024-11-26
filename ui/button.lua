@@ -91,12 +91,17 @@ function newButton(pos, size, text, text_offset)
     return button
 end
 
-function newImgButton(pos, sprite, text, text_offset, size)
+function newImgButton(pos, sprite, text, text_offset, size, scale)
+    scale = scale or newVector2(1,1)
     size = size or newVector2()
     local img = sprite
-    local tmp_size = newVector2(math.max(size.x,img.width), math.max(size.y,img.height))
+    local tmp_size = newVector2(math.max(size.x,img.width*scale.x), math.max(size.y,img.height*scale.y))
     local button = newButton(pos, tmp_size, text, text_offset)
     button.img = img
+
+    button.update = function(dt, x, y)
+        button.checkIsHovered(x, y)
+    end
 
     button.draw = function()
         love.graphics.setColor(0, 0, 0, 0.5)
@@ -106,36 +111,21 @@ function newImgButton(pos, sprite, text, text_offset, size)
         love.graphics.rectangle("fill", button.pos.x, button.pos.y, button.size.x, button.size.y)
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.rectangle("line", button.pos.x, button.pos.y, button.size.x, button.size.y)
-        button.img.draw(button.content_pos)
+        button.img.draw(button.content_pos, 0, scale)
+        
+        button.draw_text()
     end
     return button
 end
 
-function newQuadButton(pos, quadSprite, text, text_offset, size)
-    size = size or newVector2()
-    local img = quadSprite
-    local tmp_size = newVector2(math.max(size.x, img.width), math.max(size.y, img.height))
-    local button = newButton(pos, tmp_size, text, text_offset)
-    button.img = img
+function newQuadButton(pos, quadSprite, text, text_offset, size, scale)
+    local button = newImgButton(pos, quadSprite, text, text_offset, size, scale)
 
     button.update = function(dt, x, y)
         button.checkIsHovered(x, y)
         button.img.update(dt)
     end
 
-
-    button.draw = function()
-        love.graphics.setColor(0, 0, 0, 0.5)
-        if button.isHovered == true then
-            love.graphics.setColor(1, 1, 1, 0.5)
-        end
-        love.graphics.rectangle("fill", button.pos.x, button.pos.y, button.size.x, button.size.y)
-        love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.rectangle("line", button.pos.x, button.pos.y, button.size.x, button.size.y)
-        button.img.draw(button.content_pos)
-        
-        button.draw_text()
-    end
     return button
 end
 

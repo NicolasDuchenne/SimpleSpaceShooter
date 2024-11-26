@@ -1,4 +1,4 @@
-* Create start menu
+
 
 * set player base life, and base weapon and enemy speed
 * add state machine in enemy spawner, spawn enemies weakest at first, then add enemies as time does by
