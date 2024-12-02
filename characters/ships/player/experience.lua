@@ -3,6 +3,7 @@ function newExperience()
     local max_level = 1000
     local exp_per_level = 100
     local level_new_weapon = 10
+    local level_new_boss = 9
     local levels_exp = {
     }
     for i=0,max_level do
@@ -12,6 +13,7 @@ function newExperience()
     local experience = {}
     experience.level = 0
     experience.exp = 0
+    experience.total_exp = 0
 
     local function set_level_text()
         return "level: "..tostring(experience.level)
@@ -21,20 +23,29 @@ function newExperience()
         return "exp: "..math.floor(experience.exp/levels_exp[experience.level] * 100).."%"
     end
 
-    experience.button_level = newTextButton(
-        newVector2(0,20),
-        newVector2(50,20),
-        set_level_text()
-    )
+    local function set_score_text()
+        return "score: "..tostring(experience.total_exp)
+    end
+
+
 
     experience.button_exp = newTextButton(
         newVector2(0,0),
-        newVector2(50,20),
+        newVector2(100,20),
         set_exp_text()
     )
 
+    experience.button_level = newTextButton(
+        newVector2(0,20),
+        newVector2(100,20),
+        set_level_text()
+    )
 
-
+    experience.button_score = newTextButton(
+        newVector2(ScreenWidth * 0.5 - 75,0),
+        newVector2(150,40),
+        set_score_text()
+    )
 
     experience.level_up = function()
         experience.level = experience.level + 1
@@ -45,15 +56,20 @@ function newExperience()
         else
             PlayerShip.upgrades.create_choices()
         end
+        if experience.level % level_new_boss == 0 then
+            Create_boss_vortex()
+        end
         Pause_game = true
     end
 
     experience.gain = function(exp)
         experience.exp = experience.exp  + exp
+        experience.total_exp = experience.total_exp + exp
     end
 
     experience.update = function(dt)
         experience.button_exp.set_text(set_exp_text())
+        experience.button_score.set_text(set_score_text())
         if experience.level < max_level and experience.exp >= levels_exp[experience.level] then
             experience.level_up()
         end

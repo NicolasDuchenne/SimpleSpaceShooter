@@ -11,13 +11,14 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     local ship = {}
     ship.pos = pos or newVector2(ScaledScreenWidth/2, ScaledScreenHeight/2)
     ship.rad = rad or 0
+    ship.group = group
     ship.moving_dir = newVector2()
     ship.base_speed = base_speed or 100
     ship.speed = ship.base_speed
     ship.lerp_speed = lerp_speed or 5
     ship.base_sprite = newSprite(img)
     ship.engine = newEngine(engine)
-    ship.weapon = newWeapon(cannon, group)
+    ship.weapon = newWeapon(cannon, ship.group)
 
     
     ship.health = health or 20
@@ -42,18 +43,26 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.shooting_speed_increase = 0
     ship.boost_increase = 0
     ship.health_increase = 0
+    ship.touched_width_limit = false
+    ship.touched_height_limit = false
 
     ship.constrain_ship_pos = function ()
         if MovingCamera == false then
+            ship.touched_width_limit = false
+            ship.touched_height_limit = false
             if ship.pos.x - ship.base_sprite.width * 0.5  < 0 then
                 ship.pos.x = ship.base_sprite.width * 0.5
+                ship.touched_width_limit = true
             elseif ship.pos.x + ship.base_sprite.width * 0.5 > ScaledScreenWidth then
                 ship.pos.x = ScaledScreenWidth - ship.base_sprite.width * 0.5
+                ship.touched_width_limit = true
             end
             if ship.pos.y - ship.base_sprite.height * 0.5  < 0 then
                 ship.pos.y = ship.base_sprite.height * 0.5
+                ship.touched_height_limit = true
             elseif ship.pos.y + ship.base_sprite.height * 0.5 > ScaledScreenHeight then
                 ship.pos.y = ScaledScreenHeight - ship.base_sprite.height * 0.5
+                ship.touched_height_limit = true
             end
         end
         
@@ -144,10 +153,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         love.graphics.setColor(1,1,1,1)
     end
 
-    local function draw_state()
-        if ship.stateMachine then
-            love.graphics.print(tostring(ship.stateMachine.state), ship.pos.x-10, ship.pos.y-50)
-        end
+    ship.draw_state = function()
     end
 
 
@@ -161,7 +167,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
         draw_health()
         draw_hitbox()
-        draw_state()
+        ship.draw_state()
         if ship.boost_activated == true then
             draw_boost()
         end

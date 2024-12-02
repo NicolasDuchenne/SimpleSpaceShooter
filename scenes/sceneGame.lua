@@ -16,10 +16,14 @@ function newScenegame(title)
     sceneGame.camera = camera
     sceneGame.saved_data = nil
     Pause_game = false
+    sceneGame.vortex_created = nil
 
     sceneGame.load = function(data, restart)
+        sceneGame.vortex_created = false
         sceneGame.update_camera()
         background.load()
+        sceneGame.unload_environment()
+
         restart = restart or false
         if restart then
             sceneGame.restart()
@@ -30,8 +34,11 @@ function newScenegame(title)
         else
             sceneGame.restart()
         end
+        sceneGame.load_environment()
         sceneGame.update_player_pos()
     end
+
+
 
     sceneGame.load_enemies = function()
     end
@@ -40,7 +47,6 @@ function newScenegame(title)
         sceneGame.restart_enemies()
         PlayerShip = data.PlayerShip
         Buttons = data.Buttons
-        sceneGame.load_enemies()
     end
 
     sceneGame.load_from_save = function()
@@ -67,11 +73,13 @@ function newScenegame(title)
         else
             if deathUI.button.isPressed then
                 sceneGame.restart()
+                Pause_game = false
             end
         end
     end
 
     local function debug_upgrades()
+        
         if love.keyboard.isScancodeDown("t") then
             Pause_game = true
             PlayerShip.upgrades.create_choices()
@@ -79,6 +87,12 @@ function newScenegame(title)
         if love.keyboard.isScancodeDown("v") then
             Pause_game = true
             PlayerShip.upgrades.create_weapon_choices()
+        end
+        if love.keyboard.isScancodeDown("y") then
+            Create_boss_vortex()
+        end
+        if love.keyboard.isScancodeDown("h") then
+            Create_survivor_vortex()
         end
     end
     
@@ -91,11 +105,11 @@ function newScenegame(title)
         PlayerShip.update(dt)
         EnemyShips.update(dt)
         Projectiles.update(dt)
+        Triggers.update(dt)
         
         if PlayerShip.is_dead then
             Pause_game = true
             deathUI.create_button()
-            --sceneGame.restart()
         end
     end
 
@@ -125,6 +139,7 @@ function newScenegame(title)
             sceneGame.camera.move()
         end
         background.draw()
+        Triggers.draw()
         EnemyShips.draw()
         PlayerShip.draw()
         Projectiles.draw()
@@ -164,9 +179,19 @@ function newScenegame(title)
         Projectiles.unload()
         sceneGame.load_enemies()
     end
+    
+    sceneGame.load_environment = function()
+    end
+    
+    sceneGame.unload_environment = function()
+        Triggers.unload()
+    end
+
 
     sceneGame.restart = function()
+        sceneGame.vortex_created = false
         Buttons.unload()
+        sceneGame.unload_environment()
         sceneGame.restart_enemies()
         PlayerShip = newPlayerShip()
         PlayerShip.load()
@@ -180,6 +205,14 @@ function newScenegame(title)
     sceneGame.save_and_change_scene = function(title)
         local data = sceneGame.save_change_scene_data()
         changeScene(title, data)
+    end
+
+    sceneGame.change_to_boss_scene = function()
+        sceneGame.save_and_change_scene("gameBoss")
+    end
+
+    sceneGame.change_to_survivor_scene = function()
+        sceneGame.save_and_change_scene("gameSurvivor")
     end
 
 

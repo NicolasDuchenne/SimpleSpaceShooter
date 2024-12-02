@@ -43,12 +43,16 @@ require("utils.vector2")
 require("utils.math")
 require("utils.copy")
 require("utils.timer")
+require("utils.callback")
+require("utils.shapes")
 require("ui.button")
+require("level.trigger")
 require("scenes.sceneManager")
 require("scenes.sceneGame")
 require("scenes.sceneGameBoss")
 require("scenes.sceneGameSurvivor")
 require("scenes.sceneMenu")
+
 
 function love.load()
     math.randomseed(os.time())
@@ -74,8 +78,10 @@ function love.mousepressed(x, y, button)
 end
 
 function love.wheelmoved(x, y)
-    Scale = math.clamp(Scale + y*scale_increment, min_scale, max_scale)
-    setScale()
+    if Pause_game == false then
+        Scale = math.clamp(Scale + y*scale_increment, min_scale, max_scale)
+        setScale()
+    end
 end
 
 function love.resize(x, y)

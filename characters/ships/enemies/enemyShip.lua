@@ -74,6 +74,12 @@ function newEnemyShip(type, pos, rad)
             end
         end
     end
+
+    ship.draw_state = function()
+        
+        love.graphics.print(tostring(ship.stateMachine.state), ship.pos.x-10, ship.pos.y-50)
+    
+    end
     
     ship.update = function(dt)
         ship.stateMachine.update(dt)

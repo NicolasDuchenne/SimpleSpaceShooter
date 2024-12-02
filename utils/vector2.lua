@@ -11,10 +11,14 @@ function newVector2(px,py)
     end
   
     function vectorMT.__add(v1,v2)  -- operateur +
-      local sum = newVector2(0,0)
-      sum.x = v1.x + v2.x
-      sum.y = v1.y + v2.y
-      return sum
+      if type(v2)=="number" then
+        return newVector2(v1.x + v2, v1.y + v2)
+      else
+        local sum = newVector2(0,0)
+        sum.x = v1.x + v2.x
+        sum.y = v1.y + v2.y
+        return sum
+      end
     end
   
     function vectorMT.__sub(v1,v2) -- operateur binaire -

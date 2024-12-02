@@ -10,8 +10,9 @@ WEAPONS.nairan = {}
 WEAPONS.nairan.fighter = "nairan_fighter_weapon"
 WEAPONS.nairan.battlecruiser = "nairan_battlecruiser_weapon"
 WEAPONS.nairan.torpedo = "nairan_torpedo_weapon"
-WEAPONS.nairan.dreadnought = "nairan_dreadnought_weapon"
-
+WEAPONS.nairan.boss = {}
+WEAPONS.nairan.boss.dreadnought_space_gun = "nairan_dreadnought_weapon_1"
+WEAPONS.nairan.boss.dreadnought_rockets = "nairan_dreadnought_weapon_2"
 
 local weapon_sprite_params = {}
 weapon_sprite_params[WEAPONS.player.auto_cannon] = {
@@ -194,13 +195,13 @@ weapon_sprite_params[WEAPONS.nairan.torpedo] = {
     }
 }
 
-weapon_sprite_params[WEAPONS.nairan.dreadnought] = {
+weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_space_gun] = {
     img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Dreadnought - Weapons.png",
     cquad = 34,
     lquad = 1,
     wquad = 128,
     hquad = 128,
-    fps = 24,
+    fps = 48,
     bullet_type = PROJECTILES.space_gun,
     bullet_base_speed = 300,
     bullet_base_damage = 20,
@@ -215,6 +216,56 @@ weapon_sprite_params[WEAPONS.nairan.dreadnought] = {
         },
         {
             frame = 8,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 11,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 14,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 17,
+            offset = newVector2(0,-20)
+        }
+    }
+}
+
+weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_rockets] = {
+    img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Dreadnought - Weapons.png",
+    cquad = 34,
+    lquad = 1,
+    wquad = 128,
+    hquad = 128,
+    fps = 32,
+    bullet_type = PROJECTILES.rockets,
+    bullet_base_speed = 300,
+    bullet_base_damage = 20,
+    shooting_frames = {
+        {
+            frame = 2,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 5,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 8,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 11,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 14,
+            offset = newVector2(0,-20)
+        },
+        {
+            frame = 17,
             offset = newVector2(0,-20)
         }
     }

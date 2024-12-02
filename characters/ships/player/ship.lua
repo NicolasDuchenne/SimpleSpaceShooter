@@ -2,7 +2,7 @@ require("characters.ships.player.experience")
 require("characters.ships.player.upgrades")
 require("characters.ships.player.inventory")
 local health = 100
-local hitbox_radius = 10
+local hitbox_radius = 6
 local base_speed = 200
 local lerp_speed = 5
 

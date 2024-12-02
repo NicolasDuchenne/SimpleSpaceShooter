@@ -8,9 +8,11 @@ end
 Buttons.update = function(dt, x, y)
     for i=#Buttons, 1, -1 do
         local button = Buttons[i]
-
         if button.update then
             button.update(dt, x, y)
+        end
+        if button.isPressed == true and button.callback then
+            button.callback()
         end
         if button.remove == true then
             table.remove(Buttons, i)
@@ -31,7 +33,7 @@ Buttons.mousepressed = function(button)
 end
 
 
-function newButton(pos, size, text, text_offset)
+function newButton(pos, size, text, text_offset, callback)
     local button = {}
     button.pos = pos
     button.size = size
@@ -39,6 +41,7 @@ function newButton(pos, size, text, text_offset)
     button.remove = false
     button.isPressed = false
     button.isHovered = false
+    button.callback = callback
     
     local function update_size_from_text()
         text_offset = text_offset or newVector2()
@@ -91,12 +94,12 @@ function newButton(pos, size, text, text_offset)
     return button
 end
 
-function newImgButton(pos, sprite, text, text_offset, size, scale)
+function newImgButton(pos, sprite, text, text_offset, size, scale, callback)
     scale = scale or newVector2(1,1)
     size = size or newVector2()
     local img = sprite
     local tmp_size = newVector2(math.max(size.x,img.width*scale.x), math.max(size.y,img.height*scale.y))
-    local button = newButton(pos, tmp_size, text, text_offset)
+    local button = newButton(pos, tmp_size, text, text_offset, callback)
     button.img = img
 
     button.update = function(dt, x, y)
@@ -118,8 +121,8 @@ function newImgButton(pos, sprite, text, text_offset, size, scale)
     return button
 end
 
-function newQuadButton(pos, quadSprite, text, text_offset, size, scale)
-    local button = newImgButton(pos, quadSprite, text, text_offset, size, scale)
+function newQuadButton(pos, quadSprite, text, text_offset, size, scale, callback)
+    local button = newImgButton(pos, quadSprite, text, text_offset, size, scale, callback)
 
     button.update = function(dt, x, y)
         button.checkIsHovered(x, y)
@@ -129,9 +132,9 @@ function newQuadButton(pos, quadSprite, text, text_offset, size, scale)
     return button
 end
 
-function newTextButton(pos, size, text, fill)
+function newTextButton(pos, size, text, text_offset, fill, callback)
     fill = fill or false
-    local button = newButton(pos,size, text)
+    local button = newButton(pos,size, text, text_offset, callback)
 
     button.draw = function()
         if fill == true then

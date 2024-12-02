@@ -10,6 +10,10 @@ function newTimer(duration, autostart)
         timer.started = false
     end
 
+    timer.set_duration = function(duration)
+        timer.duration = duration
+    end
+
     timer.update = function(dt)
         if timer.started == true then
             timer.elapsed_time = timer.elapsed_time + dt
