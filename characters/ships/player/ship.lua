@@ -121,19 +121,22 @@ function newPlayerShip()
     end
 
     ship.draw_health = function()
-        local x_pos = ship.pos.x-ship.life_bar_size.x*0.5
-        local y_pos =  ship.pos.y + ScaledScreenHeight * 0.5 - ship.life_bar_size.y
+        local x_pos = ScreenWidth*0.5-ship.life_bar_size.x*0.5
+        local y_pos =  ScreenHeight - ship.life_bar_size.y
         local text = tostring(ship.health).."/"..tostring(ship.max_health)
         local textWidth = Font:getWidth(text)
         local textHeight = Font:getHeight(text)
-        local text_x_pos = ship.pos.x - textWidth * 0.5
-        local text_y_pos = ship.pos.y + ScaledScreenHeight * 0.5 - textHeight - 5
+        local text_x_pos = ScreenWidth*0.5 - textWidth * 0.5
+        local text_y_pos = ScreenHeight - textHeight - 5
 
+        love.graphics.push()
+        love.graphics.origin()
         love.graphics.setColor(1,0,0,0.6)
         love.graphics.rectangle("line", x_pos, y_pos, ship.life_bar_size.x, ship.life_bar_size.y)
         love.graphics.rectangle("fill", x_pos, y_pos, ship.life_bar_size.x*(ship.health/ship.max_health), ship.life_bar_size.y)
         love.graphics.setColor(1,1,1,1)
         love.graphics.print(text, text_x_pos, text_y_pos)
+        love.graphics.pop()
     end
 
 
