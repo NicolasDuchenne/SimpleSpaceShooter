@@ -187,6 +187,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.hit = function(damage)
         if ship.can_get_hit == true then
+            ship.can_get_hit = false
             ship.invincibility_timer.start()
             take_damage(damage)
         end

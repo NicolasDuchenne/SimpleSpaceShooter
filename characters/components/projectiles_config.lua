@@ -51,7 +51,10 @@ projectiles_params[PROJECTILES.rockets]= {
     fps = 8,
     scale = newVector2(2,2),
     hitbox_radius = 3,
-    style = PROJECTILES_STYLES.heat_seaking
+    style = PROJECTILES_STYLES.heat_seaking,
+    base_lerp_speed = 3,
+    detection_range = 500,
+    lerp_acceleration_range = 200
 }
 projectiles_params[PROJECTILES.zapper]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Zapper.png",
