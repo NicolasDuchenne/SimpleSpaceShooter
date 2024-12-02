@@ -61,6 +61,8 @@ function newEnemyShip(type, pos, rad)
     ship.has_hit_something = false
     ship.stateMachine = newEnemyShipStateMachine(ship)
 
+    ship.health_per_level = enemy_ships_params[type].health_per_level
+
     ship.die = function()
         ship.is_dead = true
         PlayerShip.experience.gain(ship.experience)
@@ -92,5 +94,7 @@ function newEnemyShip(type, pos, rad)
 
     table.insert(EnemyShips, ship)
     EnemyShips.total_exp = EnemyShips.total_exp + ship.experience
+
+    return ship
     
 end

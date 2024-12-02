@@ -133,7 +133,9 @@ function newProjectile(type, pos, rad, speed, group, damage)
         if projectile.style == PROJECTILES_STYLES.heat_seaking and projectile.closest_enemy and projectile.closest_enemy.is_dead == false then
             projectile.rad, projectile.dir = SmoothLookAt(projectile.pos, projectile.closest_enemy.pos, projectile.rad, projectile.lerp_speed, dt)
             if math.vdist(projectile.pos, projectile.closest_enemy.pos) < projectile.lerp_acceleration_range then
-                projectile.lerp_speed = projectile.base_lerp_speed * 5
+                projectile.lerp_speed = projectile.base_lerp_speed * projectile.speed/100
+                print(projectile.lerp_speed)
+                projectile.lerp_acceleration_range = projectile.lerp_acceleration_range + 10
             end
         end
         projectile.update_hit_timer(dt)

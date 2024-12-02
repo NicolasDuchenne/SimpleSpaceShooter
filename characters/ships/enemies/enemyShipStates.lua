@@ -1,9 +1,8 @@
 local STATES = {}
-STATES.IDLE = "idle"
+STATES.HIGH_SPEED_CHASE = "high_speed_chase"
 STATES.FLEE = "flee"
 STATES.MOVE = "move"
 STATES.CHASE = "chase"
-STATES.FLEE = "flee"
 STATES.FIRE = "fire"
 STATES.HARASS = "harass"
 
@@ -44,7 +43,7 @@ local newEnemyShipStateMachine = function(ship)
     stateMachine.shoot_timer = newTimer(ship.fire_delay_seconds)
     stateMachine.update_dir_timer = newTimer()
     stateMachine.harass_dir = get_random_harass_dir()
-    stateMachine.state = STATES.IDLE
+    stateMachine.state = STATES.HIGH_SPEED_CHASE
 
     local function move(dt, flee)
         flee = flee or false
@@ -86,8 +85,11 @@ local newEnemyShipStateMachine = function(ship)
 
         update_harass_dir(dt)
         local dist_to_player = math.vdist(ship.pos, PlayerShip.pos)
-        if stateMachine.state == STATES.IDLE then
+        if stateMachine.state == STATES.HIGH_SPEED_CHASE then
+            move(dt)
+            ship.speed = ship.base_speed * 5
             if dist_to_player < ship.detection_range then
+                ship.speed = ship.base_speed
                 stateMachine.state = STATES.CHASE
             end
         elseif stateMachine.state == STATES.CHASE then
@@ -95,7 +97,7 @@ local newEnemyShipStateMachine = function(ship)
             if dist_to_player < ship.shooting_range then
                 stateMachine.state = STATES.FIRE
             elseif dist_to_player > ship.detection_range then
-                stateMachine.state = STATES.IDLE
+                stateMachine.state = STATES.HIGH_SPEED_CHASE
             end
         elseif stateMachine.state == STATES.FIRE then
             move(dt)

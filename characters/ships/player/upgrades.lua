@@ -14,7 +14,7 @@ local weapon_upgrade_list = {
 local upgrades_list = {
     shooting_speed = {
         color = {r=0, g=1, b=0},
-        increase = 10,
+        increase = 20,
         max = 300
     },
     damage = {
@@ -24,8 +24,8 @@ local upgrades_list = {
     },
     projectile_speed = {
         color = {r=0, g=0, b=1},
-        increase = 10,
-        max = 200
+        increase = 30,
+        max = 400
     },
     heal = {
         color = {r=1, g=1, b=1},
@@ -33,7 +33,7 @@ local upgrades_list = {
     },
     max_boost = {
         color = {r=1, g=1, b=1},
-        increase = 10,
+        increase = 20,
         max = 300
     }
     
