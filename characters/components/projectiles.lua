@@ -150,7 +150,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.draw = function()
         love.graphics.setColor(projectile.color.r, projectile.color.g, projectile.color.b)
         projectile.sprite.draw(projectile.pos, projectile.rad + IMG_RAD_OFFSET, projectile.scale)
-        draw_hitbox()
+        --draw_hitbox()
         love.graphics.setColor(1, 1, 1)
     end
     table.insert(Projectiles, projectile)

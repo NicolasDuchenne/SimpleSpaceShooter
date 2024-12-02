@@ -18,6 +18,8 @@ function newPlayerShip()
         lerp_speed
     )
     ship.boost_activated = true
+    
+    ship.life_bar_size = newVector2(160,30)
 
 
 
@@ -111,10 +113,27 @@ function newPlayerShip()
         ship.update_invincibility_timer(dt)
         ship.boost(dt)
     end
+    
 
     ship.switch_weapon = function(key)
         ship.weapon = ship.inventory.weapons[key]
         ship.weapon.reset()
+    end
+
+    ship.draw_health = function()
+        local x_pos = ship.pos.x-ship.life_bar_size.x*0.5
+        local y_pos =  ship.pos.y + ScaledScreenHeight * 0.5 - ship.life_bar_size.y
+        local text = tostring(ship.health).."/"..tostring(ship.max_health)
+        local textWidth = Font:getWidth(text)
+        local textHeight = Font:getHeight(text)
+        local text_x_pos = ship.pos.x - textWidth * 0.5
+        local text_y_pos = ship.pos.y + ScaledScreenHeight * 0.5 - textHeight - 5
+
+        love.graphics.setColor(1,0,0,0.6)
+        love.graphics.rectangle("line", x_pos, y_pos, ship.life_bar_size.x, ship.life_bar_size.y)
+        love.graphics.rectangle("fill", x_pos, y_pos, ship.life_bar_size.x*(ship.health/ship.max_health), ship.life_bar_size.y)
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.print(text, text_x_pos, text_y_pos)
     end
 
 

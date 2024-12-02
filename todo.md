@@ -1,4 +1,4 @@
-* set player base life, and base weapon and enemy speed
+* draw enemy life bar
 
 
 * Create boss enemy, with predefined patterns, boss spawns based on a pattern

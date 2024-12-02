@@ -20,8 +20,8 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.engine = newEngine(engine)
     ship.weapon = newWeapon(cannon, ship.group)
 
-    
-    ship.health = health or 20
+    ship.max_health = health or 20
+    ship.health = ship.max_health
     ship.is_dead = false
     ship.can_get_hit = true
     ship.invincibility_timer = newTimer(0.1)
@@ -37,6 +37,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.energy_bar_size = newVector2(60,10)
     ship.energy_bar_size_filed = 1
     ship.boost_activated = false
+
+    ship.life_bar_size = newVector2(40,7)
+    ship.life_bar_size_filed = 1
 
     ship.bullet_speed_increase = 0
     ship.bullet_damage_increase = 0
@@ -74,6 +77,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.heal = function(added_health)
         ship.health_increase = ship.health_increase + added_health
+        ship.max_health = ship.max_health + added_health
         ship.health = ship.health + added_health
     end
 
@@ -142,8 +146,12 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         
     end
 
-    local function draw_health()
-        love.graphics.print(tostring(ship.health), ship.pos.x-10, ship.pos.y-30)
+    ship.draw_health = function()
+        --love.graphics.print(tostring(ship.health), ship.pos.x-10, ship.pos.y-30)
+        love.graphics.setColor(1,0,0,0.6)
+        love.graphics.rectangle("line", ship.pos.x-ship.life_bar_size.x*0.5, ship.pos.y-30, ship.life_bar_size.x, ship.life_bar_size.y)
+        love.graphics.rectangle("fill", ship.pos.x-ship.life_bar_size.x*0.5, ship.pos.y-30, ship.life_bar_size.x*(ship.health/ship.max_health), ship.life_bar_size.y)
+        love.graphics.setColor(1,1,1,1)
     end
 
     local function draw_boost()
@@ -165,9 +173,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
         ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
         ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-        draw_health()
-        draw_hitbox()
-        ship.draw_state()
+        ship.draw_health()
+        --draw_hitbox()
+        --ship.draw_state()
         if ship.boost_activated == true then
             draw_boost()
         end
