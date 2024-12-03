@@ -75,7 +75,7 @@ function newWeapon(type, group)
                         weapon.bullet_damage
                     )
                     if weapon.sound then
-                        PlaySound(weapon.sound, 0.1)
+                        PlaySound(weapon.sound, 0.1, 0.5)
                     end
                     weapon.has_shot[i] = true
                     weapon.shot_fired = weapon.shot_fired + 1

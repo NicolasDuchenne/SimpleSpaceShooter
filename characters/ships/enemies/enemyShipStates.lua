@@ -40,6 +40,8 @@ end
 
 local newEnemyShipStateMachine = function(ship)
     local stateMachine = {}
+    stateMachine.canChangeState = true
+    stateMachine.change_state_timer = newTimer(1)
     stateMachine.shoot_timer = newTimer(ship.fire_delay_seconds)
     stateMachine.update_dir_timer = newTimer()
     stateMachine.harass_dir = get_random_harass_dir()
@@ -81,8 +83,18 @@ local newEnemyShipStateMachine = function(ship)
         end
     end
 
-    stateMachine.update = function(dt)
+    local function change_state(newState)
+        if stateMachine.canChangeState == true then
+            stateMachine.canChangeState = false
+            stateMachine.change_state_timer.start()
+            stateMachine.state = newState
+        end
+    end
 
+    stateMachine.update = function(dt)
+        if stateMachine.change_state_timer.update(dt) then
+            stateMachine.canChangeState = true
+        end
         update_harass_dir(dt)
         local dist_to_player = math.vdist(ship.pos, PlayerShip.pos)
         if stateMachine.state == STATES.HIGH_SPEED_CHASE then
@@ -90,39 +102,39 @@ local newEnemyShipStateMachine = function(ship)
             ship.speed = ship.base_speed * 5
             if dist_to_player < ship.detection_range then
                 ship.speed = ship.base_speed
-                stateMachine.state = STATES.CHASE
+                change_state(STATES.CHASE)
             end
         elseif stateMachine.state == STATES.CHASE then
             move(dt)
             if dist_to_player < ship.shooting_range then
-                stateMachine.state = STATES.FIRE
+                change_state(STATES.FIRE)
             elseif dist_to_player > ship.detection_range then
-                stateMachine.state = STATES.HIGH_SPEED_CHASE
+                change_state(STATES.HIGH_SPEED_CHASE)
             end
         elseif stateMachine.state == STATES.FIRE then
             move(dt)
             shoot(dt)
             if dist_to_player > ship.shooting_range then
                 ship.weapon.reset()
-                stateMachine.state = STATES.CHASE
+                change_state(STATES.CHASE)
             elseif dist_to_player < ship.harass_range then
-                stateMachine.state = STATES.HARASS
+                change_state(STATES.HARASS)
             end
 
         elseif stateMachine.state == STATES.HARASS then
             move(dt)
             shoot(dt)
             if dist_to_player > ship.harass_range then
-                stateMachine.state = STATES.FIRE
+                change_state(STATES.FIRE)
             end
             if dist_to_player < ship.flee_range then
-                stateMachine.state = STATES.FLEE
+                change_state(STATES.FLEE)
             end
         elseif stateMachine.state == STATES.FLEE then
             move(dt, true)
             shoot(dt)
             if dist_to_player > ship.harass_range then
-                stateMachine.state = STATES.CHASE
+                change_state(STATES.CHASE)
             end
         end
         ship.constrain_ship_pos()

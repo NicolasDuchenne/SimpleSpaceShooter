@@ -34,11 +34,14 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.boost_factor = 1.5
     ship.is_boosting = false
     ship.boost_recharge_factor = 0
-    ship.energy_bar_size = newVector2(60,10)
+
+    ship.energy_bar_size = newVector2(60, 10)
     ship.energy_bar_size_filed = 1
     ship.boost_activated = false
 
-    ship.life_bar_size = newVector2(40,7)
+    local life_bar_width = 40
+    local life_bar_height = 10
+    ship.life_bar_size = newVector2(life_bar_width,life_bar_height)
     ship.life_bar_size_filed = 1
 
     ship.bullet_speed_increase = 0
@@ -48,6 +51,8 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.health_increase = 0
     ship.touched_width_limit = false
     ship.touched_height_limit = false
+
+    ship.damage_sound = nil
 
     ship.constrain_ship_pos = function ()
         if MovingCamera == false then
@@ -92,8 +97,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.increase_fire_rate = function(added_speed)
         ship.shots_per_sec_increase = ship.shots_per_sec_increase + added_speed
-        ship.weapon.shot_per_sec = ship.weapon.base_shots_per_sec + ship.weapon.base_shots_per_sec * ship.shots_per_sec_increase / 100
-        ship.weapon.current_base_sprite.fps = ship.weapon.current_base_sprite.nframes * ship.weapon.shot_per_sec
+        ship.weapon.shots_per_sec = ship.weapon.base_shots_per_sec + ship.weapon.base_shots_per_sec * ship.shots_per_sec_increase / 100
+        ship.weapon.current_base_sprite.fps = ship.weapon.current_base_sprite.nframes * ship.weapon.shots_per_sec
+
     end
 
     ship.increase_damage = function(added_damage)
@@ -154,11 +160,23 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     end
 
     ship.draw_health = function()
-        --love.graphics.print(tostring(ship.health), ship.pos.x-10, ship.pos.y-30)
+        local font = love.graphics.newFont(12)  -- Choose your font size
+        love.graphics.setFont(font)
+        local x_pos = ship.pos.x-ship.life_bar_size.x*0.5
+        local y_pos = ship.pos.y-30
+        local text = tostring(ship.health).."/"..tostring(ship.max_health)
+        local textWidth = font:getWidth(text)
+        ship.life_bar_size.x = math.max(ship.life_bar_size.x, textWidth)
+        local textHeight = font:getHeight(text)
+        local text_x_pos = ship.pos.x - textWidth * 0.5
+        local text_y_pos = y_pos-2
+
         love.graphics.setColor(1,0,0,0.6)
-        love.graphics.rectangle("line", ship.pos.x-ship.life_bar_size.x*0.5, ship.pos.y-30, ship.life_bar_size.x, ship.life_bar_size.y)
-        love.graphics.rectangle("fill", ship.pos.x-ship.life_bar_size.x*0.5, ship.pos.y-30, ship.life_bar_size.x*(ship.health/ship.max_health), ship.life_bar_size.y)
+        love.graphics.rectangle("line", x_pos, y_pos, ship.life_bar_size.x, ship.life_bar_size.y)
+        love.graphics.rectangle("fill", x_pos, y_pos, ship.life_bar_size.x*(ship.health/ship.max_health), ship.life_bar_size.y)
         love.graphics.setColor(1,1,1,1)
+        love.graphics.print(text, text_x_pos, text_y_pos)
+        love.graphics.setFont(Font)
     end
 
     local function draw_boost()
@@ -193,6 +211,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     end
 
     local function take_damage(damage)
+        if ship.damage_sound then
+            PlaySound(ship.damage_sound, 0.1)
+        end
         ship.health = ship.health - damage
         if ship.health <= 0 then
             ship.health = 0

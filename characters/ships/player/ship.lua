@@ -21,6 +21,8 @@ function newPlayerShip()
     
     ship.life_bar_size = newVector2(160,30)
 
+    ship.damage_sound = love.audio.newSource("assets/sounds/ship/shoot02wav-14562.mp3", "static") 
+
 
 
     local function move(dt)
@@ -31,7 +33,7 @@ function newPlayerShip()
         if MovingCamera == true then
             look_at_pos = newVector2(ScaledScreenWidth * 0.5 * Scale, ScaledScreenHeight * 0.5 * Scale)
         else
-            look_at_pos = ship.pos
+            look_at_pos = ship.pos * Scale
         end
         ship.rad, dir = SmoothLookAt(
             look_at_pos,

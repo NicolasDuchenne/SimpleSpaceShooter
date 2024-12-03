@@ -16,6 +16,7 @@ function newScenegame(title)
     sceneGame.camera = camera
     sceneGame.saved_data = nil
     Pause_game = false
+    Pause_full_game = false
     sceneGame.vortex_created = nil
     sceneGame.music_name = nil
     sceneGame.music = nil
@@ -129,13 +130,15 @@ function newScenegame(title)
 
 
     sceneGame.update = function(dt)
-        if Pause_game == true then
-            update_pause()
-        else
-            sceneGame.update_game(dt)
+        if Pause_full_game == false then
+            if Pause_game == true then
+                update_pause()
+            else
+                sceneGame.update_game(dt)
+            end
+            
+            sceneGame.update_ui(dt)
         end
-        
-        sceneGame.update_ui(dt)
     end
 
     local function draw_game()
@@ -152,14 +155,30 @@ function newScenegame(title)
     end
 
     local function draw_ui()
-        love.graphics.origin()
         Buttons.draw()
+    end
+
+    local function draw_pause()
+        if Pause_full_game == true then
+            local font = love.graphics.newFont(48)  -- Choose your font size
+            love.graphics.setFont(font)
+            local text = "Game is Paused\n\nPress Escape to Resume"
+            local textWidth = font:getWidth(text)
+
+            local textHeight = font:getHeight(text) * (select(2, text:gsub("\n", "\n"))+1)
+            love.graphics.printf(text, (ScreenWidth-textWidth) * 0.5, (ScaledScreenHeight - textHeight) * 0.5, textWidth, "center")
+            love.graphics.setFont(Font)
+        end
     end
 
     sceneGame.draw = function()
         draw_game()
+        love.graphics.origin()
         draw_ui()
+        draw_pause()
+        
     end
+    
 
     sceneGame.save_change_scene_data = function()
         local data = {}
@@ -221,7 +240,7 @@ function newScenegame(title)
     end
     sceneGame.pause_music = function(scancode)
         if scancode == "p" then
-            print(sceneGame.music)
+
             if sceneGame.music:isPlaying() then
                 love.audio.pause()
             else
@@ -229,6 +248,13 @@ function newScenegame(title)
             end
         end
     end
+
+    sceneGame.pause_game = function(scancode)
+        if scancode == "escape" then
+            Pause_full_game = not Pause_full_game
+        end
+    end
+
 
     sceneGame.keypressed = function(key, scancode)
         sceneGame.pause_music(scancode)

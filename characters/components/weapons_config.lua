@@ -35,7 +35,7 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
             offset = newVector2(-10,0)
         }
     },
-    sound = "assets/sounds/weapon/gun_shot.mp3"
+    sound = "assets/sounds/weapon/076415_light-machine-gun-m249-39827.mp3"
 }
 
 weapon_sprite_params[WEAPONS.player.big_space_gun] = {
@@ -53,7 +53,8 @@ weapon_sprite_params[WEAPONS.player.big_space_gun] = {
             frame = 7,
             offset = newVector2(0,-20)
         }
-    }
+    },
+    sound = "assets/sounds/weapon/mixkit-laser-cannon-shot-1678.wav"
 }
 
 weapon_sprite_params[WEAPONS.player.rockets] = {
@@ -92,7 +93,8 @@ weapon_sprite_params[WEAPONS.player.rockets] = {
             offset = newVector2(15,10)
         },
         
-    }
+    },
+    sound = "assets/sounds/weapon/laserrocket-5984.mp3"
 }
 
 weapon_sprite_params[WEAPONS.player.zapper] = {
@@ -114,7 +116,8 @@ weapon_sprite_params[WEAPONS.player.zapper] = {
             frame = 5,
             offset = newVector2(-8,-20)
         },
-    }
+    },
+    sound = "assets/sounds/weapon/snare-space-shot-80932.mp3"
 }
 
 weapon_sprite_params[WEAPONS.nairan.fighter] = {

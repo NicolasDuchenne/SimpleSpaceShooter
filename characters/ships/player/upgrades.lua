@@ -28,18 +28,18 @@ local upgrades_list = {
     projectile_speed = {
         pickup = nil,
         color = newColor(0, 0, 255),
-        increase = 30,
-        max = 400
+        increase = 10,
+        max = 100
     },
     increase_health = {
         pickup = PICKUP.health,
-        color = newColor(255, 255, 255),
+        color = newColor(255, 0, 0),
         increase = 10,
         max = 300
     },
     heal = {
         pickup = PICKUP.health,
-        color = newColor(255, 255, 255),
+        color = newColor(0, 255, 0),
         increase = 40
     },
     max_boost = {
@@ -159,21 +159,21 @@ function newUpgrades()
         end
     end
 
-    local function get_current_increase(upgrade_type)
+    local function get_current_increase_and_value(upgrade_type)
         if upgrade_type == UPGRADE_SHOOTING_SPEED then
-            return PlayerShip.shots_per_sec_increase
+            return PlayerShip.shots_per_sec_increase, PlayerShip.weapon.shots_per_sec
         elseif  upgrade_type == UPGRADE_DAMAGE then
-            return PlayerShip.bullet_damage_increase
+            return PlayerShip.bullet_damage_increase, PlayerShip.weapon.bullet_damage
         elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
-            return PlayerShip.bullet_speed_increase
+            return PlayerShip.bullet_speed_increase, PlayerShip.weapon.bullet_speed
         elseif upgrade_type == UPGRADE_INCREASE_HEALTH then
-            return PlayerShip.health_increase
+            return PlayerShip.health_increase, PlayerShip.max_health
         elseif upgrade_type == UPGRADE_HEAL then
-            return 0
+            return 0, 0
         elseif upgrade_type == UPGRADE_MAX_BOOST then
-            return PlayerShip.boost_increase
+            return PlayerShip.boost_increase, PlayerShip.max_boost_energy
         end
-        return nil
+        return nil, nil
     end
 
 
@@ -194,14 +194,14 @@ function newUpgrades()
                 if upgrades_list[upgrade_type].pickup then
                     weapon_type =  upgrades_list[upgrade_type].pickup
                 end
-                local current_increase = get_current_increase(upgrade_type)
+                local current_increase, current_value = get_current_increase_and_value(upgrade_type)
                 local text = ""
 
                 if current_increase then
                     if max_upgrade_increase then
                         upgrade_value = upgrade_attenuation_function(max_upgrade_increase, current_increase, upgrade_value)
                     end
-                    text = "current: "..current_increase.." \nincrease : "..upgrade_value
+                    text = "current: "..current_value.." \nincrease % : "..upgrade_value
                 end
                 
                 if upgrade_type then

@@ -26,10 +26,18 @@ end
 local display_mode_params = {resizable = false, vsync = false, msaa = 4}
 
 local monitorWidth, monitorHeight = love.window.getDesktopDimensions()
-local offset = 200
+local offset = 100
 monitorWidth = monitorWidth - offset
 monitorHeight = monitorHeight - offset
 love.window.setMode(monitorWidth, monitorHeight, display_mode_params)
+
+local devScreenWidth = 900
+local devScreenHeight = 700
+local ratio_width = monitorWidth/devScreenWidth
+local ratio_height = monitorHeight/devScreenHeight
+
+Scale = math.min(ratio_width, ratio_height)
+
 -- end
 setScale()
 
@@ -81,10 +89,11 @@ function love.mousepressed(x, y, button)
 end
 
 function love.wheelmoved(x, y)
-    if Pause_game == false then
-        Scale = math.clamp(Scale + y*scale_increment, min_scale, max_scale)
-        setScale()
-    end
+    -- uncomment to be able to zoom game
+    -- if Pause_game == false then
+    --     Scale = math.clamp(Scale + y*scale_increment, min_scale, max_scale)
+    --     setScale()
+    -- end
 end
 
 function love.resize(x, y)
