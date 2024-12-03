@@ -10,4 +10,5 @@ function PlayMusic(music_name)
     local music = love.audio.newSource(music_name, "stream")
     music:setLooping(true)
     music:play()
+    return music
 end

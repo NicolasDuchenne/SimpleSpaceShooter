@@ -117,6 +117,10 @@ function newPlayerShip()
 
     ship.switch_weapon = function(key)
         ship.weapon = ship.inventory.weapons[key]
+        -- launch all stats increase on new weapon
+        ship.increase_damage(0)
+        ship.increase_fire_rate(0)
+        ship.increase_projectile_speed(0)
         ship.weapon.reset()
     end
 

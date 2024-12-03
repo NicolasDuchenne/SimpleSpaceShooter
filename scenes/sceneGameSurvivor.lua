@@ -29,6 +29,7 @@ sceneGame.update_camera = function()
 end
 
 sceneGame.keypressed = function(key, scancode)
+    sceneGame.pause_music(scancode)
     if Pause_game == false then
         if scancode=="space" then
             changeScene("menu", "hello world")

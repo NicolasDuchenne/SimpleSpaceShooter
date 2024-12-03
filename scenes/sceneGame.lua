@@ -18,9 +18,10 @@ function newScenegame(title)
     Pause_game = false
     sceneGame.vortex_created = nil
     sceneGame.music_name = nil
+    sceneGame.music = nil
     sceneGame.load = function(data, restart)
         if sceneGame.music_name then
-            PlayMusic(sceneGame.music_name)
+            sceneGame.music = PlayMusic(sceneGame.music_name)
         end
         sceneGame.vortex_created = false
         sceneGame.update_camera()
@@ -218,7 +219,20 @@ function newScenegame(title)
     sceneGame.change_to_survivor_scene = function()
         sceneGame.save_and_change_scene("gameSurvivor")
     end
+    sceneGame.pause_music = function(scancode)
+        if scancode == "p" then
+            print(sceneGame.music)
+            if sceneGame.music:isPlaying() then
+                love.audio.pause()
+            else
+                sceneGame.music:play()
+            end
+        end
+    end
 
+    sceneGame.keypressed = function(key, scancode)
+        sceneGame.pause_music(scancode)
+    end
 
 
     return sceneGame

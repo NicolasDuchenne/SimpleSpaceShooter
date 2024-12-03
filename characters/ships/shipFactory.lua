@@ -43,7 +43,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.bullet_speed_increase = 0
     ship.bullet_damage_increase = 0
-    ship.shooting_speed_increase = 0
+    ship.shots_per_sec_increase = 0
     ship.boost_increase = 0
     ship.health_increase = 0
     ship.touched_width_limit = false
@@ -76,6 +76,10 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     end
 
     ship.heal = function(added_health)
+        ship.health = math.min(ship.max_health, ship.health + added_health)
+    end
+
+    ship.increase_max_health = function(added_health)
         ship.health_increase = ship.health_increase + added_health
         ship.max_health = ship.max_health + added_health
         ship.health = ship.health + added_health
@@ -87,8 +91,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     end
 
     ship.increase_fire_rate = function(added_speed)
-        ship.shooting_speed_increase = ship.shooting_speed_increase + added_speed
-        ship.weapon.current_base_sprite.fps = ship.weapon.base_shooting_speed + math.floor(ship.weapon.base_shooting_speed * ship.shooting_speed_increase / 100)
+        ship.shots_per_sec_increase = ship.shots_per_sec_increase + added_speed
+        ship.weapon.shot_per_sec = ship.weapon.base_shots_per_sec + ship.weapon.base_shots_per_sec * ship.shots_per_sec_increase / 100
+        ship.weapon.current_base_sprite.fps = ship.weapon.current_base_sprite.nframes * ship.weapon.shot_per_sec
     end
 
     ship.increase_damage = function(added_damage)
@@ -108,6 +113,8 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
             ship.increase_damage(ugrade_value)
         elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
             ship.increase_projectile_speed(ugrade_value)
+        elseif upgrade_type == UPGRADE_INCREASE_HEALTH then
+            ship.increase_max_health(ugrade_value)
         elseif upgrade_type == UPGRADE_HEAL then
             ship.heal(ugrade_value)
         elseif upgrade_type == UPGRADE_MAX_BOOST then

@@ -28,6 +28,7 @@ sceneGame.update_player_pos = function()
 end
 
 sceneGame.keypressed = function(key, scancode)
+    sceneGame.pause_music(scancode)
     if scancode=="space" then
         sceneGame.saved_data = sceneGame.save_data()
         changeScene("menu", "hello world")

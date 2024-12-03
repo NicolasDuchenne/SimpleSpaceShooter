@@ -2,13 +2,14 @@ local weapon_sprite_params = require("characters.components.weapons_config")
 
 
 local function create_weapon_sprite(params)
+    local fps = params.cquad * params.shots_per_sec
     return newQuadSprite(
         params.img,
         params.cquad,
         params.lquad,
         params.wquad,
         params.hquad,
-        params.fps,
+        fps,
         newColor(255, 255, 255),
         SPRITE_PLAY_ONCE
     )
@@ -24,7 +25,8 @@ function newWeapon(type, group)
     weapon.bullet_speed = weapon.bullet_base_speed
     weapon.bullet_base_damage = weapon_sprite_params[type].bullet_base_damage
     weapon.bullet_damage = weapon.bullet_base_damage
-    weapon.base_shooting_speed = weapon_sprite_params[type].fps
+    weapon.base_shots_per_sec = weapon_sprite_params[type].shots_per_sec
+    weapon.shots_per_sec = weapon.base_shots_per_sec
     weapon.bullet_speed_increase = 0
     weapon.bullet_damage_increase = 0
     weapon.shooting_speed_increase = 0

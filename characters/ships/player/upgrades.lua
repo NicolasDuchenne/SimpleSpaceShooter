@@ -2,6 +2,7 @@ UPGRADE_GET = "get"
 UPGRADE_SHOOTING_SPEED = "shooting_speed"
 UPGRADE_DAMAGE = "damage"
 UPGRADE_PROJECTILE_SPEED = "projectile_speed"
+UPGRADE_INCREASE_HEALTH = "increase_health"
 UPGRADE_HEAL = "heal"
 UPGRADE_MAX_BOOST = "max_boost"
 
@@ -30,10 +31,16 @@ local upgrades_list = {
         increase = 30,
         max = 400
     },
+    increase_health = {
+        pickup = PICKUP.health,
+        color = newColor(255, 255, 255),
+        increase = 10,
+        max = 300
+    },
     heal = {
         pickup = PICKUP.health,
         color = newColor(255, 255, 255),
-        increase = 10
+        increase = 40
     },
     max_boost = {
         pickup = PICKUP.boost,
@@ -55,8 +62,9 @@ local bupgrades_available = {}
 bupgrades_available[1] = UPGRADE_SHOOTING_SPEED
 bupgrades_available[2] = UPGRADE_DAMAGE
 bupgrades_available[3] = UPGRADE_PROJECTILE_SPEED
-bupgrades_available[4] = UPGRADE_HEAL
-bupgrades_available[5] = UPGRADE_MAX_BOOST
+bupgrades_available[4] = UPGRADE_INCREASE_HEALTH
+bupgrades_available[5] = UPGRADE_HEAL
+bupgrades_available[6] = UPGRADE_MAX_BOOST
 
 
 local function upgrade_weapon_callback(upgrade_type, upgrade_value)
@@ -153,13 +161,15 @@ function newUpgrades()
 
     local function get_current_increase(upgrade_type)
         if upgrade_type == UPGRADE_SHOOTING_SPEED then
-            return PlayerShip.shooting_speed_increase
+            return PlayerShip.shots_per_sec_increase
         elseif  upgrade_type == UPGRADE_DAMAGE then
             return PlayerShip.bullet_damage_increase
         elseif upgrade_type == UPGRADE_PROJECTILE_SPEED then
             return PlayerShip.bullet_speed_increase
-        elseif upgrade_type == UPGRADE_HEAL then
+        elseif upgrade_type == UPGRADE_INCREASE_HEALTH then
             return PlayerShip.health_increase
+        elseif upgrade_type == UPGRADE_HEAL then
+            return 0
         elseif upgrade_type == UPGRADE_MAX_BOOST then
             return PlayerShip.boost_increase
         end
