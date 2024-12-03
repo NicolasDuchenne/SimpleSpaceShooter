@@ -22,6 +22,7 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
     wquad = 48,
     hquad = 48,
     fps = 24,
+    fire_rate = 0.3,
     bullet_type = PROJECTILES.auto_cannon,
     bullet_base_speed = 500,
     bullet_base_damage = 10,
@@ -34,7 +35,8 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
             frame = 3,
             offset = newVector2(-10,0)
         }
-    }
+    },
+    sound = "assets/sounds/weapon/gun_shot.mp3"
 }
 
 weapon_sprite_params[WEAPONS.player.big_space_gun] = {

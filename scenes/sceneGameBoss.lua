@@ -2,6 +2,7 @@ local newBossShip = require("characters.ships.enemies.bossShip")
 local sceneGame = newScenegame("gameBoss")
 local newSurvivorTriger = require("level.survivorTrigger")
 
+sceneGame.music_name = "assets/sounds/ambiance/DavidKBD - Cosmic Pack 05 - Stellar Confrontation-full.ogg"
 
 
 sceneGame.load_enemies = function()

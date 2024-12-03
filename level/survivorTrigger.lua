@@ -7,7 +7,7 @@ local triggerImg = newQuadSprite(
     trigger_img_width,
     trigger_img_width,
     450,
-    {r=0.5, g=0, b=0.8}
+    newColor(123, 0, 210)
 )
 local trigger_scale = 2
 local trigger_radius = trigger_img_width*trigger_scale*0.2

@@ -57,11 +57,11 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.closest_enemy = nil
     
     if group == SHIP_GROUPS.PLAYER then
-        projectile.color = {r = 0, g = 1, b = 0}
+        projectile.color = newColor(0, 255, 0)
     elseif projectile.group == SHIP_GROUPS.ENEMY then
-        projectile.color = {r = 1, g = 0, b = 0}
+        projectile.color = newColor(255, 0, 0)
     else
-        projectile.color = {r = 1, g = 1, b = 1}
+        projectile.color = newColor(255, 255, 255)
     end
 
     local function get_closest_enemy()

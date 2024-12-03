@@ -17,8 +17,11 @@ function newScenegame(title)
     sceneGame.saved_data = nil
     Pause_game = false
     sceneGame.vortex_created = nil
-
+    sceneGame.music_name = nil
     sceneGame.load = function(data, restart)
+        if sceneGame.music_name then
+            PlayMusic(sceneGame.music_name)
+        end
         sceneGame.vortex_created = false
         sceneGame.update_camera()
         background.load()
@@ -63,6 +66,7 @@ function newScenegame(title)
     end
 
     sceneGame.unload = function()
+        love.audio.stop()
         sceneGame.saved_data = sceneGame.save_data()
         Buttons.unload()
     end

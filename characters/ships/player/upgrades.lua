@@ -7,32 +7,37 @@ UPGRADE_MAX_BOOST = "max_boost"
 
 local weapon_upgrade_list = {
     get =  {
-        color = {r=1, g=1, b=1}
+        color = newColor(255, 255, 255)
     }
 }
 
 local upgrades_list = {
     shooting_speed = {
-        color = {r=0, g=1, b=0},
+        pickup = nil,
+        color = newColor(0, 255, 0),
         increase = 20,
         max = 300
     },
     damage = {
-        color = {r=1, g=0, b=0},
+        pickup = nil,
+        color = newColor(255, 0, 0),
         increase = 10,
         max = 200
     },
     projectile_speed = {
-        color = {r=0, g=0, b=1},
+        pickup = nil,
+        color = newColor(0, 0, 255),
         increase = 30,
         max = 400
     },
     heal = {
-        color = {r=1, g=1, b=1},
+        pickup = PICKUP.health,
+        color = newColor(255, 255, 255),
         increase = 10
     },
     max_boost = {
-        color = {r=1, g=1, b=1},
+        pickup = PICKUP.boost,
+        color = newColor(255, 255, 255),
         increase = 20,
         max = 300
     }
@@ -176,6 +181,9 @@ function newUpgrades()
                 local max_upgrade_increase = upgrades_list[upgrade_type].max
                 local color = upgrades_list[upgrade_type].color
                 local weapon_type = PlayerShip.weapon.type
+                if upgrades_list[upgrade_type].pickup then
+                    weapon_type =  upgrades_list[upgrade_type].pickup
+                end
                 local current_increase = get_current_increase(upgrade_type)
                 local text = ""
 

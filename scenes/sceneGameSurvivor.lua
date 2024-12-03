@@ -2,6 +2,8 @@ local sceneGame = newScenegame("gameSurvivor")
 local enemySpawner = require("characters.ships.enemies.enemySpawner")
 local newBossTrigger = require("level.bossTrigger")
 
+sceneGame.music_name = "assets/sounds/ambiance/DavidKBD - Cosmic Pack 06 - Lunar Rampage-full.ogg"
+
 
 sceneGame.update_game = function(dt)
     sceneGame.update_game_without_enemies(dt)

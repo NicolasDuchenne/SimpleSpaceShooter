@@ -34,4 +34,6 @@ function SmoothLookAt(source, target, rad, lerp_speed, dt)
     return output_rad, moving_dir
 end
 
-
+function RandomFloat(min, max)
+    return min + math.random() * (max - min)
+end

@@ -9,7 +9,7 @@ local function create_weapon_sprite(params)
         params.wquad,
         params.hquad,
         params.fps,
-        {r=1, g=1, b=1},
+        newColor(255, 255, 255),
         SPRITE_PLAY_ONCE
     )
 end
@@ -30,6 +30,9 @@ function newWeapon(type, group)
     weapon.shooting_speed_increase = 0
     weapon.shooting_frames = weapon_sprite_params[type].shooting_frames
     weapon.group = group or "player"
+    if weapon_sprite_params[type].sound then
+        weapon.sound = love.audio.newSource(weapon_sprite_params[type].sound, "static")
+    end
 
     weapon.reset = function()
         weapon.current_base_sprite.reset()
@@ -69,6 +72,9 @@ function newWeapon(type, group)
                         weapon.group,
                         weapon.bullet_damage
                     )
+                    if weapon.sound then
+                        PlaySound(weapon.sound, 0.1)
+                    end
                     weapon.has_shot[i] = true
                     weapon.shot_fired = weapon.shot_fired + 1
                 end
