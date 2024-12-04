@@ -1,13 +1,12 @@
 function newTimer(duration, autostart)
     local timer = {}
-    autostart = autostart or true
-
     timer.duration = duration or 1
     timer.elapsed_time = 0
-    if autostart == true then
-        timer.started = true
-    else
-        timer.started = false
+    timer.started = true
+    if autostart~=nil then
+        if autostart == false then
+            timer.started = false
+        end
     end
 
     timer.set_duration = function(duration)
@@ -18,17 +17,21 @@ function newTimer(duration, autostart)
         if timer.started == true then
             timer.elapsed_time = timer.elapsed_time + dt
             if timer.elapsed_time > timer.duration then
-                timer.elapsed_time = 0
-                timer.started = false
+                timer.stop()
                 return true
             end
         end
         return false
     end
 
-    timer.start = function(duration)
-        timer.duration = duration or timer.duration
+    timer.start = function(new_duration)
+        timer.duration = new_duration or timer.duration
         timer.started = true
+        timer.elapsed_time = 0
+    end
+
+    timer.stop = function()
+        timer.started = false
         timer.elapsed_time = 0
     end
         

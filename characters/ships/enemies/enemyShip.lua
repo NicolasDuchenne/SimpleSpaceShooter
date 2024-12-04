@@ -13,7 +13,7 @@ end
 EnemyShips.update = function(dt)
     for i=#EnemyShips, 1, -1 do
         EnemyShips[i].update(dt)
-        if EnemyShips[i].is_dead == true or EnemyShips[i].has_hit_something then
+        if EnemyShips[i].is_dead == true then
             EnemyShips.remove_ship(i)
         end
     end
@@ -58,7 +58,6 @@ function newEnemyShip(type, pos, rad)
     ship.experience = enemy_ships_params[type].experience
     
     ship.self_destruct = enemy_ships_params[type].self_destruct or false
-    ship.has_hit_something = false
     ship.stateMachine = newEnemyShipStateMachine(ship)
 
     ship.health_per_level = enemy_ships_params[type].health_per_level
@@ -72,7 +71,7 @@ function newEnemyShip(type, pos, rad)
         if ship.self_destruct == true then
             if  math.vdist(ship.pos, PlayerShip.pos) < PlayerShip.hitbox_radius+ship.hitbox_radius then
                 PlayerShip.hit(ship.weapon.bullet_damage)
-                ship.has_hit_something = true
+                ship.hit(ship.health)
             end
         end
     end
@@ -86,6 +85,7 @@ function newEnemyShip(type, pos, rad)
     ship.update = function(dt)
         ship.stateMachine.update(dt)
         ship.update_invincibility_timer(dt)
+        ship.update_blink_timer(dt)
         ship.engine.update(0, dt)
         ship.weapon.update(dt, ship.pos, ship.rad)
         ship.hit_player()

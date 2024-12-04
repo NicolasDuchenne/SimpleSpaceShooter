@@ -10,7 +10,7 @@ local function create_weapon_sprite(params)
         params.wquad,
         params.hquad,
         fps,
-        newColor(255, 255, 255),
+        nil,
         SPRITE_PLAY_ONCE
     )
 end
@@ -66,10 +66,14 @@ function newWeapon(type, group)
         if weapon.will_shoot then
             for i= 1, #weapon.shooting_frames do
                 if weapon.current_base_sprite.frame == weapon.shooting_frames[i].frame and weapon.has_shot[i] == false then
+                    local rad_shoot = rad
+                    if weapon.shooting_frames[i].offset_rad then
+                        rad_shoot = rad_shoot + weapon.shooting_frames[i].offset_rad
+                    end
                     newProjectile(
                         weapon.bullet_type,
                         pos + weapon.shooting_frames[i].offset.rotate(rad + IMG_RAD_OFFSET),
-                        rad,
+                        rad_shoot,
                         weapon.bullet_speed,
                         weapon.group,
                         weapon.bullet_damage

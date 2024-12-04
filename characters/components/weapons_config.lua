@@ -13,6 +13,7 @@ WEAPONS.nairan.torpedo = "nairan_torpedo_weapon"
 WEAPONS.nairan.boss = {}
 WEAPONS.nairan.boss.dreadnought_space_gun = "nairan_dreadnought_weapon_1"
 WEAPONS.nairan.boss.dreadnought_rockets = "nairan_dreadnought_weapon_2"
+WEAPONS.nairan.boss.rotating_dreadnought_space_gun = "nairan_dreadnought_weapon_3"
 
 local weapon_sprite_params = {}
 weapon_sprite_params[WEAPONS.player.auto_cannon] = {
@@ -28,11 +29,11 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
     shooting_frames = {
         {
             frame = 2,
-            offset = newVector2(10,0)
+            offset = newVector2(10, -4),
         },
         {
             frame = 3,
-            offset = newVector2(-10,0)
+            offset = newVector2(-10,-4)
         }
     },
     sound = "assets/sounds/weapon/076415_light-machine-gun-m249-39827.mp3"
@@ -172,15 +173,18 @@ weapon_sprite_params[WEAPONS.nairan.battlecruiser] = {
     shooting_frames = {
         {
             frame = 2,
-            offset = newVector2(0,-20)
+            offset = newVector2(0,-20),
+            offset_rad = math.pi/6
         },
         {
             frame = 5,
-            offset = newVector2(0,-20)
+            offset = newVector2(0,-20),
+            offset_rad = 0
         },
         {
-            frame = 8,
-            offset = newVector2(0,-20)
+            frame = 7,
+            offset = newVector2(0,-20),
+            offset_rad = -math.pi/6
         }
     }
 }
@@ -235,6 +239,37 @@ weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_space_gun] = {
             offset = newVector2(0,-20)
         }
     }
+}
+
+local shooting_frames = {}
+local i = 1
+while i < 34 do
+    local offset = newVector2(0,-20)
+    local frame = {
+        frame = i,
+        offset = offset
+    }
+    table.insert(shooting_frames, frame)
+    frame = {
+        frame = i,
+        offset = offset,
+        offset_rad = math.pi
+    }
+    table.insert(shooting_frames, frame)
+    i = i + 3
+end
+
+weapon_sprite_params[WEAPONS.nairan.boss.rotating_dreadnought_space_gun] = {
+    img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Dreadnought - Weapons.png",
+    cquad = 34,
+    lquad = 1,
+    wquad = 128,
+    hquad = 128,
+    shots_per_sec = 1.2,
+    bullet_type = PROJECTILES.space_gun,
+    bullet_base_speed = 300,
+    bullet_base_damage = 20,
+    shooting_frames = shooting_frames
 }
 
 weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_rockets] = {

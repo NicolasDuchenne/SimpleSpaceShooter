@@ -113,6 +113,7 @@ function newPlayerShip()
         update_weapons()
         shoot(dt)
         ship.update_invincibility_timer(dt)
+        ship.update_blink_timer(dt)
         ship.boost(dt)
     end
     

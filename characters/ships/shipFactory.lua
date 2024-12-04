@@ -24,7 +24,9 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.health = ship.max_health
     ship.is_dead = false
     ship.can_get_hit = true
+    ship.invicible = false
     ship.invincibility_timer = newTimer(0.1)
+    ship.blink_timer = newTimer(0.1, false)
     ship.hitbox_radius = hitbox_radius or 20
 
     ship.base_max_boost_energy = 100
@@ -53,6 +55,8 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.touched_height_limit = false
 
     ship.damage_sound = nil
+
+    ship.show = true
 
     ship.constrain_ship_pos = function ()
         if MovingCamera == false then
@@ -150,13 +154,20 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.energy_bar_size_filed = ship.boost_energy/ship.max_boost_energy
     end
 
+    ship.update_blink_timer = function(dt)
+        if ship.blink_timer.update(dt) then
+            ship.show = not ship.show
+            ship.blink_timer.start()
+        end
+    end
+
     ship.update = function(dt)
         ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
         ship.engine.update(0, dt)
         ship.shoot()
         ship.weapon.update(dt, ship.pos, ship.rad)
         ship.update_invincibility_timer(dt)
-        
+        ship.update_blink_timer(dt)
     end
 
     ship.draw_health = function()
@@ -195,9 +206,18 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     end
 
     ship.draw = function()
-        ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-        ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
-        ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+        
+        if ship.color then
+            love.graphics.setColor(ship.color.r, ship.color.g, ship.color.b)
+        end
+        if ship.show == true then
+            ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+            ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+            ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
+        end
+        if ship.color then
+            love.graphics.setColor(1, 1, 1)
+        end
         ship.draw_health()
         --draw_hitbox()
         --ship.draw_state()
@@ -227,6 +247,22 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
             ship.invincibility_timer.start()
             take_damage(damage)
         end
+    end
+
+    ship.turn_invincible = function()
+        ship.invicible = true
+        ship.can_get_hit = false
+        ship.color = newColor(255,0,0)
+        ship.blink_timer.start()
+
+    end
+    
+    ship.turn_vulnerable = function()
+        ship.invicible = false
+        ship.show = true
+        ship.can_get_hit = true
+        ship.color = newColor(255,255,255)
+        ship.blink_timer.stop()
     end
 
     return ship

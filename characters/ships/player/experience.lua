@@ -42,7 +42,7 @@ function newExperience()
     )
 
     experience.button_score = newTextButton(
-        newVector2(ScreenWidth * 0.5 - 75,0),
+        newVector2(ScreenWidth - 150,0),
         newVector2(150,40),
         set_score_text()
     )
