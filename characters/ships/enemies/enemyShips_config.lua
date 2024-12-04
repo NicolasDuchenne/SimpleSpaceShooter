@@ -49,7 +49,7 @@ enemy_ships_params[NAIRAN_BATTLECRUISER] = {
     harass_range = 500,
     flee_range = 200,
     avoid_ship_range = 100,
-    fire_delay_seconds = 3,
+    fire_delay_seconds = 2.5,
     experience = 100,
     health_per_level = 10
 }

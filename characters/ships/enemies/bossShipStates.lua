@@ -131,7 +131,7 @@ local function newBossShipStates(ship)
 
     states.state = states.idle
 
-    --table.insert(list_start_states, states.start_fire_down)
+    table.insert(list_start_states, states.start_fire_down)
     table.insert(list_start_states, states.start_fire_up)
     table.insert(list_start_states, states.start_fire_center)
 
