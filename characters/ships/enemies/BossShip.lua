@@ -5,6 +5,7 @@ local boss_ship_params = {
     img = "assets/Void_EnemyFleet_2/Nairan/Designs - Base/PNGs/Nairan - Dreadnought - Base.png",
     engine = ENGINES.nairan.dreadnought,
     weapon = WEAPONS.nairan.boss.dreadnought_space_gun,
+    destruction_animation = DESTRUCTION_ANIMATION.NAIRAN_BOSS,
     health = 100,
     hitbox_radius = 40,
     base_speed = 100,
@@ -28,7 +29,8 @@ local function newBossShip(type, pos, rad)
         boss_ship_params.base_speed,
         boss_ship_params.base_lerp_speed,
         pos,
-        rad
+        rad,
+        boss_ship_params.destruction_animation
     )
     ship.name = boss_ship_params.name
     ship.type = type
@@ -53,7 +55,7 @@ local function newBossShip(type, pos, rad)
     table.insert(EnemyShips, ship)
 
     ship.die = function()
-        ship.is_dead = true
+        ship.common_death_process()
         PlayerShip.experience.gain(ship.experience)
         Create_survivor_vortex()
     end
@@ -82,12 +84,16 @@ local function newBossShip(type, pos, rad)
     end
 
     ship.update = function(dt)
-        ship.engine.update(0, dt)
-        ship.weapon.update(dt, ship.pos, ship.rad)
-        ship.update_invincibility_timer(dt)
-        ship.update_blink_timer(dt)
-        ship.stateMachine.update(dt)
-        ship.hit_player(dt)
+        if ship.is_dead == false then
+            ship.engine.update(0, dt)
+            ship.weapon.update(dt, ship.pos, ship.rad)
+            ship.update_invincibility_timer(dt)
+            ship.update_blink_timer(dt)
+            ship.stateMachine.update(dt)
+            ship.hit_player(dt)
+        else
+            ship.update_death_animation(dt)
+        end
     end
 
     ship.draw_health = function()

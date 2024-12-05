@@ -151,14 +151,18 @@ function newPlayerShip()
     end
 
     ship.update = function(dt)
-        ship.experience.update(dt)
-        move_2(dt)
-        update_engines(dt)
-        update_weapons()
-        shoot(dt)
-        ship.update_invincibility_timer(dt)
-        ship.update_blink_timer(dt)
-        ship.boost(dt)
+        if ship.is_dead == false then
+            ship.experience.update(dt)
+            move_2(dt)
+            update_engines(dt)
+            update_weapons()
+            shoot(dt)
+            ship.update_invincibility_timer(dt)
+            ship.update_blink_timer(dt)
+            ship.boost(dt)
+        else
+            ship.update_death_animation(dt)
+        end
     end
     
 

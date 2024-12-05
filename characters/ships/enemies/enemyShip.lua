@@ -13,7 +13,7 @@ end
 EnemyShips.update = function(dt)
     for i=#EnemyShips, 1, -1 do
         EnemyShips[i].update(dt)
-        if EnemyShips[i].is_dead == true then
+        if EnemyShips[i].death_animation_finished == true then
             EnemyShips.remove_ship(i)
         end
     end
@@ -44,7 +44,8 @@ function newEnemyShip(type, pos, rad)
         enemy_ships_params[type].base_speed,
         enemy_ships_params[type].lerp_speed,
         pos,
-        rad
+        rad,
+        enemy_ships_params[type].destruction_animation
     )
     ship.type = type
     ship.detection_range = enemy_ships_params[type].detection_range
@@ -63,8 +64,10 @@ function newEnemyShip(type, pos, rad)
     ship.health_per_level = enemy_ships_params[type].health_per_level
     ship.damage_per_level = enemy_ships_params[type].damage_per_level
 
+    
+
     ship.die = function()
-        ship.is_dead = true
+        ship.common_death_process()
         PlayerShip.experience.gain(ship.experience)
     end
 
@@ -84,12 +87,16 @@ function newEnemyShip(type, pos, rad)
     end
     
     ship.update = function(dt)
-        ship.stateMachine.update(dt)
-        ship.update_invincibility_timer(dt)
-        ship.update_blink_timer(dt)
-        ship.engine.update(0, dt)
-        ship.weapon.update(dt, ship.pos, ship.rad)
-        ship.hit_player()
+        if ship.is_dead == false then
+            ship.stateMachine.update(dt)
+            ship.update_invincibility_timer(dt)
+            ship.update_blink_timer(dt)
+            ship.engine.update(0, dt)
+            ship.weapon.update(dt, ship.pos, ship.rad)
+            ship.hit_player()
+        else
+            ship.update_death_animation(dt)
+        end
 
     end
 

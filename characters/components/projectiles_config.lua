@@ -86,13 +86,13 @@ projectiles_params[PROJECTILES.zapper]= {
 }
 
 projectiles_params[PROJECTILES.nairan_bolt]= {
-    img = "assets/Void_EnemyFleet_2/Nairan/Weapon Effects - Projectiles/PNGs/Nairan - Bolt.png",
-    cquad = 5,
+    img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Rocket.png",
+    cquad = 3,
     lquad = 1,
-    wquad = 9,
-    hquad = 9,
+    wquad = 32,
+    hquad = 32,
     fps = 8,
-    scale = newVector2(2.5,2.5),
+    scale = newVector2(2, 2),
     hitbox_radius = 3,
     style=PROJECTILES_STYLES.normal
 }

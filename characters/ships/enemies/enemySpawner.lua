@@ -1,12 +1,12 @@
 local enemySpawner = {}
 enemySpawner.timer_min_duration  = 1
 enemySpawner.timer_variation = 0.1
-enemySpawner.enemy_min_distance = 500
-enemySpawner.enemy_max_distance = 1000
+enemySpawner.enemy_min_distance = 800
+enemySpawner.enemy_max_distance = 1500
 enemySpawner.timer_duration = 1
 enemySpawner.timer = newTimer(enemySpawner.timer_duration)
-enemySpawner.base_max_enemies_experience = 1000
-enemySpawner.max_max_enemies_experience = 10000
+enemySpawner.base_max_enemies_experience = 200
+enemySpawner.max_max_enemies_experience = 2000
 enemySpawner.max_enemies_experience = enemySpawner.base_max_enemies_experience
 
 enemySpawner.load = function()
@@ -16,7 +16,7 @@ end
 enemySpawner.update = function(dt)
     if enemySpawner.timer.update(dt) then
         -- Increase max enemies and decrease spawn interval with levels and experience
-        enemySpawner.max_enemies_experience = enemySpawner.base_max_enemies_experience + enemySpawner.max_max_enemies_experience*(1-1/(PlayerShip.experience.total_exp/enemySpawner.max_max_enemies_experience+1))
+        enemySpawner.max_enemies_experience = math.min(enemySpawner.max_max_enemies_experience, enemySpawner.base_max_enemies_experience + (PlayerShip.experience.level-1) * 50)
         enemySpawner.timer_min_duration = math.min(1, 5/PlayerShip.experience.level)
         if  EnemyShips.total_exp < enemySpawner.max_enemies_experience then
             local enemy_index = math.random(1, #ENEMIES_WITH_RARENESS)

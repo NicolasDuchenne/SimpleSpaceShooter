@@ -2,12 +2,13 @@ require("characters.components.engines")
 require("characters.components.projectiles")
 require("characters.components.weapons")
 require("characters.components.pickups")
+require("characters.components.destruction")
 
 SHIP_GROUPS = {}
 SHIP_GROUPS.ENEMY = "enemy"
 SHIP_GROUPS.PLAYER = "player"
 
-function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, lerp_speed, pos, rad)
+function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, lerp_speed, pos, rad, destruction_animation)
     local ship = {}
     ship.pos = pos or newVector2(ScaledScreenWidth/2, ScaledScreenHeight/2)
     ship.rad = rad or 0
@@ -19,10 +20,14 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.base_sprite = newSprite(img)
     ship.engine = newEngine(engine)
     ship.weapon = newWeapon(cannon, ship.group)
+    if destruction_animation then
+        ship.destruction_animation = newDestructionAnimation(destruction_animation)
+    end
 
     ship.max_health = health or 20
     ship.health = ship.max_health
     ship.is_dead = false
+    ship.death_animation_finished = false
     ship.can_get_hit = true
     ship.invicible = false
     ship.invincibility_timer = newTimer(0.1)
@@ -57,6 +62,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
     ship.damage_sound = nil
 
     ship.show = true
+
 
     ship.constrain_ship_pos = function ()
         if MovingCamera == false then
@@ -108,7 +114,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.increase_damage = function(added_damage)
         ship.bullet_damage_increase = ship.bullet_damage_increase + added_damage
-        ship.weapon.bullet_damage =ship.weapon.bullet_base_damage + math.floor(ship.weapon.bullet_base_damage * ship.bullet_damage_increase / 100)
+        ship.weapon.q =ship.weapon.bullet_base_damage + math.floor(ship.weapon.bullet_base_damage * ship.bullet_damage_increase / 100)
     end
 
     ship.increase_projectile_speed = function(added_speed)
@@ -161,13 +167,27 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         end
     end
 
+    ship.update_death_animation = function(dt)
+        if ship.death_animation_finished == false and ship.is_dead == true and ship.destruction_animation then
+            ship.destruction_animation.update(dt)
+            if ship.destruction_animation.img.play_sprite == false then
+                ship.death_animation_finished = true
+            end
+        end
+    end
+
     ship.update = function(dt)
-        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
-        ship.engine.update(0, dt)
-        ship.shoot()
-        ship.weapon.update(dt, ship.pos, ship.rad)
-        ship.update_invincibility_timer(dt)
-        ship.update_blink_timer(dt)
+        if ship.is_dead == false then
+            ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+            ship.engine.update(0, dt)
+            ship.shoot()
+            ship.weapon.update(dt, ship.pos, ship.rad)
+            ship.update_invincibility_timer(dt)
+            ship.update_blink_timer(dt)
+        else
+            ship.update_death_animation(dt)
+        end
+
     end
 
     ship.draw_health = function()
@@ -205,12 +225,18 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         love.graphics.circle("line", ship.pos.x, ship.pos.y, ship.hitbox_radius)
     end
 
+    ship.draw_death_animation = function(new_pos, new_rad)
+        if ship.destruction_animation and ship.is_dead then
+            ship.destruction_animation.draw(new_pos, new_rad)
+        end
+    end
+
     ship.draw = function()
         
         if ship.color then
             love.graphics.setColor(ship.color.r, ship.color.g, ship.color.b)
         end
-        if ship.show == true then
+        if ship.show == true and ship.is_dead == false then
             ship.base_sprite.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
             ship.engine.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
             ship.weapon.draw(ship.pos, ship.rad + IMG_RAD_OFFSET)
@@ -218,16 +244,27 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         if ship.color then
             love.graphics.setColor(1, 1, 1)
         end
-        ship.draw_health()
+        if ship.is_dead == false then
+            ship.draw_health()
+        end
         --draw_hitbox()
         --ship.draw_state()
         if ship.boost_activated == true then
             draw_boost()
         end
+        ship.draw_death_animation(ship.pos, ship.rad + IMG_RAD_OFFSET)
+        
+    end
+
+    ship.common_death_process = function()
+        ship.is_dead = true
+        if ship.destruction_animation then
+            ship.destruction_animation.img.play_sprite = true
+        end
     end
     
     ship.die = function()
-        ship.is_dead = true
+        ship.common_death_process()
     end
 
     local function take_damage(damage)

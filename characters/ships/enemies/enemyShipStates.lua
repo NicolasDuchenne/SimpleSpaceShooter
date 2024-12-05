@@ -5,6 +5,7 @@ STATES.MOVE = "move"
 STATES.CHASE = "chase"
 STATES.FIRE = "fire"
 STATES.HARASS = "harass"
+STATES.GET_AROUND = "get_around"
 
 
 local function get_close_ships_direction(ship)
@@ -22,13 +23,16 @@ local function get_close_ships_direction(ship)
     end
 
     -- Check if player is too close
-    if  math.vdist(ship.pos, PlayerShip.pos) < ship.avoid_ship_range then
-        dir = dir + (PlayerShip.pos - ship.pos)
-        ship_detected = true
+    if ship.self_destruct == false then
+        if  math.vdist(ship.pos, PlayerShip.pos) < ship.avoid_ship_range then
+            dir = dir + (PlayerShip.pos - ship.pos)
+            ship_detected = true
+        end
     end
 
     if ship_detected == true then
-        return dir.normalize()
+        local close_ship_dir = dir.normalize()
+        return close_ship_dir
     else
         return nil
     end
@@ -41,33 +45,46 @@ end
 local newEnemyShipStateMachine = function(ship)
     local stateMachine = {}
     stateMachine.canChangeState = true
-    stateMachine.change_state_timer = newTimer(1)
+    stateMachine.can_shoot = true
+    stateMachine.change_state_timer = newTimer(0.5)
     stateMachine.shoot_timer = newTimer(ship.fire_delay_seconds)
     stateMachine.update_dir_timer = newTimer()
     stateMachine.harass_dir = get_random_harass_dir()
     stateMachine.state = STATES.HIGH_SPEED_CHASE
+    stateMachine.enemyShips_dir = nil
+    --stateMachine.get_around = false
+
 
     local function move(dt, flee)
         flee = flee or false
         ship.rad, ship.moving_dir = SmoothLookAt(ship.pos, PlayerShip.pos, ship.rad, ship.lerp_speed, dt)
-        local harass_dir = ship.moving_dir.rotate(stateMachine.harass_dir  *math.pi/2)
+        local harass_dir = ship.moving_dir.rotate(stateMachine.harass_dir*math.pi/2)
         if flee == true then
             ship.moving_dir = -ship.moving_dir
         end
+        
         if stateMachine.state == STATES.HARASS or stateMachine.state == STATES.FLEE then
-            ship.moving_dir = ship.moving_dir+harass_dir
-            ship.moving_dir.normalize()
+            ship.moving_dir = ship.moving_dir+harass_dir * 3
+        elseif  stateMachine.state == STATES.GET_AROUND then
+            ship.moving_dir = ship.moving_dir+harass_dir * 2
         end
-        local enemyShips_dir = get_close_ships_direction(ship)
-        -- If close ships detected, move in opposite direction
-        if enemyShips_dir then
-            ship.moving_dir = -enemyShips_dir
+        ship.moving_dir = ship.moving_dir.normalize()
+        if stateMachine.state == STATES.CHASE or stateMachine.state == STATES.FIRE then
+            stateMachine.enemyShips_dir = get_close_ships_direction(ship)
+            -- If close ships detected, move in opposite direction
+            if stateMachine.enemyShips_dir then
+                ship.moving_dir = -stateMachine.enemyShips_dir
+            end
         end
         ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
     end
 
     local function shoot(dt)
-        if stateMachine.shoot_timer.update(dt) == true then
+        if stateMachine.shoot_timer.update(dt) then
+            stateMachine.can_shoot = true
+        end
+        if stateMachine.can_shoot == true then
+            stateMachine.can_shoot = false
             ship.shoot()
             stateMachine.shoot_timer.start()
         end
@@ -77,16 +94,19 @@ local newEnemyShipStateMachine = function(ship)
         
         if stateMachine.update_dir_timer.update(dt) == true then
             stateMachine.harass_dir = get_random_harass_dir()
-            stateMachine.update_dir_timer.start(math.random()+3)
+            local new_timer_duration = 0.5 + math.random()*4
+            stateMachine.update_dir_timer.start(new_timer_duration)
             ship.harass_range = ship.base_harass_range + math.random(-50,50)
             ship.flee_range = ship.base_flee_range + math.random(-50,50)
+            --stateMachine.get_around = true
         end
     end
 
     local function change_state(newState)
         if stateMachine.canChangeState == true then
+            ship.speed = ship.base_speed
             stateMachine.canChangeState = false
-            stateMachine.change_state_timer.start()
+            stateMachine.change_state_timer.start(0.25 + math.random()*0.5)
             stateMachine.state = newState
         end
     end
@@ -95,13 +115,25 @@ local newEnemyShipStateMachine = function(ship)
         if stateMachine.change_state_timer.update(dt) then
             stateMachine.canChangeState = true
         end
+
         update_harass_dir(dt)
         local dist_to_player = math.vdist(ship.pos, PlayerShip.pos)
+        -- if stateMachine.get_around == true then
+        --     stateMachine.get_around = false
+        --     if math.random(2) == 1 then
+        --         change_state(STATES.GET_AROUND)
+        --     end
+        -- end
         if stateMachine.state == STATES.HIGH_SPEED_CHASE then
             move(dt)
             ship.speed = ship.base_speed * 5
             if dist_to_player < ship.detection_range then
-                ship.speed = ship.base_speed
+                change_state(STATES.CHASE)
+            end
+        elseif stateMachine.state == STATES.GET_AROUND then
+            move(dt)
+            ship.speed = ship.base_speed * 3
+            if dist_to_player < ship.detection_range then
                 change_state(STATES.CHASE)
             end
         elseif stateMachine.state == STATES.CHASE then
@@ -109,7 +141,7 @@ local newEnemyShipStateMachine = function(ship)
             if dist_to_player < ship.shooting_range then
                 change_state(STATES.FIRE)
             elseif dist_to_player > ship.detection_range then
-                change_state(STATES.HIGH_SPEED_CHASE)
+                change_state(STATES.GET_AROUND)
             end
         elseif stateMachine.state == STATES.FIRE then
             move(dt)
