@@ -13,6 +13,8 @@ The ship always looks at the mouse. All movement direction is relative to the sh
 * escape: pause game
 * space: return to main menu
 
+* 1-4 : change weapon
+
 ## Cheat Codes
 * v: Spawn weapon selection menu
 * t: Spawn upgrade selection menu

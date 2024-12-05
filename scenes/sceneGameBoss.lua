@@ -6,7 +6,7 @@ sceneGame.music_name = "assets/sounds/ambiance/DavidKBD - Cosmic Pack 05 - Stell
 
 
 sceneGame.load_enemies = function()
-    newBossShip(NAIRAN_BOSS, newVector2(ScaledScreenWidth/2, ScaledScreenHeight/2-200), 0)
+    newBossShip(NAIRAN_BOSS, newVector2(ScaledScreenWidth/2, ScaledScreenHeight/6), 0)
 end
 
 
@@ -24,7 +24,7 @@ sceneGame.update_camera = function()
 end
 
 sceneGame.update_player_pos = function()
-    PlayerShip.pos = newVector2(ScaledScreenWidth * 0.5, ScaledScreenHeight * 0.5)
+    PlayerShip.pos = newVector2(ScaledScreenWidth * 0.5, ScaledScreenHeight * 0.75)
 end
 
 sceneGame.keypressed = function(key, scancode)

@@ -22,7 +22,7 @@ local upgrades_list = {
     damage = {
         pickup = nil,
         color = newColor(255, 0, 0),
-        increase = 10,
+        increase = 20,
         max = 200
     },
     projectile_speed = {
@@ -34,18 +34,18 @@ local upgrades_list = {
     increase_health = {
         pickup = PICKUP.health,
         color = newColor(255, 0, 0),
-        increase = 10,
+        increase = 20,
         max = 300
     },
     heal = {
         pickup = PICKUP.health,
         color = newColor(0, 255, 0),
-        increase = 40
+        increase = 50
     },
     max_boost = {
         pickup = PICKUP.boost,
         color = newColor(255, 255, 255),
-        increase = 20,
+        increase = 40,
         max = 300
     }
     

@@ -26,6 +26,7 @@ function newPlayerShip()
 
 
     local function move(dt)
+        -- Moving direction is relative to mouse direction
         local mouseX, mouseY = love.mouse.getPosition()
         --ship does not move in screen because the camera follows the ship so we calculate the angle like this
         local dir = nil
@@ -71,6 +72,49 @@ function newPlayerShip()
         
     end
 
+
+    local function move_2(dt)
+        -- Moving direction absolute
+        local mouseX, mouseY = love.mouse.getPosition()
+        --ship does not move in screen because the camera follows the ship so we calculate the angle like this
+        local dir = nil
+        local look_at_pos = nil
+        if MovingCamera == true then
+            look_at_pos = newVector2(ScaledScreenWidth * 0.5 * Scale, ScaledScreenHeight * 0.5 * Scale)
+        else
+            look_at_pos = ship.pos * Scale
+        end
+        ship.rad, dir = SmoothLookAt(
+            look_at_pos,
+            newVector2(mouseX, mouseY),
+            ship.rad,
+            ship.lerp_speed,
+            dt
+        )
+
+        local side_engine_dir = 0
+        --up down thrust
+        if love.keyboard.isScancodeDown("w") then
+            side_engine_dir = side_engine_dir - 1
+        end
+        if love.keyboard.isScancodeDown("s") then
+            side_engine_dir = side_engine_dir +1
+        end
+        local up_engine_dir = 0
+        if love.keyboard.isScancodeDown("d") then
+            up_engine_dir = up_engine_dir + 1
+        end
+        if love.keyboard.isScancodeDown("a") then
+            up_engine_dir = up_engine_dir -1
+        end
+
+        ship.moving_dir = newVector2(up_engine_dir, side_engine_dir).normalize()
+        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+
+        ship.constrain_ship_pos()
+        
+    end
+
     local shoot= function(dt)
         -- shoot weapon
         if love.mouse.isDown(1) then
@@ -108,7 +152,7 @@ function newPlayerShip()
 
     ship.update = function(dt)
         ship.experience.update(dt)
-        move(dt)
+        move_2(dt)
         update_engines(dt)
         update_weapons()
         shoot(dt)

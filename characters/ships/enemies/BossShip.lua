@@ -32,7 +32,7 @@ local function newBossShip(type, pos, rad)
     )
     ship.name = boss_ship_params.name
     ship.type = type
-    ship.experience = boss_ship_params.experience * PlayerShip.level
+    ship.experience = boss_ship_params.experience * PlayerShip.experience.level
     ship.stateMachine = newBossShipStates(ship)
     ship.hit_player_timer = newTimer(1)
     ship.hit_player_damage = boss_ship_params.hit_player_damage
