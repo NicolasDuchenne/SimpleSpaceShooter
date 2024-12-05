@@ -12,7 +12,10 @@ local function newBossShipStates(ship)
     states.last_state = 0
     states.last_rad = 0
 
-    states.change_state = function(new_state, invicible)
+    states.change_state = function(new_state, invicible, weapon_key)
+        if weapon_key then
+            ship.switch_weapon(weapon_key)
+        end
         invicible = invicible or false
         if invicible then
             ship.turn_invincible()
@@ -74,14 +77,13 @@ local function newBossShipStates(ship)
         local up_left_pos = newVector2(2*arrived_pos, arrived_pos)
         states.go_to_pos(up_left_pos, dt)
         if math.vdist(ship.pos, up_left_pos) < arrived_range then
-            states.change_state(states.fire_down)
+            states.change_state(states.fire_down, false, WEAPONS.nairan.boss.dreadnought_space_gun)
         end
     end
     
     states.fire_down = function(dt)
-        ship.weapon = ship.weapons[WEAPONS.nairan.boss.dreadnought_space_gun]
         states.fire_in_dir(newVector2(ship.pos.x, ScaledScreenHeight), dt)
-        if states.loop > 1 then
+        if states.loop > 2 then
             states.change_state(states.idle)
         end
     end
@@ -90,14 +92,14 @@ local function newBossShipStates(ship)
         local down_left_pos = newVector2(2*arrived_pos, ScaledScreenHeight-arrived_pos)
         states.go_to_pos(down_left_pos, dt)
         if math.vdist(ship.pos, down_left_pos) < arrived_range then
-            states.change_state(states.fire_up)
+            states.change_state(states.fire_up, false, WEAPONS.nairan.boss.dreadnought_rockets)
         end
     end
     
     states.fire_up = function(dt)
-        ship.weapon = ship.weapons[WEAPONS.nairan.boss.dreadnought_rockets]
+        
         states.fire_in_dir(newVector2(ship.pos.x, 0), dt)
-        if states.loop > 1 then
+        if states.loop > 2 then
             states.change_state(states.idle)
         end
     end
@@ -106,20 +108,17 @@ local function newBossShipStates(ship)
         local center_pos = newVector2(ScaledScreenWidth*0.5, ScaledScreenHeight*0.5)
         states.go_to_pos(center_pos, dt)
         if math.vdist(ship.pos, center_pos) < arrived_range then
-            states.change_state(states.fire_center)
+            states.change_state(states.fire_center, false, WEAPONS.nairan.boss.rotating_dreadnought_space_gun)
         end
     end
     
     states.fire_center = function(dt)
         ship.lerp_speed = ship.base_lerp_speed*0.3
-        ship.weapon = ship.weapons[WEAPONS.nairan.boss.rotating_dreadnought_space_gun]
+        
         ship.rad = ship.rad + ship.lerp_speed * dt
-        if (ship.rad - states.last_rad) > 12 * math.pi then
-            states.loop = states.loop + 1
-        end
         ship.moving_dir = newVector2()
         shoot(dt)
-        if states.loop > 1 then
+        if (ship.rad - states.last_rad) > 12 * math.pi then
             states.change_state(states.idle)
         end
     end

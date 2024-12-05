@@ -5,13 +5,15 @@ local boss_ship_params = {
     img = "assets/Void_EnemyFleet_2/Nairan/Designs - Base/PNGs/Nairan - Dreadnought - Base.png",
     engine = ENGINES.nairan.dreadnought,
     weapon = WEAPONS.nairan.boss.dreadnought_space_gun,
-    health = 2000,
+    health = 100,
     hitbox_radius = 40,
-    base_speed = 200,
+    base_speed = 100,
     base_lerp_speed = 20,
-    experience = 500,
+    experience = 200,
     name = "Dreadnought",
-    hit_player_damage = 20
+    hit_player_damage = 20,
+    health_per_level = 200,
+    damage_per_level = 10
 }
 
 
@@ -30,13 +32,18 @@ local function newBossShip(type, pos, rad)
     )
     ship.name = boss_ship_params.name
     ship.type = type
-    ship.experience = boss_ship_params.experience
+    ship.experience = boss_ship_params.experience * PlayerShip.level
     ship.stateMachine = newBossShipStates(ship)
     ship.hit_player_timer = newTimer(1)
     ship.hit_player_damage = boss_ship_params.hit_player_damage
     ship.can_hit_player = true
     ship.life_bar_size = newVector2(600,30)
     ship.base_lerp_speed = boss_ship_params.base_lerp_speed
+    ship.damage_per_level = boss_ship_params.damage_per_level
+    ship.health_per_level = boss_ship_params.health_per_level
+
+    ship.increase_max_health(ship.health_per_level * (PlayerShip.experience.level-1))
+    ship.increase_damage(ship.damage_per_level * (PlayerShip.experience.level-1))
 
     ship.weapons = {}
     ship.weapons[WEAPONS.nairan.boss.dreadnought_space_gun] = newWeapon(WEAPONS.nairan.boss.dreadnought_space_gun, ship.group)
@@ -49,6 +56,15 @@ local function newBossShip(type, pos, rad)
         ship.is_dead = true
         PlayerShip.experience.gain(ship.experience)
         Create_survivor_vortex()
+    end
+
+    ship.switch_weapon = function(key)
+        ship.weapon = ship.weapons[key]
+        -- launch all stats increase on new weapon
+        ship.increase_damage(0)
+        ship.increase_fire_rate(0)
+        ship.increase_projectile_speed(0)
+        ship.weapon.reset()
     end
 
     ship.hit_player = function(dt)

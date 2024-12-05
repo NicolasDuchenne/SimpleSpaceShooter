@@ -3,7 +3,7 @@ function newExperience()
     local max_level = 1000
     local exp_per_level = 100
     local level_new_weapon = 10
-    local level_new_boss = 9
+    local level_new_boss = 10
     local levels_exp = {
     }
     for i=0,max_level do
@@ -51,7 +51,7 @@ function newExperience()
         experience.level = experience.level + 1
         experience.exp = 0
         experience.button_level.set_text(set_level_text())
-        if experience.level % level_new_weapon == 1 then
+        if experience.level == 1 or experience.level % level_new_weapon == 0 then
             PlayerShip.upgrades.create_weapon_choices()
         else
             PlayerShip.upgrades.create_choices()

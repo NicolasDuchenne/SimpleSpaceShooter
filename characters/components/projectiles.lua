@@ -76,6 +76,8 @@ function newProjectile(type, pos, rad, speed, group, damage)
                     closest_dist = enemy_dist
                 end
             end
+        elseif projectile.group == SHIP_GROUPS.ENEMY then
+            projectile.closest_enemy = PlayerShip
         end
     end
     
@@ -88,7 +90,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     end
 
 
-    local function process_hit()
+    projectile.process_hit = function()
         projectile.can_hit = false
         projectile.hit_timer.start()
         if projectile.style == PROJECTILES_STYLES.goes_through then
@@ -110,14 +112,27 @@ function newProjectile(type, pos, rad, speed, group, damage)
                 for i, enemyShip in ipairs(EnemyShips) do
                     if math.vdist(projectile.pos, enemyShip.pos) < enemyShip.hitbox_radius+projectile.hitbox_radius then
                         enemyShip.hit(projectile.damage)
-                        process_hit()
+                        projectile.process_hit()
                     end
                 end
             elseif projectile.group == SHIP_GROUPS.ENEMY then
                 -- Check if player is hit
                 if  math.vdist(projectile.pos, PlayerShip.pos) < PlayerShip.hitbox_radius+projectile.hitbox_radius then
                         PlayerShip.hit(projectile.damage)
-                        process_hit()
+                        projectile.process_hit()
+                end
+            end
+        end
+    end
+
+    local function hit_projectiles()
+        if projectile.group == SHIP_GROUPS.PLAYER then
+            for i, tmp_projectile in ipairs(Projectiles) do
+                if tmp_projectile.style == PROJECTILES_STYLES.heat_seaking and tmp_projectile.group == SHIP_GROUPS.ENEMY then
+                    if math.vdist(projectile.pos, tmp_projectile.pos) < tmp_projectile.hitbox_radius+projectile.hitbox_radius then
+                        projectile.process_hit()
+                        tmp_projectile.process_hit()
+                    end
                 end
             end
         end
@@ -141,6 +156,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
         projectile.sprite.update(dt)
         projectile.pos = projectile.pos + projectile.dir * projectile.speed * dt
         hit_ships()
+        hit_projectiles()
     end
     local function draw_hitbox()
         love.graphics.circle("line", projectile.pos.x, projectile.pos.y, projectile.hitbox_radius)

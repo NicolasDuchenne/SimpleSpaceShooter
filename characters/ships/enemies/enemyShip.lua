@@ -61,6 +61,7 @@ function newEnemyShip(type, pos, rad)
     ship.stateMachine = newEnemyShipStateMachine(ship)
 
     ship.health_per_level = enemy_ships_params[type].health_per_level
+    ship.damage_per_level = enemy_ships_params[type].damage_per_level
 
     ship.die = function()
         ship.is_dead = true

@@ -32,7 +32,8 @@ enemy_ships_params[NAIRAN_FIGHTER] = {
     avoid_ship_range = 30,
     fire_delay_seconds = 2,
     experience = 50,
-    health_per_level = 3
+    health_per_level = 3,
+    damage_per_level = 3
 
 }
 
@@ -51,7 +52,8 @@ enemy_ships_params[NAIRAN_BATTLECRUISER] = {
     avoid_ship_range = 100,
     fire_delay_seconds = 2.5,
     experience = 100,
-    health_per_level = 10
+    health_per_level = 10,
+    damage_per_level = 5
 }
 
 
@@ -71,7 +73,8 @@ enemy_ships_params[NAIRAN_TORPEDO] = {
     fire_delay_seconds = 1000000,
     experience = 50,
     self_destruct = true,
-    health_per_level = 3
+    health_per_level = 3,
+    damage_per_level = 3
 }
 
 return enemy_ships_params

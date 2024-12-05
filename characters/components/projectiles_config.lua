@@ -3,6 +3,7 @@ PROJECTILES = {}
 PROJECTILES.auto_cannon = "auto_cannon_projectile"
 PROJECTILES.space_gun = "big_space_gun_projectile"
 PROJECTILES.rockets = "rockets_projectile"
+PROJECTILES.boss_rockets = "boss_Srockets_projectile"
 PROJECTILES.zapper = "zapper_projectile"
 
 PROJECTILES.nairan_bolt = "nairan_bolt_projectile"
@@ -56,6 +57,22 @@ projectiles_params[PROJECTILES.rockets]= {
     detection_range = 500,
     lerp_acceleration_range = 200
 }
+
+projectiles_params[PROJECTILES.boss_rockets]= {
+    img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Rocket.png",
+    cquad = 3,
+    lquad = 1,
+    wquad = 32,
+    hquad = 32,
+    fps = 8,
+    scale = newVector2(3,3),
+    hitbox_radius = 5,
+    style = PROJECTILES_STYLES.heat_seaking,
+    base_lerp_speed = 3,
+    detection_range = 500,
+    lerp_acceleration_range = 200
+}
+
 projectiles_params[PROJECTILES.zapper]= {
     img = "assets/Void_MainShip/Main Ship/Main ship - Projectiles/PNGs/Main ship weapon - Projectile - Zapper.png",
     cquad = 8,
@@ -75,7 +92,7 @@ projectiles_params[PROJECTILES.nairan_bolt]= {
     wquad = 9,
     hquad = 9,
     fps = 8,
-    scale = newVector2(2,2),
+    scale = newVector2(2.5,2.5),
     hitbox_radius = 3,
     style=PROJECTILES_STYLES.normal
 }

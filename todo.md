@@ -1,14 +1,6 @@
-* draw enemy life bar
-
-
-* Create boss enemy, with predefined patterns, boss spawns based on a pattern
 
 * add animation for enemy's death
 
-
-* Scale button with scene scale ?
-
-* add rad offset to weapon projectile frame for enemies
 
 * Cherche information sur les behavior tree pour generer l'IA
 

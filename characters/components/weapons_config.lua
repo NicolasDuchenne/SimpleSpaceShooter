@@ -25,7 +25,7 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
     shots_per_sec = 3,
     bullet_type = PROJECTILES.auto_cannon,
     bullet_base_speed = 500,
-    bullet_base_damage = 10,
+    bullet_base_damage = 15,
     shooting_frames = {
         {
             frame = 2,
@@ -64,7 +64,7 @@ weapon_sprite_params[WEAPONS.player.rockets] = {
     lquad = 1,
     wquad = 48,
     hquad = 48,
-    shots_per_sec = 1,
+    shots_per_sec = 0.7,
     bullet_type = PROJECTILES.rockets,
     bullet_base_speed = 500,
     bullet_base_damage = 10,
@@ -107,7 +107,7 @@ weapon_sprite_params[WEAPONS.player.zapper] = {
     shots_per_sec = 2,
     bullet_type = PROJECTILES.zapper,
     bullet_base_speed = 400,
-    bullet_base_damage = 20,
+    bullet_base_damage = 30,
     shooting_frames = {
         {
             frame = 5,
@@ -128,7 +128,7 @@ weapon_sprite_params[WEAPONS.nairan.fighter] = {
     wquad = 64,
     hquad = 64,
     shots_per_sec = 0.5,
-    bullet_type = PROJECTILES.rockets,
+    bullet_type = PROJECTILES.nairan_bolt,
     bullet_base_speed = 400,
     bullet_base_damage = 10,
     shooting_frames = {
@@ -203,6 +203,26 @@ weapon_sprite_params[WEAPONS.nairan.torpedo] = {
     }
 }
 
+local shooting_frames = {}
+local i = 1
+while i < 25 do
+    local offset = newVector2(0,-20)
+    local frame = {
+        frame = i,
+        offset = offset,
+        offset_rad = math.pi / 4
+    }
+    table.insert(shooting_frames, frame)
+    frame = {
+        frame = i,
+        offset = offset,
+        offset_rad = 0
+    }
+    table.insert(shooting_frames, frame)
+    i = i + 5
+end
+
+
 weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_space_gun] = {
     img = "assets/Void_EnemyFleet_2/Nairan/Weapons/PNGs/Nairan - Dreadnought - Weapons.png",
     cquad = 34,
@@ -212,37 +232,12 @@ weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_space_gun] = {
     shots_per_sec = 1.2,
     bullet_type = PROJECTILES.space_gun,
     bullet_base_speed = 300,
-    bullet_base_damage = 20,
-    shooting_frames = {
-        {
-            frame = 2,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 5,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 8,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 11,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 14,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 17,
-            offset = newVector2(0,-20)
-        }
-    }
+    bullet_base_damage = 10,
+    shooting_frames = shooting_frames
 }
 
-local shooting_frames = {}
-local i = 1
+shooting_frames = {}
+i = 1
 while i < 34 do
     local offset = newVector2(0,-20)
     local frame = {
@@ -268,7 +263,7 @@ weapon_sprite_params[WEAPONS.nairan.boss.rotating_dreadnought_space_gun] = {
     shots_per_sec = 1.2,
     bullet_type = PROJECTILES.space_gun,
     bullet_base_speed = 300,
-    bullet_base_damage = 20,
+    bullet_base_damage = 10,
     shooting_frames = shooting_frames
 }
 
@@ -278,33 +273,21 @@ weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_rockets] = {
     lquad = 1,
     wquad = 128,
     hquad = 128,
-    shots_per_sec = 1,
+    shots_per_sec =0.8,
     bullet_type = PROJECTILES.rockets,
-    bullet_base_speed = 300,
-    bullet_base_damage = 20,
+    bullet_base_speed = 150,
+    bullet_base_damage = 10,
     shooting_frames = {
         {
-            frame = 2,
+            frame = 1,
             offset = newVector2(0,-20)
         },
         {
-            frame = 5,
+            frame = 15,
             offset = newVector2(0,-20)
         },
         {
-            frame = 8,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 11,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 14,
-            offset = newVector2(0,-20)
-        },
-        {
-            frame = 17,
+            frame = 30,
             offset = newVector2(0,-20)
         }
     }

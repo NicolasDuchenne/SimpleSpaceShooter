@@ -24,6 +24,7 @@ enemySpawner.update = function(dt)
             local enemy_pos = newVector2FromRad(rad_spawn) * math.random(enemySpawner.enemy_min_distance, enemySpawner.enemy_max_distance)
             local ship = newEnemyShip(ENEMIES_WITH_RARENESS[enemy_index], PlayerShip.pos + enemy_pos)
             ship.increase_max_health(ship.health_per_level * (PlayerShip.experience.level-1))
+            ship.increase_damage(ship.damage_per_level * (PlayerShip.experience.level-1))
         end
 
         enemySpawner.timer.start(math.random()*enemySpawner.timer_variation+enemySpawner.timer_min_duration)
