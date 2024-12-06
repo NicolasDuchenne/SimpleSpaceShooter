@@ -274,8 +274,8 @@ weapon_sprite_params[WEAPONS.nairan.boss.dreadnought_rockets] = {
     wquad = 128,
     hquad = 128,
     shots_per_sec =0.8,
-    bullet_type = PROJECTILES.rockets,
-    bullet_base_speed = 150,
+    bullet_type = PROJECTILES.boss_rockets,
+    bullet_base_speed = 180,
     bullet_base_damage = 10,
     shooting_frames = {
         {

@@ -1,5 +1,5 @@
 local enemy_ships_params = require("characters.ships.enemies.enemyShips_config")
-local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStates")
+local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStates2")
 
 EnemyShips = {}
 EnemyShips.total_exp = 0

@@ -26,7 +26,8 @@ projectiles_params[PROJECTILES.auto_cannon]= {
     fps = 8,
     scale = newVector2(1,1),
     hitbox_radius = 3,
-    style = PROJECTILES_STYLES.normal
+    style = PROJECTILES_STYLES.normal,
+    can_be_shot_down = false
 }
 
 projectiles_params[PROJECTILES.space_gun]= {
@@ -38,7 +39,8 @@ projectiles_params[PROJECTILES.space_gun]= {
     fps = 8,
     scale = newVector2(1.5,1.5),
     hitbox_radius = 8,
-    style = PROJECTILES_STYLES.goes_through
+    style = PROJECTILES_STYLES.goes_through,
+    can_be_shot_down = false
 
     
 }
@@ -55,7 +57,8 @@ projectiles_params[PROJECTILES.rockets]= {
     style = PROJECTILES_STYLES.heat_seaking,
     base_lerp_speed = 3,
     detection_range = 500,
-    lerp_acceleration_range = 200
+    lerp_acceleration_range = 200,
+    can_be_shot_down = false
 }
 
 projectiles_params[PROJECTILES.boss_rockets]= {
@@ -65,12 +68,14 @@ projectiles_params[PROJECTILES.boss_rockets]= {
     wquad = 32,
     hquad = 32,
     fps = 8,
-    scale = newVector2(3,3),
+    scale = newVector2(2.5,2.5),
     hitbox_radius = 5,
     style = PROJECTILES_STYLES.heat_seaking,
     base_lerp_speed = 3,
     detection_range = 500,
-    lerp_acceleration_range = 200
+    lerp_acceleration_range = 200,
+    can_be_shot_down = true,
+    life_timer = 10
 }
 
 projectiles_params[PROJECTILES.zapper]= {
@@ -82,7 +87,8 @@ projectiles_params[PROJECTILES.zapper]= {
     fps = 8,
     scale = newVector2(1,1),
     hitbox_radius = 3,
-    style = PROJECTILES_STYLES.rebound
+    style = PROJECTILES_STYLES.rebound,
+    can_be_shot_down = false
 }
 
 projectiles_params[PROJECTILES.nairan_bolt]= {
@@ -94,7 +100,8 @@ projectiles_params[PROJECTILES.nairan_bolt]= {
     fps = 8,
     scale = newVector2(2, 2),
     hitbox_radius = 3,
-    style=PROJECTILES_STYLES.normal
+    style=PROJECTILES_STYLES.normal,
+    can_be_shot_down = true
 }
 
 return projectiles_params

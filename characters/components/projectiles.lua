@@ -45,7 +45,8 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.sprite = create_projectile_sprite(projectiles_params[type])
     projectile.scale = projectiles_params[type].scale
     projectile.style = projectiles_params[type].style
-    projectile.life_timer = newTimer(5)
+    projectile.can_be_shot_down = projectiles_params[type].can_be_shot_down
+    projectile.life_timer = newTimer(projectiles_params[type].life_timer or 5)
     projectile.life_timer.start()
     projectile.hitbox_radius = projectiles_params[type].hitbox_radius * projectile.scale.x
     projectile.damage = damage
@@ -55,6 +56,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.hit_timer = newTimer(0.2)
 
     projectile.closest_enemy = nil
+    print(projectile.can_be_shot_down)
     
     if group == SHIP_GROUPS.PLAYER then
         projectile.color = newColor(0, 255, 0)
@@ -128,7 +130,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     local function hit_projectiles()
         if projectile.group == SHIP_GROUPS.PLAYER then
             for i, tmp_projectile in ipairs(Projectiles) do
-                if tmp_projectile.style == PROJECTILES_STYLES.heat_seaking and tmp_projectile.group == SHIP_GROUPS.ENEMY then
+                if tmp_projectile.group == SHIP_GROUPS.ENEMY and tmp_projectile.can_be_shot_down == true  then
                     if math.vdist(projectile.pos, tmp_projectile.pos) < tmp_projectile.hitbox_radius+projectile.hitbox_radius then
                         projectile.process_hit()
                         tmp_projectile.process_hit()

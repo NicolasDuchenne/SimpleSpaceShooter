@@ -160,6 +160,11 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.energy_bar_size_filed = ship.boost_energy/ship.max_boost_energy
     end
 
+    ship.move_toward = function(dist_pos, dt)
+        ship.rad, ship.moving_dir = SmoothLookAt(ship.pos,dist_pos, ship.rad, ship.lerp_speed, dt)
+        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+    end
+
     ship.update_blink_timer = function(dt)
         if ship.blink_timer.update(dt) then
             ship.show = not ship.show

@@ -1,11 +1,11 @@
 local enemySpawner = {}
 enemySpawner.timer_min_duration  = 1
 enemySpawner.timer_variation = 0.1
-enemySpawner.enemy_min_distance = 800
-enemySpawner.enemy_max_distance = 1500
+enemySpawner.enemy_min_distance = 100
+enemySpawner.enemy_max_distance = 200
 enemySpawner.timer_duration = 1
 enemySpawner.timer = newTimer(enemySpawner.timer_duration)
-enemySpawner.base_max_enemies_experience = 200
+enemySpawner.base_max_enemies_experience = 50
 enemySpawner.max_max_enemies_experience = 2000
 enemySpawner.max_enemies_experience = enemySpawner.base_max_enemies_experience
 
