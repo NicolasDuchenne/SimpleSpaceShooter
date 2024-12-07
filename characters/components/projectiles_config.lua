@@ -56,8 +56,8 @@ projectiles_params[PROJECTILES.rockets]= {
     hitbox_radius = 3,
     style = PROJECTILES_STYLES.heat_seaking,
     base_lerp_speed = 3,
-    detection_range = 500,
-    lerp_acceleration_range = 200,
+    detection_range = 300,
+    lerp_acceleration_range = 150,
     can_be_shot_down = false
 }
 

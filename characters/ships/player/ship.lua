@@ -5,6 +5,7 @@ local health = 100
 local hitbox_radius = 6
 local base_speed = 200
 local lerp_speed = 5
+local invicibility_duration = 0.5
 
 function newPlayerShip()
     local ship = newShip(
@@ -18,11 +19,11 @@ function newPlayerShip()
         lerp_speed
     )
     ship.boost_activated = true
+    ship.invincibility_timer = newTimer(invicibility_duration)
     
     ship.life_bar_size = newVector2(160,30)
 
     ship.damage_sound = love.audio.newSource("assets/sounds/ship/shoot02wav-14562.mp3", "static") 
-
 
 
     local function move(dt)

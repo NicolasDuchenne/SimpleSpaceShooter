@@ -1,5 +1,5 @@
 local enemy_ships_params = require("characters.ships.enemies.enemyShips_config")
-local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStates2")
+local newEnemyShipStateMachine = require("characters.ships.enemies.enemyShipStates")
 
 EnemyShips = {}
 EnemyShips.total_exp = 0
@@ -52,8 +52,6 @@ function newEnemyShip(type, pos, rad)
     ship.shooting_range = enemy_ships_params[type].shooting_range
     ship.base_harass_range = enemy_ships_params[type].harass_range
     ship.harass_range = ship.base_harass_range
-    ship.base_flee_range = enemy_ships_params[type].flee_range
-    ship.flee_range = ship.base_flee_range
     ship.avoid_ship_range = enemy_ships_params[type].avoid_ship_range
     ship.fire_delay_seconds = enemy_ships_params[type].fire_delay_seconds
     ship.experience = enemy_ships_params[type].experience
@@ -82,7 +80,7 @@ function newEnemyShip(type, pos, rad)
 
     ship.draw_state = function()
         
-        love.graphics.print(tostring(ship.stateMachine.state), ship.pos.x-10, ship.pos.y-50)
+        love.graphics.print(tostring(ship.stateMachine.state.name), ship.pos.x-10, ship.pos.y-50)
     
     end
     

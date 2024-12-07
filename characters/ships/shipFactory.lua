@@ -114,7 +114,7 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
 
     ship.increase_damage = function(added_damage)
         ship.bullet_damage_increase = ship.bullet_damage_increase + added_damage
-        ship.weapon.q =ship.weapon.bullet_base_damage + math.floor(ship.weapon.bullet_base_damage * ship.bullet_damage_increase / 100)
+        ship.weapon.bullet_damage =ship.weapon.bullet_base_damage + math.floor(ship.weapon.bullet_base_damage * ship.bullet_damage_increase / 100)
     end
 
     ship.increase_projectile_speed = function(added_speed)
@@ -160,9 +160,20 @@ function newShip(group, img, engine, cannon, health, hitbox_radius, base_speed, 
         ship.energy_bar_size_filed = ship.boost_energy/ship.max_boost_energy
     end
 
-    ship.move_toward = function(dist_pos, dt)
+    ship.move_and_look_at = function(dist_pos, dt)
         ship.rad, ship.moving_dir = SmoothLookAt(ship.pos,dist_pos, ship.rad, ship.lerp_speed, dt)
         ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+    end
+
+    ship.move_to = function(dist_pos, dt)
+        local target_rad = math.angle(ship.pos.x, ship.pos.y, dist_pos.x, dist_pos.y)
+        ship.moving_dir = newVector2FromRad(target_rad)
+        ship.pos = ship.pos + ship.moving_dir * ship.speed * dt
+    end
+
+    ship.look_at = function(dist_pos, dt)
+        local moving_dir
+        ship.rad, moving_dir = SmoothLookAt(ship.pos, dist_pos, ship.rad, ship.lerp_speed, dt)
     end
 
     ship.update_blink_timer = function(dt)

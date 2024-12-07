@@ -13,7 +13,7 @@ local boss_ship_params = {
     experience = 200,
     name = "Dreadnought",
     hit_player_damage = 20,
-    health_per_level = 200,
+    health_per_level = 300,
     damage_per_level = 10
 }
 

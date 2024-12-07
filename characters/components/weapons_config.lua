@@ -25,7 +25,7 @@ weapon_sprite_params[WEAPONS.player.auto_cannon] = {
     shots_per_sec = 3,
     bullet_type = PROJECTILES.auto_cannon,
     bullet_base_speed = 500,
-    bullet_base_damage = 15,
+    bullet_base_damage = 20,
     shooting_frames = {
         {
             frame = 2,
@@ -48,7 +48,7 @@ weapon_sprite_params[WEAPONS.player.big_space_gun] = {
     shots_per_sec = 2,
     bullet_type = PROJECTILES.space_gun,
     bullet_base_speed = 400,
-    bullet_base_damage = 30,
+    bullet_base_damage = 20,
     shooting_frames = {
         {
             frame = 7,
@@ -64,7 +64,7 @@ weapon_sprite_params[WEAPONS.player.rockets] = {
     lquad = 1,
     wquad = 48,
     hquad = 48,
-    shots_per_sec = 0.7,
+    shots_per_sec = 1,
     bullet_type = PROJECTILES.rockets,
     bullet_base_speed = 500,
     bullet_base_damage = 10,
@@ -104,10 +104,10 @@ weapon_sprite_params[WEAPONS.player.zapper] = {
     lquad = 1,
     wquad = 48,
     hquad = 48,
-    shots_per_sec = 2,
+    shots_per_sec = 2.5,
     bullet_type = PROJECTILES.zapper,
     bullet_base_speed = 400,
-    bullet_base_damage = 30,
+    bullet_base_damage = 20,
     shooting_frames = {
         {
             frame = 5,
@@ -127,9 +127,9 @@ weapon_sprite_params[WEAPONS.nairan.fighter] = {
     lquad = 1,
     wquad = 64,
     hquad = 64,
-    shots_per_sec = 0.5,
+    shots_per_sec = 0.3,
     bullet_type = PROJECTILES.nairan_bolt,
-    bullet_base_speed = 400,
+    bullet_base_speed = 250,
     bullet_base_damage = 10,
     shooting_frames = {
         {
@@ -168,7 +168,7 @@ weapon_sprite_params[WEAPONS.nairan.battlecruiser] = {
     hquad = 128,
     shots_per_sec = 3,
     bullet_type = PROJECTILES.space_gun,
-    bullet_base_speed = 300,
+    bullet_base_speed = 250,
     bullet_base_damage = 20,
     shooting_frames = {
         {
@@ -177,7 +177,22 @@ weapon_sprite_params[WEAPONS.nairan.battlecruiser] = {
             offset_rad = math.pi/6
         },
         {
-            frame = 5,
+            frame = 2,
+            offset = newVector2(0,-20),
+            offset_rad = 0
+        },
+        {
+            frame = 2,
+            offset = newVector2(0,-20),
+            offset_rad = -math.pi/6
+        },
+        {
+            frame = 7,
+            offset = newVector2(0,-20),
+            offset_rad = math.pi/6
+        },
+        {
+            frame = 7,
             offset = newVector2(0,-20),
             offset_rad = 0
         },

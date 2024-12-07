@@ -37,3 +37,7 @@ end
 function RandomFloat(min, max)
     return min + math.random() * (max - min)
 end
+
+function RandomDirection()
+    return math.random(0, 1) == 0 and -1 or 1
+end

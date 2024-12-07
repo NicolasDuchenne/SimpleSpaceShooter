@@ -5,7 +5,7 @@
 ENEMIES = {}
 table.insert(ENEMIES, {name = NAIRAN_FIGHTER, frequency = 3})
 table.insert(ENEMIES, {name = NAIRAN_BATTLECRUISER, frequency = 1})
-table.insert(ENEMIES, {name = NAIRAN_TORPEDO, frequency = 4})
+table.insert(ENEMIES, {name = NAIRAN_TORPEDO, frequency = 2})
 
 ENEMIES_WITH_RARENESS = {}
 for i, enemy in ipairs(ENEMIES) do
@@ -27,11 +27,9 @@ enemy_ships_params[NAIRAN_FIGHTER] = {
     base_speed = 125,
     lerp_speed = 10,
     detection_range = 450,
-    shooting_range = 500,
-    harass_range = 300,
-    flee_range = 100,
-    avoid_ship_range = 30,
-    fire_delay_seconds = 2,
+    harass_range = 400,
+    avoid_ship_range = 100,
+    fire_delay_seconds = 5,
     experience = 50,
     health_per_level = 3,
     damage_per_level = 3
@@ -48,11 +46,9 @@ enemy_ships_params[NAIRAN_BATTLECRUISER] = {
     base_speed = 100,
     lerp_speed = 5,
     detection_range = 450,
-    shooting_range = 500,
     harass_range = 400,
-    flee_range = 150,
-    avoid_ship_range = 100,
-    fire_delay_seconds = 2.5,
+    avoid_ship_range = 200,
+    fire_delay_seconds = 3.5,
     experience = 100,
     health_per_level = 10,
     damage_per_level = 5
@@ -69,10 +65,8 @@ enemy_ships_params[NAIRAN_TORPEDO] = {
     base_speed = 200,
     lerp_speed = 10,
     detection_range = 400,
-    shooting_range = 0,
     harass_range = 0,
-    flee_range = 0,
-    avoid_ship_range = 30,
+    avoid_ship_range = 0,
     fire_delay_seconds = 1000000,
     experience = 50,
     self_destruct = true,

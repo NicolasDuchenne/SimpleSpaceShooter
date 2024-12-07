@@ -16,36 +16,36 @@ local upgrades_list = {
     shooting_speed = {
         pickup = nil,
         color = newColor(0, 255, 0),
-        increase = 20,
+        increase = 40,
         max = 300
     },
     damage = {
         pickup = nil,
         color = newColor(255, 0, 0),
-        increase = 20,
+        increase = 30,
         max = 200
     },
     projectile_speed = {
         pickup = nil,
         color = newColor(0, 0, 255),
-        increase = 10,
+        increase = 20,
         max = 100
     },
     increase_health = {
         pickup = PICKUP.health,
         color = newColor(255, 0, 0),
-        increase = 20,
+        increase = 40,
         max = 300
     },
     heal = {
         pickup = PICKUP.health,
         color = newColor(0, 255, 0),
-        increase = 50
+        increase = 60
     },
     max_boost = {
         pickup = PICKUP.boost,
         color = newColor(255, 255, 255),
-        increase = 40,
+        increase = 50,
         max = 300
     }
     

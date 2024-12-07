@@ -56,7 +56,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.hit_timer = newTimer(0.2)
 
     projectile.closest_enemy = nil
-    print(projectile.can_be_shot_down)
+
     
     if group == SHIP_GROUPS.PLAYER then
         projectile.color = newColor(0, 255, 0)
