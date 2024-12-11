@@ -20,6 +20,7 @@ function newScenegame(title)
     sceneGame.vortex_created = nil
     sceneGame.music_name = nil
     sceneGame.music = nil
+    
     sceneGame.load = function(data, restart)
         if sceneGame.music_name then
             sceneGame.music = PlayMusic(sceneGame.music_name)
@@ -175,8 +176,7 @@ function newScenegame(title)
         draw_game()
         love.graphics.origin()
         draw_ui()
-        draw_pause()
-        
+        draw_pause() 
     end
     
 

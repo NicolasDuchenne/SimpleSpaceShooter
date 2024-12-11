@@ -82,13 +82,17 @@ function newProjectile(type, pos, rad, speed, group, damage)
             projectile.closest_enemy = PlayerShip
         end
     end
-    
-    if projectile.style == PROJECTILES_STYLES.heat_seaking then
+
+    projectile.load_heat_seaking = function()
         projectile.base_lerp_speed = projectiles_params[type].base_lerp_speed
         projectile.lerp_speed = projectile.base_lerp_speed
         projectile.detection_range = projectiles_params[type].detection_range
         projectile.lerp_acceleration_range = projectiles_params[type].lerp_acceleration_range
         get_closest_enemy()
+    end
+    
+    if projectile.style == PROJECTILES_STYLES.heat_seaking then
+        projectile.load_heat_seaking()
     end
 
 
@@ -107,7 +111,6 @@ function newProjectile(type, pos, rad, speed, group, damage)
     end
 
     local function hit_ships()
-
         if projectile.can_hit == true then
             if projectile.group == SHIP_GROUPS.PLAYER then
                 -- Check if enemy is hit

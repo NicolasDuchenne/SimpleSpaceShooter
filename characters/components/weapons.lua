@@ -58,34 +58,37 @@ function newWeapon(type, group)
         end
     end
 
+    weapon.update_shoot = function(pos, rad)
+        for i= 1, #weapon.shooting_frames do
+            if weapon.current_base_sprite.frame == weapon.shooting_frames[i].frame and weapon.has_shot[i] == false then
+                local rad_shoot = rad
+                if weapon.shooting_frames[i].offset_rad then
+                    rad_shoot = rad_shoot + weapon.shooting_frames[i].offset_rad
+                end
+                newProjectile(
+                    weapon.bullet_type,
+                    pos + weapon.shooting_frames[i].offset.rotate(rad + IMG_RAD_OFFSET),
+                    rad_shoot,
+                    weapon.bullet_speed,
+                    weapon.group,
+                    weapon.bullet_damage
+                )
+                if weapon.sound then
+                    PlaySound(weapon.sound, 0.1, 0.5)
+                end
+                weapon.has_shot[i] = true
+                weapon.shot_fired = weapon.shot_fired + 1
+            end
+        end
+    end
+
     weapon.update = function(dt, pos, rad)
         weapon.current_base_sprite.update(dt)
         if weapon.current_base_sprite.play_sprite == false then
             weapon.can_shoot = true
         end
         if weapon.will_shoot then
-            for i= 1, #weapon.shooting_frames do
-                if weapon.current_base_sprite.frame == weapon.shooting_frames[i].frame and weapon.has_shot[i] == false then
-                    local rad_shoot = rad
-                    if weapon.shooting_frames[i].offset_rad then
-                        rad_shoot = rad_shoot + weapon.shooting_frames[i].offset_rad
-                    end
-                    newProjectile(
-                        weapon.bullet_type,
-                        pos + weapon.shooting_frames[i].offset.rotate(rad + IMG_RAD_OFFSET),
-                        rad_shoot,
-                        weapon.bullet_speed,
-                        weapon.group,
-                        weapon.bullet_damage
-                    )
-                    if weapon.sound then
-                        PlaySound(weapon.sound, 0.1, 0.5)
-                    end
-                    weapon.has_shot[i] = true
-                    weapon.shot_fired = weapon.shot_fired + 1
-                end
-
-            end
+            weapon.update_shoot(pos, rad)
             if weapon.shot_fired == #weapon.shooting_frames then
                 weapon.will_shoot = false
             end

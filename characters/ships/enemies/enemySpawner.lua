@@ -5,10 +5,10 @@ enemySpawner.enemy_min_distance = 800
 enemySpawner.enemy_max_distance = 1500
 enemySpawner.timer_duration = 1
 enemySpawner.timer = newTimer(enemySpawner.timer_duration)
-enemySpawner.base_max_enemies_experience = 200
+enemySpawner.base_max_enemies_experience = 150
 enemySpawner.max_max_enemies_experience = 1000
 enemySpawner.max_enemies_experience = enemySpawner.base_max_enemies_experience
-enemySpawner.max_enemies_exp_per_level = 30
+enemySpawner.max_enemies_exp_per_level = 25
 
 enemySpawner.load = function()
     enemySpawner.timer.start()

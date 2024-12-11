@@ -38,7 +38,7 @@ projectiles_params[PROJECTILES.space_gun]= {
     hquad = 32,
     fps = 8,
     scale = newVector2(1.5,1.5),
-    hitbox_radius = 8,
+    hitbox_radius = 9,
     style = PROJECTILES_STYLES.goes_through,
     can_be_shot_down = false
 

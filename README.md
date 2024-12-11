@@ -67,22 +67,21 @@ Elle pourrait être améliorée pour implémenter un système de sauvegarde et u
 
 ##### Scene Game
 Scene héritée par les scènes de gameplay. Elle contient la majorité des fonctions update et draw.
-La boucle d'update contient deux fonctions qui sont lancées alternativement selon si le jeu est en pause :
-* Update game : met à jour tous les éléments du jeu lorsqu'il n'est pas en pause
-  * Update background : met à jour le fond du jeu pour qu'il soit positionné au même endroit que le joueur, avec un effet de parallaxe si la caméra bouge
-  * update camera: bouge la camera pour qu'elle suive le joueur
-  * Update playership: update le joueur
-  * Update enemies: update tous les enemies
-  * Update projectile: update les projectiles
-  * Update trigger: update les trigger
-* Update pause: met à jour les elements d'ui Interactif lorsque le jeux est en pause
-  * Update button: update le boutton et réagit si on clique sur un des boutons en relançant le jeu
 
-La boucle de draw est appelé pour draw tous les assets du jeu en permanence
-
+* La boucle d'update contient deux fonctions qui sont lancées alternativement selon si le jeu est en pause :
+  * Update game : met à jour tous les éléments du jeu lorsqu'il n'est pas en pause
+    * Update background : met à jour le fond du jeu pour qu'il soit positionné au même endroit que le joueur, avec un effet de parallaxe si la caméra bouge
+    * update camera: bouge la camera pour qu'elle suive le joueur
+    * Update playership: update le joueur
+    * Update enemies: update tous les enemies
+    * Update projectile: update les projectiles
+    * Update trigger: update les trigger
+    * Update pause: met à jour les elements d'ui Interactif lorsque le jeux est en pause
+      * Update button: update le boutton et réagit si on clique sur un des boutons en relançant le jeu
+* La boucle de draw est appelé pour draw tous les assets du jeu en permanence
 
 ##### Scene Survivor
-Hérite de scene game et ajoute un enemy spawner pour faire apparaitre les ennemis a interval régulier
+Hérite de scene game et ajoute un enemy spawner pour faire apparaitre les ennemis à interval régulier
 
 ##### Scene Boss
 Hérite de scene game et crée le boss lorsqu'elle se load
