@@ -129,7 +129,7 @@ weapon_sprite_params[WEAPONS.nairan.fighter] = {
     hquad = 64,
     shots_per_sec = 0.3,
     bullet_type = PROJECTILES.nairan_bolt,
-    bullet_base_speed = 250,
+    bullet_base_speed = 300,
     bullet_base_damage = 10,
     shooting_frames = {
         {

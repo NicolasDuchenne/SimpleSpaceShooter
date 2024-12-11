@@ -15,7 +15,7 @@ Simple Space Shooter est un jeu de type « Vampire Survivor » dans l'espace ent
 
 ### Ennemis
 * Les ennemis apparaissent de manière aléatoire.
-* Plus le niveau du joueur est élevé, plus le nombre d'ennemis augmente et plus ils apparaissent rapidement.
+* Plus le niveau du joueur est élevé, plus le nombre d'ennemis augmente, plus ils apparaissent rapidement et plus les ennemis sont fort
 * Il y a trois types d'ennemis :
   * Fighter : ennemi léger qui tire des roquettes destructibles par le joueur.
   * Torpedo : ennemi kamikaze qui cherche à détruire le joueur en le percutant.

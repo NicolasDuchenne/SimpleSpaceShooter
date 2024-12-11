@@ -105,7 +105,7 @@ local function newEnemyShipStateMachine(ship)
 
     state_machine.avoid_ship = newState("avoid_ship")
     state_machine.avoid_ship.load = function()
-        ship.speed = ship.base_speed * 2
+        ship.speed = ship.base_speed * 1.5
         state_machine.chase.offset = (ship.pos - PlayerShip.pos).normalize().rotate(RandomDirection()*RandomFloat(-math.pi*0.25, math.pi*0.25)) * math.random(1.3*ship.avoid_ship_range, 0.8 * ship.harass_range)
     end
     

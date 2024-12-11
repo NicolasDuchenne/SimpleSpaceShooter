@@ -16,10 +16,14 @@ Projectiles = {}
 Projectiles.update = function(dt)
     for i=#Projectiles, 1, -1 do
         Projectiles[i].update(dt)
-        if Projectiles[i].life_timer.update(dt) or Projectiles[i].has_hit_something == true then
+        if Projectiles[i].life_timer.update(dt)
+        or Projectiles[i].has_hit_something == true
+        or math.vdist(Projectiles[i].pos, PlayerShip.pos) > 1.5 * ScaledScreenWidth then
             table.remove(Projectiles, i)
         end
+
     end
+
 
 end
 
@@ -46,7 +50,7 @@ function newProjectile(type, pos, rad, speed, group, damage)
     projectile.scale = projectiles_params[type].scale
     projectile.style = projectiles_params[type].style
     projectile.can_be_shot_down = projectiles_params[type].can_be_shot_down
-    projectile.life_timer = newTimer(projectiles_params[type].life_timer or 5)
+    projectile.life_timer = newTimer(projectiles_params[type].life_timer or 200)
     projectile.life_timer.start()
     projectile.hitbox_radius = projectiles_params[type].hitbox_radius * projectile.scale.x
     projectile.damage = damage
