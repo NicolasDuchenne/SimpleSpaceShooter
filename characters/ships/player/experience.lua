@@ -31,13 +31,13 @@ function newExperience()
 
     experience.button_exp = newTextButton(
         newVector2(0,0),
-        newVector2(100,20),
+        newVector2(100,30),
         set_exp_text()
     )
 
     experience.button_level = newTextButton(
-        newVector2(0,20),
-        newVector2(100,20),
+        newVector2(0,30),
+        newVector2(100,30),
         set_level_text()
     )
 

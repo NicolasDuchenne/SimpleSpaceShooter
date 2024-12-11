@@ -6,7 +6,7 @@ sceneGame.music_name = "assets/sounds/ambiance/DavidKBD - Cosmic Pack 06 - Lunar
 
 
 sceneGame.update_game = function(dt)
-    sceneGame.update_game_without_enemies(dt)
+    sceneGame.update_game_without_enemies_spawn(dt)
     enemySpawner.update(dt)
 end
 

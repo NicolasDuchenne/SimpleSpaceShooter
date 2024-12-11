@@ -102,7 +102,7 @@ function newScenegame(title)
         end
     end
     
-    sceneGame.update_game_without_enemies = function(dt)
+    sceneGame.update_game_without_enemies_spawn = function(dt)
         debug_upgrades()
         if MovingCamera == true then
             sceneGame.camera.update(PlayerShip.pos.x, PlayerShip.pos.y)
@@ -120,7 +120,7 @@ function newScenegame(title)
     end
 
     sceneGame.update_game = function(dt)
-        sceneGame.update_game_without_enemies(dt)
+        sceneGame.update_game_without_enemies_spawn(dt)
     end
 
     sceneGame.update_ui = function(dt)

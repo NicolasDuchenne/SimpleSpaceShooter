@@ -109,11 +109,15 @@ function newUpgrades()
         local quadSPrite = pickup.sprite
 
         quadSPrite.color = color
+        local upgrade_text = upgrade_type
+        if text then
+            upgrade_text = upgrade_text.."\n"..text
+        end
         upgrades.buttons[button_index] = newQuadButton(
             newVector2(ScreenWidth/2  + offset - upgrades.size.x * number_of_choice / 2, ScreenHeight/2 + upgrades.size.y),
             quadSPrite,
-            upgrade_type.."\n"..(text or ""),
-            newVector2(0,0),
+            upgrade_text,
+            newVector2(0,40),
             upgrades.size,
             upgrades.img_scale,
             callback
@@ -137,10 +141,10 @@ function newUpgrades()
                 local weapon_type = weapons[weapon_index]
                 local upgrade_type = UPGRADE_GET
                 local color = weapon_upgrade_list[upgrade_type].color
-                
+                print(weapon_type)
                 if not PlayerShip.inventory.has_weapon(weapon_type) then
                     offset = create_upgrade_button(
-                        upgrade_type,
+                        weapon_type,
                         weapon_type,
                         button_index,
                         upgrades.number_of_weapon_choice, 
@@ -201,7 +205,10 @@ function newUpgrades()
                     if max_upgrade_increase then
                         upgrade_value = upgrade_attenuation_function(max_upgrade_increase, current_increase, upgrade_value)
                     end
-                    text = "current: "..current_value.." \nincrease % : "..upgrade_value
+                    text = "current: "..current_value.." \nincrease: "..upgrade_value
+                    if upgrade_type ~= UPGRADE_HEAL then
+                        text = text.."%"
+                    end
                 end
                 
                 if upgrade_type then
