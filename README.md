@@ -1,5 +1,6 @@
 # Simple Space Shooter
-[TOC]
+* auto-gen TOC:
+{:toc}
 
 ## Principe de jeu
 Simple Space Shooter est un jeu de type « Vampire Survivor » dans l'espace. 
