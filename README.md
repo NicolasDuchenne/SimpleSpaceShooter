@@ -58,20 +58,6 @@ Survivre le plus longtemps possible et accumuler le plus de point. Le score est 
 
 ### Decoupage
 #### Scenes
-##### Scene Manager
-Scène parent héritée par toutes les scènes. Elle est appelée depuis le main et gère la scène actuelle.
-
-##### Scene Menu
-Le jeu démarre sur la scène menu, actuellement simple et permettant uniquement de lancer une partie.
-Elle pourra être enrichie avec un système de sauvegarde et un tableau des scores.
-
-##### Scene Game
-Scène parent pour le gameplay, contenant les principales fonctions update et draw.
-La boucle d'update alterne entre deux fonctions selon l'état de pause :
-* Update game : actualise tous les éléments du jeu en mode actif
-* Update background : synchronise le fond avec la position du joueur, créant un effet de parallaxe lors des mouvements de caméra### Découpage
-
-#### Scènes
 
 ##### Scene Manager
 Scène parent héritée par toutes les scènes. Elle est appelée depuis le main et gère la scène actuelle.
@@ -128,20 +114,20 @@ Un vaisseau combine sprite, moteur, arme, animation de destruction et caractéri
 Hérite de ShipFactory
 Adapte la fonction update pour le contrôle clavier/souris
 Modules :
-* experience : gère la progression et les améliorations de niveau
+* experience : gère la progression et les améliorations de niveau, et le spawn du trigger du boss
 * inventory : stocke et affiche les armes
 * upgrade : propose des améliorations en pause
 
-###### Enemies
+###### EnemyShip
 Hérite de ShipFactory
 Utilise une machine à états pour gérer déplacements et tirs
-
-###### EnemyShip
 Configuration flexible des ennemis via paramètres d'armes et de comportement
 Intègre le système de spawn des ennemis
 
 ###### EnemyBoss
+Hérite de ShipFactory
 Implémente le boss avec sa machine à états spécifique
+Spawn une trigger quand il meurt
 
 
 ### Machine à états
