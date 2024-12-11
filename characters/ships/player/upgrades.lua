@@ -141,7 +141,6 @@ function newUpgrades()
                 local weapon_type = weapons[weapon_index]
                 local upgrade_type = UPGRADE_GET
                 local color = weapon_upgrade_list[upgrade_type].color
-                print(weapon_type)
                 if not PlayerShip.inventory.has_weapon(weapon_type) then
                     offset = create_upgrade_button(
                         weapon_type,
